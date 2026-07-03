@@ -3,8 +3,11 @@ about.html
 docs/
 assets/
 
-# Служебное
+# Служебное / временное (QA-рендеры и т.п.)
 .DS_Store
 Thumbs.db
 *.local
 *.log
+_*.html
+_*.png
+_*.svg

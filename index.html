@@ -114,6 +114,9 @@
 
   /* Body (expanded / focus) */
   .body{margin-top:14px; border-top:1px solid var(--line); padding-top:14px; animation:rise .35s ease both}
+  .illus{margin:0 0 16px; border:1px solid var(--line); border-radius:14px; padding:10px;
+    background:radial-gradient(130% 130% at 50% 0%, rgba(124,156,255,.07), transparent 68%), var(--bg2); overflow:hidden}
+  .illus svg{display:block; width:100%; height:auto; max-height:230px}
   .body p{margin:0 0 12px; color:#d5ddec; font-size:15.5px}
   .body strong{color:#fff}
   .body code{background:#0a0e18; border:1px solid var(--line); padding:1px 6px; border-radius:6px; font-size:13.5px; color:var(--a1); font-family:ui-monospace,Menlo,Consolas,monospace}
@@ -251,6 +254,7 @@
 <div id="pop"></div>
 
 <script src="cards.js"></script>
+<script src="illustrations.js"></script>
 <script>
 (function(){
   "use strict";
@@ -328,6 +332,8 @@
   // ---------- render a full body (used inline & in focus) ----------
   function bodyHTML(card, inFocus){
     const box=document.createElement('div'); box.className='body';
+    const illu=(window.ILLUS||{})[card.id];
+    if(illu){ const fig=document.createElement('figure'); fig.className='illus'; fig.innerHTML=illu; box.appendChild(fig); }
     const txt=document.createElement('div'); txt.innerHTML=md(card.body_md);
     const matched=annotate(txt, card.terms); box.appendChild(txt);
     const leftover=(card.terms||[]).filter(t=>matched.indexOf(t.term)<0);
