@@ -1,0 +1,10 @@
+# Личное — НЕ публикуем (остаётся только локально)
+about.html
+docs/
+assets/
+
+# Служебное
+.DS_Store
+Thumbs.db
+*.local
+*.log
