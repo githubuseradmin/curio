@@ -29,7 +29,7 @@
     background-image:
       radial-gradient(55vw 55vw at 90% -10%, rgba(124,156,255,.13), transparent 60%),
       radial-gradient(45vw 45vw at -5% 5%, rgba(94,234,212,.09), transparent 55%);
-    background-attachment:fixed; padding-bottom:60px;
+    background-attachment:fixed; padding-bottom:calc(60px + env(safe-area-inset-bottom, 0px));
   }
   a{color:var(--a2); text-decoration:none} a:hover{text-decoration:underline}
   button{font-family:inherit; cursor:pointer}
@@ -37,7 +37,9 @@
 
   /* Header */
   header{position:sticky; top:0; z-index:20; backdrop-filter:blur(12px);
-    background:linear-gradient(180deg,rgba(11,15,23,.92),rgba(11,15,23,.72)); border-bottom:1px solid var(--line)}
+    background:linear-gradient(180deg,rgba(11,15,23,.92),rgba(11,15,23,.72)); border-bottom:1px solid var(--line);
+    padding-top:env(safe-area-inset-top, 0px)}
+  .wrap{padding-left:max(clamp(14px,4vw,22px), env(safe-area-inset-left, 0px)); padding-right:max(clamp(14px,4vw,22px), env(safe-area-inset-right, 0px))}
   .hbar{display:flex; align-items:center; gap:12px; padding:12px 0}
   .brand{display:flex; align-items:baseline; gap:10px; font-weight:800; letter-spacing:-.02em; font-size:22px;
     background:linear-gradient(120deg,#fff,var(--a1) 70%,var(--a2)); -webkit-background-clip:text; background-clip:text; color:transparent}
@@ -151,7 +153,7 @@
   .fpanel{max-width:var(--maxw); margin:0 auto; min-height:100%; background:var(--bg2); border-left:1px solid var(--line); border-right:1px solid var(--line);
     padding:0 clamp(16px,4vw,26px) 40px}
   .fbar{position:sticky; top:0; background:linear-gradient(180deg,var(--bg2),rgba(15,20,32,.86)); backdrop-filter:blur(8px);
-    padding:14px 0; display:flex; align-items:center; gap:10px; border-bottom:1px solid var(--line); z-index:2}
+    padding:14px 0; padding-top:calc(14px + env(safe-area-inset-top, 0px)); display:flex; align-items:center; gap:10px; border-bottom:1px solid var(--line); z-index:2}
   .crumbs{display:flex; gap:4px; align-items:center; overflow-x:auto; font-size:12.5px; color:var(--dim); flex:1; scrollbar-width:none}
   .crumbs::-webkit-scrollbar{display:none}
   .crumbs button{border:0; background:transparent; color:var(--muted); font-size:12.5px; padding:2px 4px; border-radius:6px; white-space:nowrap; max-width:180px; overflow:hidden; text-overflow:ellipsis}
@@ -194,6 +196,7 @@
       <div class="hstats">
         <span class="pill" id="streak" title="Дней подряд">🔥 <b>0</b></span>
         <span class="pill learned" id="learned" title="Изучено карточек">📚 <b>0</b></span>
+        <button class="icobtn" id="langBtn" title="Русский / English">EN</button>
         <button class="icobtn" id="helpBtn" title="Горячие клавиши">?</button>
         <button class="icobtn" id="bmBtn" title="Закладки">★</button>
       </div>
@@ -227,7 +230,7 @@
 </main>
 
 <footer>
-  <span>Curio · личный движок любопытства</span>
+  <span>Curio · личный движок любопытства · <span style="color:#93a0b8">проект 🌙 MoonCap</span></span>
   <span><button id="reset">сбросить прогресс</button></span>
 </footer>
 
@@ -254,6 +257,7 @@
 <div id="pop"></div>
 
 <script src="cards.js"></script>
+<script src="cards.en.js"></script>
 <script src="illustrations.js"></script>
 <script>
 (function(){
@@ -271,13 +275,16 @@
 
   // ---------- state ----------
   const LSKEY='curio.v1';
-  const def = {seen:{},known:{},saved:{},deep:{},skips:{},dislikes:{},streak:{count:0,last:null},pace:3,filter:'all'};
+  const def = {seen:{},known:{},saved:{},deep:{},skips:{},dislikes:{},streak:{count:0,last:null},pace:3,filter:'all',lang:'ru'};
   let state = load();
   function load(){ try{ const s=Object.assign({},def,JSON.parse(localStorage.getItem(LSKEY))||{}); s.dislikes=s.dislikes||{}; return s; }catch(e){ return Object.assign({},def); } }
   function save(){ try{ localStorage.setItem(LSKEY, JSON.stringify(state)); }catch(e){} }
   function today(){ const d=new Date(); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
   function daysBetween(a,b){ return Math.round((new Date(b)-new Date(a))/86400000); }
   function plural(n,one,few,many){ n=Math.abs(n)%100; const d=n%10; if(n>10&&n<20)return many; if(d>1&&d<5)return few; if(d===1)return one; return many; }
+  const UISTR={gloss:{ru:'Словарь',en:'Glossary'},deeper:{ru:'Провалиться глубже',en:'Go deeper'},test:{ru:'Проверь себя',en:'Test yourself'},sources:{ru:'Источники: ',en:'Sources: '},new:{ru:'новое',en:'new'}};
+  function ui(k){ return (UISTR[k]||{})[state.lang==='en'?'en':'ru']||''; }
+  function T(card){ if(state.lang==='en'){ const e=(window.CARDS_EN||{})[card.id]; if(e) return {title:e.title||card.title,tldr:e.tldr||card.tldr,body_md:e.body_md||card.body_md,terms:(e.terms&&e.terms.length)?e.terms:card.terms,test_yourself:e.test_yourself||card.test_yourself}; } return card; }
 
   function tickStreak(){
     const t=today(); const s=state.streak;
@@ -334,19 +341,20 @@
     const box=document.createElement('div'); box.className='body';
     const illu=(window.ILLUS||{})[card.id];
     if(illu){ const fig=document.createElement('figure'); fig.className='illus'; fig.innerHTML=illu; box.appendChild(fig); }
-    const txt=document.createElement('div'); txt.innerHTML=md(card.body_md);
-    const matched=annotate(txt, card.terms); box.appendChild(txt);
-    const leftover=(card.terms||[]).filter(t=>matched.indexOf(t.term)<0);
+    const v=T(card);
+    const txt=document.createElement('div'); txt.innerHTML=md(v.body_md);
+    const matched=annotate(txt, v.terms); box.appendChild(txt);
+    const leftover=(v.terms||[]).filter(t=>matched.indexOf(t.term)<0);
     if(leftover.length){
       const g=document.createElement('div'); g.className='gloss';
-      g.innerHTML='<div class="lbl2">Словарь</div>';
+      g.innerHTML='<div class="lbl2">'+ui('gloss')+'</div>';
       leftover.forEach(t=>{ const s=document.createElement('span'); s.className='term gchip'; s.textContent=t.term; s.dataset.explain=t.explain; g.appendChild(s); });
       box.appendChild(g);
     }
     const holes=(card.rabbit_holes||[]).filter(h=>h.to_id && byId[h.to_id]);
     if(holes.length){
       const wrap=document.createElement('div'); wrap.className='holes';
-      wrap.innerHTML='<div class="lbl2">Провалиться глубже</div>';
+      wrap.innerHTML='<div class="lbl2">'+ui('deeper')+'</div>';
       holes.forEach(h=>{
         const b=document.createElement('button'); b.className='hole';
         b.innerHTML='<b></b><span></span>'; b.querySelector('b').textContent=h.label; b.querySelector('span').textContent=h.teaser;
@@ -355,13 +363,13 @@
       });
       box.appendChild(wrap);
     }
-    if(card.test_yourself){
+    if(v.test_yourself){
       const t=document.createElement('div'); t.className='test';
-      t.innerHTML='<b>Проверь себя</b>'; t.appendChild(document.createTextNode(card.test_yourself));
+      const bb=document.createElement('b'); bb.textContent=ui('test'); t.appendChild(bb); t.appendChild(document.createTextNode(v.test_yourself));
       box.appendChild(t);
     }
     if(card.sources && card.sources.length){
-      const s=document.createElement('div'); s.className='src'; s.appendChild(document.createTextNode('Источники: '));
+      const s=document.createElement('div'); s.className='src'; s.appendChild(document.createTextNode(ui('sources')));
       card.sources.forEach(src=>{ if(src.url){ const a=document.createElement('a'); a.href=src.url; a.target='_blank'; a.rel='noopener'; a.textContent=src.label||src.url; s.appendChild(a);} else { const sp=document.createElement('span'); sp.textContent=src.label; s.appendChild(sp);} });
       box.appendChild(s);
     }
@@ -388,9 +396,10 @@
       +'<button class="btn no" data-a="no" title="Не интересно">Не моё</button>'
       +'<button class="btn star" data-a="save" title="В закладки">'+(state.saved[card.id]?'★':'☆')+'</button>'
       +'</div>';
-    el.querySelector('h2').textContent=card.title;
-    el.querySelector('.tldr').textContent=card.tldr;
-    if(!state.seen[card.id]){ const nb=document.createElement('span'); nb.className='badge new'; nb.textContent='новое'; const m=el.querySelector('.meta'); m.insertBefore(nb, m.firstChild); }
+    const v=T(card);
+    el.querySelector('h2').textContent=v.title;
+    el.querySelector('.tldr').textContent=v.tldr;
+    if(!state.seen[card.id]){ const nb=document.createElement('span'); nb.className='badge new'; nb.textContent=ui('new'); const m=el.querySelector('.meta'); m.insertBefore(nb, m.firstChild); }
     el.querySelector('[data-a="open"]').onclick=(e)=>toggleOpen(el,card,e.currentTarget);
     el.querySelector('[data-a="know"]').onclick=()=>skipCard(card,el,'know');
     el.querySelector('[data-a="no"]').onclick=()=>skipCard(card,el,'no');
@@ -430,7 +439,7 @@
     if(!state.seen[id]) state.seen[id]=true;
     state.deep[card.domain]=(state.deep[card.domain]||0)+1; save(); renderStats();
     fbody.innerHTML=metaHTML(card)+'<h2></h2>';
-    fbody.querySelector('h2').textContent=card.title;
+    fbody.querySelector('h2').textContent=T(card).title;
     const acts=document.createElement('div'); acts.className='acts';
     acts.innerHTML='<button class="btn ghost" data-a="know">Знаю ✓</button>'
       +'<button class="btn no" data-a="no">Не моё</button>'
@@ -443,7 +452,7 @@
     crumbs.innerHTML='';
     trail.forEach((tid,i)=>{
       if(i){ const s=document.createElement('span'); s.className='sep'; s.textContent=' › '; crumbs.appendChild(s); }
-      const b=document.createElement('button'); b.textContent=(byId[tid]||{}).title||tid;
+      const b=document.createElement('button'); b.textContent=(byId[tid]?T(byId[tid]).title:tid);
       b.onclick=()=>{ trail=trail.slice(0,i+1); renderFocus(); history.replaceState({curioFocus:true},'',urlFor(trail[trail.length-1])); }; crumbs.appendChild(b);
     });
     focus.scrollTop=0;
@@ -522,14 +531,14 @@
 
   // ---------- search ----------
   const search=document.getElementById('search'), searchRes=document.getElementById('searchRes');
-  function searchIndex(c){ return (c.title+' '+c.tldr+' '+(DOMAINS[c.domain]||{}).name+' '+(c.terms||[]).map(t=>t.term).join(' ')).toLowerCase(); }
+  function searchIndex(c){ const e=(window.CARDS_EN||{})[c.id]||{}; return (c.title+' '+c.tldr+' '+(e.title||'')+' '+(e.tldr||'')+' '+(DOMAINS[c.domain]||{}).name+' '+(c.terms||[]).map(t=>t.term).join(' ')).toLowerCase(); }
   function runSearch(){
     const q=search.value.trim().toLowerCase(); searchRes.innerHTML='';
     if(!q){ searchRes.classList.remove('show'); return; }
     const hits=CARDS.filter(c=>searchIndex(c).indexOf(q)>=0).slice(0,8);
     if(!hits.length){ searchRes.innerHTML='<div class="sr-empty">Ничего не найдено</div>'; searchRes.classList.add('show'); return; }
     hits.forEach(c=>{ const d=DOMAINS[c.domain]||{emoji:'•'}; const b=document.createElement('button'); b.className='sr';
-      b.innerHTML='<b></b><i></i>'; b.querySelector('b').textContent=d.emoji+' '+c.title; b.querySelector('i').textContent=c.tldr;
+      b.innerHTML='<b></b><i></i>'; b.querySelector('b').textContent=d.emoji+' '+T(c).title; b.querySelector('i').textContent=T(c).tldr;
       b.onclick=()=>{ search.value=''; searchRes.classList.remove('show'); openFocus(c.id); }; searchRes.appendChild(b); });
     searchRes.classList.add('show');
   }
@@ -554,6 +563,9 @@
   const bmBtn=document.getElementById('bmBtn');
   function syncBm(){ bmBtn.classList.toggle('on',viewSaved); }
   bmBtn.onclick=()=>{ viewSaved=!viewSaved; syncBm(); renderFilters(); rebuild(); };
+  const langBtn=document.getElementById('langBtn');
+  function syncLang(){ langBtn.textContent = state.lang==='en'?'RU':'EN'; langBtn.classList.toggle('on', state.lang==='en'); }
+  langBtn.onclick=()=>{ state.lang = state.lang==='en'?'ru':'en'; save(); syncLang(); rebuild(); if(focus.classList.contains('show')) renderFocus(); };
   const help=document.getElementById('help');
   document.getElementById('helpBtn').onclick=()=>help.classList.add('show');
   document.getElementById('helpClose').onclick=()=>help.classList.remove('show');
@@ -580,10 +592,11 @@
 
   // ---------- init ----------
   [...document.querySelectorAll('#pace button')].forEach(b=>b.classList.toggle('on', (b.dataset.p==='all'?'all':parseInt(b.dataset.p,10))===state.pace));
-  tickStreak(); renderStats(); renderFilters(); rebuild();
+  tickStreak(); renderStats(); syncLang(); renderFilters(); rebuild();
   const h0=decodeURIComponent(location.hash.slice(1));
   if(h0 && byId[h0]){ trail=[h0]; renderFocus(); showFocus(); history.replaceState({curioFocus:true},'',urlFor(h0)); }
 })();
 </script>
+<script>if('serviceWorker' in navigator && location.protocol!=='file:'){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}</script>
 </body>
 </html>
