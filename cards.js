@@ -1,5 +1,4 @@
-// Curio — корпус карточек (сгенерирован контент-движком, факты со ссылками).
-// Формат карточки описан в docs/VISION.md. Правь/дополняй свободно.
+// Curio - card corpus (RU). read_more = further-reading links (wiki + official).
 window.CARDS = [
   {
     "id": "math-monty-hall",
@@ -34,6 +33,18 @@ window.CARDS = [
       {
         "label": "Monty Hall problem — Wikipedia",
         "url": "https://en.wikipedia.org/wiki/Monty_Hall_problem"
+      }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Парадокс Монти Холла",
+        "url": "https://ru.wikipedia.org/wiki/Парадокс_Монти_Холла",
+        "kind": "wiki"
+      },
+      {
+        "label": "UPenn Math: оригинальная история задачи (репортаж J. Tierney, NYT)",
+        "url": "https://www2.math.upenn.edu/~kazdan/210/notes-misc/Monty_Hall.html",
+        "kind": "official"
       }
     ]
   },
@@ -78,6 +89,18 @@ window.CARDS = [
       {
         "label": "Base rate fallacy — Wikipedia",
         "url": "https://en.wikipedia.org/wiki/Base_rate_fallacy"
+      }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Теорема Байеса",
+        "url": "https://ru.wikipedia.org/wiki/Теорема_Байеса",
+        "kind": "wiki"
+      },
+      {
+        "label": "Stanford Encyclopedia of Philosophy: Bayes' Theorem",
+        "url": "https://plato.stanford.edu/entries/bayes-theorem/",
+        "kind": "official"
       }
     ]
   },
@@ -127,6 +150,18 @@ window.CARDS = [
         "label": "Gambler's fallacy — Wikipedia",
         "url": "https://en.wikipedia.org/wiki/Gambler%27s_fallacy"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Закон больших чисел",
+        "url": "https://ru.wikipedia.org/wiki/Закон_больших_чисел",
+        "kind": "wiki"
+      },
+      {
+        "label": "Stanford Encyclopedia of Philosophy: Interpretations of Probability",
+        "url": "https://plato.stanford.edu/entries/probability-interpret/",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -171,6 +206,23 @@ window.CARDS = [
         "term": "резолвер",
         "explain": "сервер, который по имени сайта ищет его IP, спрашивая другие DNS-серверы."
       }
+    ],
+    "read_more": [
+      {
+        "label": "DNS — Википедия",
+        "url": "https://ru.wikipedia.org/wiki/DNS",
+        "kind": "wiki"
+      },
+      {
+        "label": "RFC 1034: доменные имена (DNS)",
+        "url": "https://datatracker.ietf.org/doc/html/rfc1034",
+        "kind": "official"
+      },
+      {
+        "label": "RFC 9293: спецификация TCP",
+        "url": "https://datatracker.ietf.org/doc/html/rfc9293",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -213,6 +265,18 @@ window.CARDS = [
       {
         "term": "TCP spoofing",
         "explain": "атака, где чужие пакеты подделываются с угаданными номерами, чтобы влезть в соединение."
+      }
+    ],
+    "read_more": [
+      {
+        "label": "TCP — Википедия",
+        "url": "https://ru.wikipedia.org/wiki/Transmission_Control_Protocol",
+        "kind": "wiki"
+      },
+      {
+        "label": "RFC 9293: спецификация TCP",
+        "url": "https://datatracker.ietf.org/doc/html/rfc9293",
+        "kind": "official"
       }
     ]
   },
@@ -257,6 +321,18 @@ window.CARDS = [
         "term": "0-RTT",
         "explain": "режим TLS 1.3: при повторном подключении данные шлют сразу, без ожидания рукопожатия."
       }
+    ],
+    "read_more": [
+      {
+        "label": "TLS — Википедия",
+        "url": "https://ru.wikipedia.org/wiki/TLS",
+        "kind": "wiki"
+      },
+      {
+        "label": "RFC 8446: протокол TLS 1.3",
+        "url": "https://datatracker.ietf.org/doc/html/rfc8446",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -296,6 +372,18 @@ window.CARDS = [
       {
         "label": "OWASP: SQL Injection",
         "url": "https://owasp.org/www-community/attacks/SQL_Injection"
+      }
+    ],
+    "read_more": [
+      {
+        "label": "Внедрение SQL-кода",
+        "url": "https://ru.wikipedia.org/wiki/Внедрение_SQL-кода",
+        "kind": "wiki"
+      },
+      {
+        "label": "OWASP: SQL Injection",
+        "url": "https://owasp.org/www-community/attacks/SQL_Injection",
+        "kind": "official"
       }
     ]
   },
@@ -345,6 +433,23 @@ window.CARDS = [
         "label": "CVE.org — CVE Numbering Authorities",
         "url": "https://www.cve.org/ProgramOrganization/CNAs"
       }
+    ],
+    "read_more": [
+      {
+        "label": "CVE — Википедия",
+        "url": "https://ru.wikipedia.org/wiki/CVE",
+        "kind": "wiki"
+      },
+      {
+        "label": "CVE.org: CNAs",
+        "url": "https://www.cve.org/ProgramOrganization/CNAs",
+        "kind": "official"
+      },
+      {
+        "label": "FIRST: спецификация CVSS 3.1",
+        "url": "https://www.first.org/cvss/v3.1/specification-document",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -393,6 +498,18 @@ window.CARDS = [
         "label": "MDPI — Survey of Bypassing Buffer Overflow Mitigations",
         "url": "https://www.mdpi.com/2076-3417/12/13/6702"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Переполнение буфера",
+        "url": "https://ru.wikipedia.org/wiki/Переполнение_буфера",
+        "kind": "wiki"
+      },
+      {
+        "label": "OWASP: Buffer Overflow",
+        "url": "https://owasp.org/www-community/vulnerabilities/Buffer_Overflow",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -433,6 +550,18 @@ window.CARDS = [
         "term": "RNN",
         "explain": "рекуррентная нейросеть — обрабатывает текст по одному слову, передавая «память» дальше по цепочке"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Внимание — это всё, что вам нужно (Википедия)",
+        "url": "https://ru.wikipedia.org/wiki/Внимание_—_это_всё,_что_вам_нужно",
+        "kind": "wiki"
+      },
+      {
+        "label": "Оригинал статьи (arXiv 1706.03762)",
+        "url": "https://arxiv.org/abs/1706.03762",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -467,6 +596,18 @@ window.CARDS = [
       {
         "term": "d_k",
         "explain": "размерность векторов Key/Query, то есть сколько чисел в одном таком векторе"
+      }
+    ],
+    "read_more": [
+      {
+        "label": "Трансформер, модель ML (Википедия)",
+        "url": "https://ru.wikipedia.org/wiki/Трансформер_(модель_машинного_обучения)",
+        "kind": "wiki"
+      },
+      {
+        "label": "Attention Is All You Need (arXiv)",
+        "url": "https://arxiv.org/abs/1706.03762",
+        "kind": "official"
       }
     ]
   },
@@ -506,6 +647,18 @@ window.CARDS = [
       {
         "term": "backpropagation",
         "explain": "алгоритм, прогоняющий ошибку с выхода сети назад к каждому весу для его подстройки"
+      }
+    ],
+    "read_more": [
+      {
+        "label": "Векторное представление слов (Википедия)",
+        "url": "https://ru.wikipedia.org/wiki/Векторное_представление_слов",
+        "kind": "wiki"
+      },
+      {
+        "label": "word2vec, Mikolov и др. (arXiv 1301.3781)",
+        "url": "https://arxiv.org/abs/1301.3781",
+        "kind": "official"
       }
     ]
   },
@@ -555,6 +708,23 @@ window.CARDS = [
         "term": "принцип Бернулли",
         "explain": "в потоке где быстрее — там ниже давление; для крыла это следствие, а не причина подъёма"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Подъёмная сила",
+        "url": "https://ru.wikipedia.org/wiki/Подъёмная_сила",
+        "kind": "wiki"
+      },
+      {
+        "label": "NASA: подъёмная сила — Бернулли и Ньютон",
+        "url": "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/bernoulli-and-newton/",
+        "kind": "official"
+      },
+      {
+        "label": "NASA: ошибочная теория подъёмной силы",
+        "url": "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/lift-3/",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -598,6 +768,18 @@ window.CARDS = [
         "term": "buffet",
         "explain": "тряска планера от сорвавшегося турбулентного потока — тактильное предупреждение о близком сваливании"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Сваливание",
+        "url": "https://ru.wikipedia.org/wiki/Сваливание",
+        "kind": "wiki"
+      },
+      {
+        "label": "FAA: Airplane Flying Handbook, гл. 5 (аэродинамика и сваливание)",
+        "url": "https://www.faa.gov/sites/faa.gov/files/regulations_policies/handbooks_manuals/aviation/airplane_handbook/06_afh_ch5.pdf",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -640,6 +822,18 @@ window.CARDS = [
       {
         "term": "датчик AoA",
         "explain": "внешняя флюгарка, напрямую меряющая угол атаки — честнее скорости для предупреждения о срыве"
+      }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Угол атаки",
+        "url": "https://ru.wikipedia.org/wiki/Угол_атаки",
+        "kind": "wiki"
+      },
+      {
+        "label": "FAA: Airplane Flying Handbook, гл. 5 (угол атаки и скорость сваливания)",
+        "url": "https://www.faa.gov/sites/faa.gov/files/regulations_policies/handbooks_manuals/aviation/airplane_handbook/06_afh_ch5.pdf",
+        "kind": "official"
       }
     ]
   },
@@ -685,6 +879,23 @@ window.CARDS = [
         "term": "неустойка",
         "explain": "штраф, который продавец платит тебе за просрочку, начисляется автоматически по закону"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Закон РБ «О защите прав потребителей»",
+        "url": "https://ru.wikipedia.org/wiki/Закон_Республики_Беларусь_«О_защите_прав_потребителей»",
+        "kind": "wiki"
+      },
+      {
+        "label": "etalonline.by: официальный текст Закона № 90-З «О защите прав потребителей»",
+        "url": "https://etalonline.by/document/?regnum=h10200090",
+        "kind": "official"
+      },
+      {
+        "label": "МАРТ РБ: права потребителей при покупке непродовольственных товаров",
+        "url": "https://mart.gov.by/activity/zashchita-prav-potrebiteley/informatsiya-dlya-potrebiteley/prava-potrebiteley-pri-pokupke-neprodovolstvennykh-tovarov/",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -719,6 +930,18 @@ window.CARDS = [
       {
         "term": "ЗоЗПП",
         "explain": "разговорное сокращение: Закон о защите прав потребителей"
+      }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Закон РБ «О защите прав потребителей»",
+        "url": "https://ru.wikipedia.org/wiki/Закон_Республики_Беларусь_«О_защите_прав_потребителей»",
+        "kind": "wiki"
+      },
+      {
+        "label": "etalonline.by: официальный текст Закона № 90-З «О защите прав потребителей»",
+        "url": "https://etalonline.by/document/?regnum=h10200090",
+        "kind": "official"
       }
     ]
   },
@@ -763,6 +986,23 @@ window.CARDS = [
         "term": "кодекс",
         "explain": "единый систематизированный писаный сборник законов по одной отрасли (Гражданский, Уголовный и т.д.)"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Романо-германская правовая семья",
+        "url": "https://ru.wikipedia.org/wiki/Романо-германская_правовая_семья",
+        "kind": "wiki"
+      },
+      {
+        "label": "Википедия: Общее право (common law)",
+        "url": "https://ru.wikipedia.org/wiki/Общее_право",
+        "kind": "wiki"
+      },
+      {
+        "label": "Большая российская энциклопедия: Романо-германская правовая семья",
+        "url": "https://bigenc.ru/c/romano-germanskaia-pravovaia-sem-ia-959ba5",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -803,6 +1043,18 @@ window.CARDS = [
         "label": "Акционерное общество и акции — myfin.by",
         "url": "https://myfin.by/wiki/term/akcionernye-obshhestva-oao-zao"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Дивиденд",
+        "url": "https://ru.wikipedia.org/wiki/Дивиденд",
+        "kind": "wiki"
+      },
+      {
+        "label": "SEC Investor.gov: Dividend (глоссарий регулятора)",
+        "url": "https://www.investor.gov/introduction-investing/investing-basics/glossary/dividend",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -833,7 +1085,19 @@ window.CARDS = [
         "explain": "сбор предварительных заявок от крупных инвесторов, чтобы понять спрос и цену"
       }
     ],
-    "sources": []
+    "sources": [],
+    "read_more": [
+      {
+        "label": "Википедия: Первичное публичное предложение (IPO)",
+        "url": "https://ru.wikipedia.org/wiki/Первичное_публичное_предложение",
+        "kind": "wiki"
+      },
+      {
+        "label": "SEC Investor.gov: Initial Public Offering (IPO)",
+        "url": "https://www.investor.gov/introduction-investing/investing-basics/glossary/initial-public-offering-ipo",
+        "kind": "official"
+      }
+    ]
   },
   {
     "id": "business-ooo-vs-ao",
@@ -875,6 +1139,18 @@ window.CARDS = [
       {
         "label": "ООО или ОАО: характеристики и отличия",
         "url": "https://registratsiyaooo.by/ooo-ili-oao-osnovnye-kharakteristiki-preimushhestva-i-nedostatki/"
+      }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Акционерное общество",
+        "url": "https://ru.wikipedia.org/wiki/Акционерное_общество",
+        "kind": "wiki"
+      },
+      {
+        "label": "Pravo.by: Закон РБ «О хозяйственных обществах» (регулирует ООО и АО)",
+        "url": "https://pravo.by/document/?guid=3871&p0=v19202020",
+        "kind": "official"
       }
     ]
   },
@@ -924,6 +1200,23 @@ window.CARDS = [
         "label": "Atlanta Fed — Origins of the 2% Target",
         "url": "https://www.atlantafed.org/research-and-data/2026/04/14/fed-and-inflation-origins-of-the-two-percent-target-rate"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Инфляционное таргетирование — Википедия",
+        "url": "https://ru.wikipedia.org/wiki/Инфляционное_таргетирование",
+        "kind": "wiki"
+      },
+      {
+        "label": "ФРС: ставка и операции на открытом рынке",
+        "url": "https://www.federalreserve.gov/monetarypolicy/openmarket.htm",
+        "kind": "official"
+      },
+      {
+        "label": "ЕЦБ: цель по инфляции 2%",
+        "url": "https://www.ecb.europa.eu/mopo/strategy/pricestab/html/index.en.html",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -967,6 +1260,23 @@ window.CARDS = [
       {
         "label": "ECB — Two per cent inflation target",
         "url": "https://www.ecb.europa.eu/mopo/strategy/pricestab/html/index.en.html"
+      }
+    ],
+    "read_more": [
+      {
+        "label": "Инфляционное таргетирование — Википедия",
+        "url": "https://ru.wikipedia.org/wiki/Инфляционное_таргетирование",
+        "kind": "wiki"
+      },
+      {
+        "label": "ФРС: почему цель именно 2%",
+        "url": "https://www.federalreserve.gov/faqs/economy_14400.htm",
+        "kind": "official"
+      },
+      {
+        "label": "ЕЦБ: почему 2%, буфер от дефляции",
+        "url": "https://www.ecb.europa.eu/mopo/strategy/pricestab/html/index.en.html",
+        "kind": "official"
       }
     ]
   },
@@ -1016,6 +1326,18 @@ window.CARDS = [
         "label": "Federal Reserve History — The Great Depression",
         "url": "https://www.federalreservehistory.org/essays/great-depression"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Дефляция (экономика) — Википедия",
+        "url": "https://ru.wikipedia.org/wiki/Дефляция_(экономика)",
+        "kind": "wiki"
+      },
+      {
+        "label": "Фишер (1933): долговая дефляция — FRASER, ФРС",
+        "url": "https://fraser.stlouisfed.org/title/debt-deflation-theory-great-depressions-3596",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -1051,6 +1373,18 @@ window.CARDS = [
         "term": "корпус",
         "explain": "гигантская база реальных текстов и речи, по которой лингвисты (и ИИ) считают, какие слова ходят вместе"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Ложные друзья переводчика",
+        "url": "https://ru.wikipedia.org/wiki/Ложные_друзья_переводчика",
+        "kind": "wiki"
+      },
+      {
+        "label": "Cambridge: Collocation",
+        "url": "https://dictionary.cambridge.org/grammar/british-grammar/collocation",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -1076,6 +1410,18 @@ window.CARDS = [
       {
         "term": "семантика",
         "explain": "то, какой смысл несёт слово — в отличие от того, как оно пишется или звучит"
+      }
+    ],
+    "read_more": [
+      {
+        "label": "Коллокация (лингвистика)",
+        "url": "https://ru.wikipedia.org/wiki/Коллокация_(лингвистика)",
+        "kind": "wiki"
+      },
+      {
+        "label": "Cambridge: Do or make?",
+        "url": "https://dictionary.cambridge.org/grammar/british-grammar/do-or-make",
+        "kind": "official"
       }
     ]
   },
@@ -1106,6 +1452,18 @@ window.CARDS = [
       {
         "term": "separable",
         "explain": "фразовый глагол, части которого можно разрывать дополнением (turn the TV on)"
+      }
+    ],
+    "read_more": [
+      {
+        "label": "Фразовый глагол",
+        "url": "https://ru.wikipedia.org/wiki/Фразовый_глагол",
+        "kind": "wiki"
+      },
+      {
+        "label": "Cambridge: Phrasal verbs",
+        "url": "https://dictionary.cambridge.org/grammar/british-grammar/phrasal-verbs",
+        "kind": "official"
       }
     ]
   },
@@ -1147,6 +1505,18 @@ window.CARDS = [
         "term": "portamento / glide",
         "explain": "Плавное «сползание» высоты звука с одной ноты на другую без разрыва."
       }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Roland TR-808",
+        "url": "https://ru.wikipedia.org/wiki/Roland_TR-808",
+        "kind": "wiki"
+      },
+      {
+        "label": "Roland: официальная история TR-808",
+        "url": "https://www.roland.com/us/promos/roland_tr-808/",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -1180,6 +1550,18 @@ window.CARDS = [
         "term": "луп (loop)",
         "explain": "Короткий фрагмент, зацикленный в бесконечное повторение как основа бита."
       }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Семпл (сэмплирование)",
+        "url": "https://ru.wikipedia.org/wiki/Семпл",
+        "kind": "wiki"
+      },
+      {
+        "label": "Библиотека Конгресса (Citizen DJ): право и этика сэмплирования",
+        "url": "https://citizen-dj.labs.loc.gov/guide/",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -1212,6 +1594,18 @@ window.CARDS = [
       {
         "term": "каданс",
         "explain": "Аккордовый оборот, создающий ощущение завершения фразы — музыкальная «точка»."
+      }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Квинтовый круг",
+        "url": "https://ru.wikipedia.org/wiki/Квинтовый_круг",
+        "kind": "wiki"
+      },
+      {
+        "label": "Berklee Online: круг квинт и гармония",
+        "url": "https://online.berklee.edu/takenote/circle-of-fifths-the-key-to-unlocking-harmonic-understanding/",
+        "kind": "official"
       }
     ]
   },
@@ -1253,6 +1647,18 @@ window.CARDS = [
         "label": "Connected Speech Guide — QuickPronounce",
         "url": "https://www.quickpronounce.site/blog/connected-speech-guide"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Connected speech",
+        "url": "https://en.wikipedia.org/wiki/Connected_speech",
+        "kind": "wiki"
+      },
+      {
+        "label": "British Council: Connected speech",
+        "url": "https://www.teachingenglish.org.uk/professional-development/teachers/knowing-subject/connected-speech-part-1",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -1292,6 +1698,18 @@ window.CARDS = [
         "label": "Connected Speech Phenomena — English Phonetics",
         "url": "https://englishphonetics.net/english-phonetics-academy/connected-speech-assimilation-elision-insertion.html"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Ассимиляция (лингвистика)",
+        "url": "https://ru.wikipedia.org/wiki/Ассимиляция_(лингвистика)",
+        "kind": "wiki"
+      },
+      {
+        "label": "British Council: Connected speech",
+        "url": "https://www.teachingenglish.org.uk/professional-development/teachers/knowing-subject/connected-speech-part-1",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -1326,6 +1744,18 @@ window.CARDS = [
       {
         "label": "What is Shadowing — Leonardo English",
         "url": "https://www.leonardoenglish.com/blog/what-is-shadowing"
+      }
+    ],
+    "read_more": [
+      {
+        "label": "Speech shadowing",
+        "url": "https://en.wikipedia.org/wiki/Speech_shadowing",
+        "kind": "wiki"
+      },
+      {
+        "label": "British Council: Shadow reading",
+        "url": "https://www.teachingenglish.org.uk/teaching-resources/teaching-adults/activities/pre-intermediate-a2/shadow-reading",
+        "kind": "official"
       }
     ]
   },
@@ -1375,6 +1805,18 @@ window.CARDS = [
         "label": "Krashen: Theory of Second Language Acquisition",
         "url": "https://www.sk.com.br/sk-krash-english.html"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Input hypothesis",
+        "url": "https://en.wikipedia.org/wiki/Input_hypothesis",
+        "kind": "wiki"
+      },
+      {
+        "label": "Krashen: Principles and Practice (PDF)",
+        "url": "https://www.sdkrashen.com/content/books/principles_and_practice.pdf",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -1417,6 +1859,18 @@ window.CARDS = [
       {
         "label": "Spaced Repetition Theory — MedEdMentor",
         "url": "https://mededmentor.org/theory-database/theory-index/spaced-repetition-theory/"
+      }
+    ],
+    "read_more": [
+      {
+        "label": "Интервальные повторения",
+        "url": "https://ru.wikipedia.org/wiki/Интервальные_повторения",
+        "kind": "wiki"
+      },
+      {
+        "label": "Cepeda et al. 2006 (мета-анализ)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/16719566/",
+        "kind": "official"
       }
     ]
   },
@@ -1461,6 +1915,18 @@ window.CARDS = [
         "label": "Lexical Approach — TeachingEnglish (British Council)",
         "url": "https://www.teachingenglish.org.uk/professional-development/teachers/knowing-subject/lexical-approach-1-what-does-lexical-approach"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Lexical approach",
+        "url": "https://en.wikipedia.org/wiki/Lexical_approach",
+        "kind": "wiki"
+      },
+      {
+        "label": "British Council: Lexical approach",
+        "url": "https://www.teachingenglish.org.uk/professional-development/teachers/knowing-subject/d-h/lexical-approach",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -1495,6 +1961,18 @@ window.CARDS = [
         "term": "аффективная память",
         "explain": "приём Станиславского: вызвать нужное чувство, вспомнив похожий эпизод из своей жизни"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Система Станиславского",
+        "url": "https://ru.wikipedia.org/wiki/Система_Станиславского",
+        "kind": "wiki"
+      },
+      {
+        "label": "Britannica: система Станиславского (техника актёра)",
+        "url": "https://www.britannica.com/art/Stanislavsky-system",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -1528,6 +2006,18 @@ window.CARDS = [
       {
         "term": "обманутое ожидание",
         "explain": "теория комического: смешно, когда мозг достроил один финал, а получил резко другой"
+      }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Комедийный тайминг (comic timing)",
+        "url": "https://en.wikipedia.org/wiki/Comic_timing",
+        "kind": "wiki"
+      },
+      {
+        "label": "Stanford Encyclopedia of Philosophy: философия юмора (теория несоответствия)",
+        "url": "https://plato.stanford.edu/entries/humor/",
+        "kind": "official"
       }
     ]
   },
@@ -1577,6 +2067,18 @@ window.CARDS = [
         "label": "Rule of three (writing) — Wikipedia",
         "url": "https://en.wikipedia.org/wiki/Rule_of_three_(writing)"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Impro (Кит Джонстон), раздел «Статус»",
+        "url": "https://en.wikipedia.org/wiki/Impro:_Improvisation_and_the_Theatre",
+        "kind": "wiki"
+      },
+      {
+        "label": "ITI (impro.global): Кит Джонстон — официальная страница",
+        "url": "https://impro.global/about-us/keith-johnstone",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -1621,6 +2123,23 @@ window.CARDS = [
         "label": "Parasocial interaction — Wikipedia",
         "url": "https://en.wikipedia.org/wiki/Parasocial_interaction"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Страх сцены (stage fright)",
+        "url": "https://en.wikipedia.org/wiki/Stage_fright",
+        "kind": "wiki"
+      },
+      {
+        "label": "Википедия: Парасоциальное взаимодействие",
+        "url": "https://en.wikipedia.org/wiki/Parasocial_interaction",
+        "kind": "wiki"
+      },
+      {
+        "label": "NCBI StatPearls: вегетативная нервная система (бей-или-беги)",
+        "url": "https://www.ncbi.nlm.nih.gov/books/NBK538516/",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -1663,6 +2182,18 @@ window.CARDS = [
       {
         "label": "Performance Anxiety: What Happens in Your Brain — CannElevate",
         "url": "https://www.cannelevate.com.au/article/understanding-performance-anxiety-stage-fright-neurobiology/"
+      }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Страх сцены (stage fright)",
+        "url": "https://en.wikipedia.org/wiki/Stage_fright",
+        "kind": "wiki"
+      },
+      {
+        "label": "NCBI StatPearls: вегетативная нервная система (симпатика/парасимпатика)",
+        "url": "https://www.ncbi.nlm.nih.gov/books/NBK538516/",
+        "kind": "official"
       }
     ]
   },
@@ -1707,6 +2238,18 @@ window.CARDS = [
         "label": "The one-and-a-half sided parasocial relationship — ScienceDirect",
         "url": "https://www.sciencedirect.com/science/article/pii/S2451958821000981"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Парасоциальные отношения",
+        "url": "https://ru.wikipedia.org/wiki/Парасоциальные_отношения",
+        "kind": "wiki"
+      },
+      {
+        "label": "Frontiers in Psychology (PMC): обзор исследований парасоциальности",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11464444/",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -1745,6 +2288,18 @@ window.CARDS = [
         "term": "атака дней рождения",
         "explain": "метод взлома хэшей: коллизию найти легче, чем кажется, из-за того же эффекта пар"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Парадокс дней рождения",
+        "url": "https://ru.wikipedia.org/wiki/Парадокс_дней_рождения",
+        "kind": "wiki"
+      },
+      {
+        "label": "UC Davis Math: The birthday problem (обзор)",
+        "url": "https://www.math.ucdavis.edu/~tracy/courses/math135A/UsefullCourseMaterial/birthday.pdf",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -1782,6 +2337,18 @@ window.CARDS = [
       {
         "term": "стандартизация",
         "explain": "приведение данных к среднему 0 и сигме 1, чтобы сравнивать разные распределения"
+      }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Нормальное распределение (правило трёх сигм)",
+        "url": "https://ru.wikipedia.org/wiki/Нормальное_распределение",
+        "kind": "wiki"
+      },
+      {
+        "label": "NIST/SEMATECH e-Handbook: What do we mean by \"Normal\" data? (68.27/95.45/99.73)",
+        "url": "https://www.itl.nist.gov/div898/handbook/pmc/section5/pmc51.htm",
+        "kind": "official"
       }
     ]
   },
@@ -1827,6 +2394,18 @@ window.CARDS = [
         "label": "Simpson's paradox — Wikipedia (кейс Беркли 1973)",
         "url": "https://en.wikipedia.org/wiki/Simpson%27s_paradox"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Парадокс Симпсона",
+        "url": "https://ru.wikipedia.org/wiki/Парадокс_Симпсона",
+        "kind": "wiki"
+      },
+      {
+        "label": "Stanford Encyclopedia of Philosophy: Simpson's Paradox",
+        "url": "https://plato.stanford.edu/entries/paradox-simpson/",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -1871,6 +2450,18 @@ window.CARDS = [
         "label": "OWASP Password Storage Cheat Sheet",
         "url": "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Хеш-функция — Википедия",
+        "url": "https://ru.wikipedia.org/wiki/Хеш-функция",
+        "kind": "wiki"
+      },
+      {
+        "label": "OWASP: хранение паролей",
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -1909,6 +2500,18 @@ window.CARDS = [
       {
         "label": "OWASP Password Storage Cheat Sheet",
         "url": "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html"
+      }
+    ],
+    "read_more": [
+      {
+        "label": "Хеш-функция — Википедия",
+        "url": "https://ru.wikipedia.org/wiki/Хеш-функция",
+        "kind": "wiki"
+      },
+      {
+        "label": "OWASP: хранение паролей",
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
+        "kind": "official"
       }
     ]
   },
@@ -1949,6 +2552,18 @@ window.CARDS = [
         "label": "SHAttered — первая коллизия SHA-1 (Google)",
         "url": "https://shattered.io/"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Коллизия хеш-функции — Википедия",
+        "url": "https://ru.wikipedia.org/wiki/Коллизия_хеш-функции",
+        "kind": "wiki"
+      },
+      {
+        "label": "SHAttered: первая коллизия SHA-1",
+        "url": "https://shattered.io/",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -1987,6 +2602,18 @@ window.CARDS = [
         "term": "радужная таблица",
         "explain": "Заранее посчитанный словарь «пароль → его хеш» для быстрого поиска совпадений"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Соль (криптография)",
+        "url": "https://ru.wikipedia.org/wiki/Соль_(криптография)",
+        "kind": "wiki"
+      },
+      {
+        "label": "OWASP: Password Storage",
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -2020,6 +2647,18 @@ window.CARDS = [
       {
         "term": "argon2",
         "explain": "Современная функция для паролей, которая нарочно требует много памяти, а не только времени"
+      }
+    ],
+    "read_more": [
+      {
+        "label": "bcrypt — Википедия",
+        "url": "https://ru.wikipedia.org/wiki/Bcrypt",
+        "kind": "wiki"
+      },
+      {
+        "label": "OWASP: Password Storage",
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
+        "kind": "official"
       }
     ]
   },
@@ -2065,6 +2704,18 @@ window.CARDS = [
         "label": "RFC 6238 — TOTP",
         "url": "https://datatracker.ietf.org/doc/html/rfc6238"
       }
+    ],
+    "read_more": [
+      {
+        "label": "TOTP — Википедия",
+        "url": "https://ru.wikipedia.org/wiki/TOTP",
+        "kind": "wiki"
+      },
+      {
+        "label": "RFC 6238 — TOTP",
+        "url": "https://datatracker.ietf.org/doc/html/rfc6238",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -2104,7 +2755,24 @@ window.CARDS = [
         "explain": "способ вычислить, как подправить каждый вес, чтобы штраф упал"
       }
     ],
-    "sources": []
+    "sources": [],
+    "read_more": [
+      {
+        "label": "Функция потерь (Википедия)",
+        "url": "https://ru.wikipedia.org/wiki/Функция_потерь",
+        "kind": "wiki"
+      },
+      {
+        "label": "Метод обратного распространения ошибки (Википедия)",
+        "url": "https://ru.wikipedia.org/wiki/Метод_обратного_распространения_ошибки",
+        "kind": "wiki"
+      },
+      {
+        "label": "Deep Learning Book, гл. про обучение (Goodfellow)",
+        "url": "https://www.deeplearningbook.org/contents/mlp.html",
+        "kind": "official"
+      }
+    ]
   },
   {
     "id": "ai-b2-tokeny-bpe",
@@ -2147,6 +2815,18 @@ window.CARDS = [
       {
         "label": "Hugging Face: Byte-Pair Encoding",
         "url": "https://huggingface.co/learn/llm-course/chapter6/5"
+      }
+    ],
+    "read_more": [
+      {
+        "label": "Byte-pair encoding (Wikipedia)",
+        "url": "https://en.wikipedia.org/wiki/Byte-pair_encoding",
+        "kind": "wiki"
+      },
+      {
+        "label": "BPE для NMT, Sennrich и др. (arXiv 1508.07909)",
+        "url": "https://arxiv.org/abs/1508.07909",
+        "kind": "official"
       }
     ]
   },
@@ -2192,6 +2872,18 @@ window.CARDS = [
         "label": "MachineLearningMastery: Logits, Temperature, Top-P",
         "url": "https://machinelearningmastery.com/the-statistics-of-token-selection-logits-temperature-and-top-p-walkthrough/"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Softmax function (Wikipedia)",
+        "url": "https://en.wikipedia.org/wiki/Softmax_function",
+        "kind": "wiki"
+      },
+      {
+        "label": "Nucleus sampling / top-p (arXiv 1904.09751)",
+        "url": "https://arxiv.org/abs/1904.09751",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -2225,6 +2917,18 @@ window.CARDS = [
       {
         "term": "тяга",
         "explain": "сила, толкающая самолёт вперёд, которую создаёт двигатель"
+      }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Турбовентиляторный двигатель",
+        "url": "https://ru.wikipedia.org/wiki/Турбовентиляторный_двигатель",
+        "kind": "wiki"
+      },
+      {
+        "label": "NASA: газотурбинные двигатели самолётов",
+        "url": "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/turbine-engines/",
+        "kind": "official"
       }
     ]
   },
@@ -2264,6 +2968,18 @@ window.CARDS = [
       {
         "label": "Fuel economy in aircraft — Wikipedia",
         "url": "https://en.wikipedia.org/wiki/Fuel_economy_in_aircraft"
+      }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Турбовентиляторный двигатель",
+        "url": "https://ru.wikipedia.org/wiki/Турбовентиляторный_двигатель",
+        "kind": "wiki"
+      },
+      {
+        "label": "NASA: газотурбинные двигатели (тяга и двухконтурность)",
+        "url": "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/turbine-engines/",
+        "kind": "official"
       }
     ]
   },
@@ -2308,6 +3024,23 @@ window.CARDS = [
         "label": "Backgrounder: Flight recorders — TSB Canada",
         "url": "https://www.tsb.gc.ca/eng/medias-media/fiches-facts/a20f0002/enregistreurs-recorders/20200309.html"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Бортовой самописец",
+        "url": "https://ru.wikipedia.org/wiki/Бортовой_самописец",
+        "kind": "wiki"
+      },
+      {
+        "label": "EUROCAE: стандарт ED-112A для защищённых регистраторов",
+        "url": "https://www.eurocae.net/product/ed-112a-mops-for-crash-protected-airborne-recorder-systems/",
+        "kind": "official"
+      },
+      {
+        "label": "TSB Canada: как устроены бортовые самописцы",
+        "url": "https://www.tsb.gc.ca/eng/medias-media/fiches-facts/a20f0002/enregistreurs-recorders/20200309.html",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -2347,7 +3080,19 @@ window.CARDS = [
         "explain": "«приглашение делать предложения» — витрина, реклама, каталог; сами по себе договор не создают"
       }
     ],
-    "sources": []
+    "sources": [],
+    "read_more": [
+      {
+        "label": "Википедия: Оферта (и акцепт)",
+        "url": "https://ru.wikipedia.org/wiki/Оферта",
+        "kind": "wiki"
+      },
+      {
+        "label": "etalonline.by: Гражданский кодекс РБ (оферта и акцепт, ст. 405, 408)",
+        "url": "https://etalonline.by/document/?regnum=hk9800218",
+        "kind": "official"
+      }
+    ]
   },
   {
     "id": "law-b2-prezumpciya-molchanie",
@@ -2383,6 +3128,23 @@ window.CARDS = [
       {
         "label": "Miranda v. Arizona 384 U.S. 436 (Justia)",
         "url": "https://supreme.justia.com/cases/federal/us/384/436/"
+      }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Презумпция невиновности",
+        "url": "https://ru.wikipedia.org/wiki/Презумпция_невиновности",
+        "kind": "wiki"
+      },
+      {
+        "label": "etalonline.by: Конституция РБ (ст. 27 — не свидетельствовать против себя)",
+        "url": "https://etalonline.by/document/?regnum=v19402875",
+        "kind": "official"
+      },
+      {
+        "label": "Cornell LII: дело Miranda v. Arizona (1966)",
+        "url": "https://www.law.cornell.edu/wex/miranda_v_arizona_(1966)",
+        "kind": "official"
       }
     ]
   },
@@ -2420,6 +3182,18 @@ window.CARDS = [
       {
         "label": "Art. 17 GDPR — Right to erasure",
         "url": "https://gdpr-info.eu/art-17-gdpr/"
+      }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Общий регламент по защите данных (GDPR)",
+        "url": "https://ru.wikipedia.org/wiki/Общий_регламент_по_защите_данных",
+        "kind": "wiki"
+      },
+      {
+        "label": "EUR-Lex: официальный текст Регламента (ЕС) 2016/679 (GDPR)",
+        "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng",
+        "kind": "official"
       }
     ]
   },
@@ -2465,6 +3239,18 @@ window.CARDS = [
         "label": "Understanding unit economics — Mercury",
         "url": "https://mercury.com/blog/understanding-unit-economics"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Отчёт о движении денежных средств (cash flow)",
+        "url": "https://ru.wikipedia.org/wiki/Отчёт_о_движении_денежных_средств",
+        "kind": "wiki"
+      },
+      {
+        "label": "IFRS Foundation: IAS 7 Statement of Cash Flows (стандарт)",
+        "url": "https://www.ifrs.org/issued-standards/list-of-standards/ias-7-statement-of-cash-flows/",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -2501,6 +3287,18 @@ window.CARDS = [
       {
         "label": "Input VAT and Output VAT — Taxually",
         "url": "https://www.taxually.com/blog/input-vat-and-output-vat-what-s-the-difference"
+      }
+    ],
+    "read_more": [
+      {
+        "label": "Википедия: Налог на добавленную стоимость",
+        "url": "https://ru.wikipedia.org/wiki/Налог_на_добавленную_стоимость",
+        "kind": "wiki"
+      },
+      {
+        "label": "Минфин РБ: НДС (глава 14 Налогового кодекса)",
+        "url": "https://www.minfin.gov.by/ru/tax_policy/tax_system/doc/12b988b8d25b4048.html",
+        "kind": "official"
       }
     ]
   },
@@ -2539,6 +3337,18 @@ window.CARDS = [
         "label": "Unit economics guide — Beancount.io",
         "url": "https://beancount.io/blog/2026/03/19/unit-economics-guide-cac-ltv-contribution-margin"
       }
+    ],
+    "read_more": [
+      {
+        "label": "Wikipedia: Customer lifetime value (LTV)",
+        "url": "https://en.wikipedia.org/wiki/Customer_lifetime_value",
+        "kind": "wiki"
+      },
+      {
+        "label": "Corporate Finance Institute: LTV/CAC Ratio",
+        "url": "https://corporatefinanceinstitute.com/resources/valuation/cac-ltv-ratio/",
+        "kind": "official"
+      }
     ]
   },
   {
@@ -2574,7 +3384,19 @@ window.CARDS = [
       }
     ],
     "sources": [],
-    "test_yourself": "Если внезапно все захотят купить доллары, а продавцов не прибавится — рубль укрепится или ослабнет?"
+    "test_yourself": "Если внезапно все захотят купить доллары, а продавцов не прибавится — рубль укрепится или ослабнет?",
+    "read_more": [
+      {
+        "label": "Валютный курс — Википедия",
+        "url": "https://ru.wikipedia.org/wiki/Валютный_курс",
+        "kind": "wiki"
+      },
+      {
+        "label": "МВФ: паритет покупательной способности",
+        "url": "https://www.imf.org/external/pubs/ft/fandd/basics/ppp.htm",
+        "kind": "official"
+      }
+    ]
   },
   {
     "id": "econ-b2-compound-72",
@@ -2609,7 +3431,19 @@ window.CARDS = [
         "url": "https://en.wikipedia.org/wiki/Rule_of_72"
       }
     ],
-    "test_yourself": "Вклад под 9% годовых со сложным процентом — за сколько лет удвоится по правилу 72?"
+    "test_yourself": "Вклад под 9% годовых со сложным процентом — за сколько лет удвоится по правилу 72?",
+    "read_more": [
+      {
+        "label": "Правило 72 — Википедия",
+        "url": "https://ru.wikipedia.org/wiki/Правило_72",
+        "kind": "wiki"
+      },
+      {
+        "label": "SEC Investor.gov: калькулятор сложного процента",
+        "url": "https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator",
+        "kind": "official"
+      }
+    ]
   },
   {
     "id": "econ-b2-comparative-adv",
@@ -2648,7 +3482,19 @@ window.CARDS = [
         "url": "https://www.econlib.org/library/Topics/Details/comparativeadvantage.html"
       }
     ],
-    "test_yourself": "У Португалии вино дешевле в «потерянном сукне», чем у Англии. На чём тогда специализироваться Англии?"
+    "test_yourself": "У Португалии вино дешевле в «потерянном сукне», чем у Англии. На чём тогда специализироваться Англии?",
+    "read_more": [
+      {
+        "label": "Теория сравнительных преимуществ — Википедия",
+        "url": "https://ru.wikipedia.org/wiki/Теория_сравнительных_преимуществ",
+        "kind": "wiki"
+      },
+      {
+        "label": "Econlib: сравнительное преимущество (Рикардо)",
+        "url": "https://www.econlib.org/library/Topics/Details/comparativeadvantage.html",
+        "kind": "official"
+      }
+    ]
   }
 ];
 

@@ -1,6 +1,6 @@
 // Curio service worker — офлайн-режим и мгновенная загрузка.
 // Бампни версию при каждом деплое, чтобы обновить кэш.
-const CACHE = 'curio-v3';
+const CACHE = 'curio-v5';
 const ASSETS = [
   './', 'index.html', 'cards.js', 'cards.en.js', 'illustrations.js', 'manifest.webmanifest',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png', 'icons/favicon-32.png'
@@ -9,7 +9,7 @@ const ASSETS = [
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE)
-      .then((c) => Promise.allSettled(ASSETS.map((a) => c.add(a)))) // не падать, если один asset недоступен
+      .then((c) => Promise.allSettled(ASSETS.map((a) => c.add(new Request(a, { cache: 'reload' }))))) // всегда свежие с сети, не из HTTP-кэша; не падать, если asset недоступен
       .then(() => self.skipWaiting())
   );
 });

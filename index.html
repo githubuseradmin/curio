@@ -181,6 +181,34 @@
     font-family:ui-monospace,Menlo,Consolas,monospace; font-size:12.5px; color:#e8edf6; min-width:24px; text-align:center; display:inline-block}
   .help-card .btn{width:100%; margin-top:14px; justify-content:center}
 
+  .readmore{margin:16px 0 2px; display:flex; flex-direction:column; gap:8px}
+  .rm{display:block; border:1px solid var(--line2); background:var(--panel2); border-radius:11px; padding:10px 13px; color:#dbe3f2; font-size:14px; transition:.15s}
+  .rm:hover{border-color:var(--a2); transform:translateX(3px); text-decoration:none}
+  .rm::before{content:"↗ "; color:var(--a2)}
+  .rm.wiki::before{content:"📖 "} .rm.official::before{content:"🏛 "}
+
+  .study-cta{background:linear-gradient(120deg,var(--a1),#43cfc0); color:#08120f; border-color:transparent; font-weight:700}
+  .study-cta:hover{border-color:transparent; filter:brightness(1.06)}
+
+  /* Study mode (лента изучения) */
+  .study{position:fixed; inset:0; z-index:50; display:none; background:var(--bg)}
+  .study.show{display:flex; flex-direction:column}
+  .study-bar{flex:0 0 auto; display:flex; align-items:center; gap:10px;
+    padding:calc(10px + env(safe-area-inset-top,0px)) clamp(14px,4vw,20px) 8px;
+    border-bottom:1px solid var(--line); background:rgba(11,15,23,.92); backdrop-filter:blur(10px)}
+  .study-bar .st-title{flex:1; text-align:center; font-weight:700; color:#fff; font-size:15px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .study-chips{flex:0 0 auto; display:flex; gap:8px; overflow-x:auto; padding:9px clamp(14px,4vw,20px);
+    border-bottom:1px solid var(--line); scrollbar-width:none}
+  .study-chips::-webkit-scrollbar{display:none}
+  .study-feed{flex:1 1 auto; overflow-y:auto; scroll-snap-type:y proximity; -webkit-overflow-scrolling:touch; overscroll-behavior:contain}
+  .slide{scroll-snap-align:start; scroll-snap-stop:always; min-height:100%; display:flex; flex-direction:column}
+  .slide-inner{max-width:var(--maxw); margin:0 auto; width:100%;
+    padding:22px max(clamp(16px,5vw,26px), env(safe-area-inset-left,0px)) 52px max(clamp(16px,5vw,26px), env(safe-area-inset-right,0px))}
+  .slide-title{font-size:clamp(20px,5vw,26px); line-height:1.22; margin:8px 0 2px; color:#fff; letter-spacing:-.01em}
+  .slide-body .body{border-top:0; margin-top:10px; padding-top:0; animation:none}
+  .slide-acts{display:flex; gap:8px; flex-wrap:wrap; margin-top:20px}
+  .slide-acts .btn{padding:8px 13px; font-size:13.5px}
+
   footer{max-width:var(--maxw); margin:30px auto 0; padding:16px 22px; color:var(--dim); font-size:12.5px;
     display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; border-top:1px solid var(--line)}
   footer button{border:0;background:transparent;color:var(--dim);text-decoration:underline;font-size:12.5px}
@@ -212,6 +240,7 @@
         <div class="searchres" id="searchRes"></div>
       </div>
       <button class="btn surprise" id="surprise">🎲 Удиви меня</button>
+      <button class="btn study-cta" id="studyBtn">📖 Режим изучения</button>
     </div>
     <div class="row">
       <span class="lbl">Порция</span>
@@ -254,6 +283,16 @@
   </div>
 </div>
 
+<div class="study" id="study">
+  <div class="study-bar">
+    <button class="fclose" id="studyClose" title="Закрыть">✕</button>
+    <div class="st-title" id="studyTitle">Изучение</div>
+    <button class="fclose" id="studyShuffle" title="Перемешать">🎲</button>
+  </div>
+  <div class="study-chips" id="studyChips"></div>
+  <div class="study-feed" id="studyFeed"></div>
+</div>
+
 <div id="pop"></div>
 
 <script src="cards.js"></script>
@@ -282,7 +321,7 @@
   function today(){ const d=new Date(); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
   function daysBetween(a,b){ return Math.round((new Date(b)-new Date(a))/86400000); }
   function plural(n,one,few,many){ n=Math.abs(n)%100; const d=n%10; if(n>10&&n<20)return many; if(d>1&&d<5)return few; if(d===1)return one; return many; }
-  const UISTR={gloss:{ru:'Словарь',en:'Glossary'},deeper:{ru:'Провалиться глубже',en:'Go deeper'},test:{ru:'Проверь себя',en:'Test yourself'},sources:{ru:'Источники: ',en:'Sources: '},new:{ru:'новое',en:'new'}};
+  const UISTR={gloss:{ru:'Словарь',en:'Glossary'},deeper:{ru:'Провалиться глубже',en:'Go deeper'},test:{ru:'Проверь себя',en:'Test yourself'},sources:{ru:'Источники: ',en:'Sources: '},new:{ru:'новое',en:'new'},readmore:{ru:'Читать дальше ↗',en:'Read more ↗'}};
   function ui(k){ return (UISTR[k]||{})[state.lang==='en'?'en':'ru']||''; }
   function T(card){ if(state.lang==='en'){ const e=(window.CARDS_EN||{})[card.id]; if(e) return {title:e.title||card.title,tldr:e.tldr||card.tldr,body_md:e.body_md||card.body_md,terms:(e.terms&&e.terms.length)?e.terms:card.terms,test_yourself:e.test_yourself||card.test_yourself}; } return card; }
 
@@ -337,7 +376,7 @@
   }
 
   // ---------- render a full body (used inline & in focus) ----------
-  function bodyHTML(card, inFocus){
+  function bodyHTML(card, onHole){
     const box=document.createElement('div'); box.className='body';
     const illu=(window.ILLUS||{})[card.id];
     if(illu){ const fig=document.createElement('figure'); fig.className='illus'; fig.innerHTML=illu; box.appendChild(fig); }
@@ -358,7 +397,7 @@
       holes.forEach(h=>{
         const b=document.createElement('button'); b.className='hole';
         b.innerHTML='<b></b><span></span>'; b.querySelector('b').textContent=h.label; b.querySelector('span').textContent=h.teaser;
-        b.onclick=()=> inFocus ? dive(h.to_id) : openFocus(h.to_id);
+        b.onclick=()=> (onHole||openFocus)(h.to_id);
         wrap.appendChild(b);
       });
       box.appendChild(wrap);
@@ -372,6 +411,12 @@
       const s=document.createElement('div'); s.className='src'; s.appendChild(document.createTextNode(ui('sources')));
       card.sources.forEach(src=>{ if(src.url){ const a=document.createElement('a'); a.href=src.url; a.target='_blank'; a.rel='noopener'; a.textContent=src.label||src.url; s.appendChild(a);} else { const sp=document.createElement('span'); sp.textContent=src.label; s.appendChild(sp);} });
       box.appendChild(s);
+    }
+    if(card.read_more && card.read_more.length){
+      const rm=document.createElement('div'); rm.className='readmore';
+      const hd=document.createElement('div'); hd.className='lbl2'; hd.textContent=ui('readmore'); rm.appendChild(hd);
+      card.read_more.forEach(l=>{ if(!l.url)return; const a=document.createElement('a'); a.className='rm '+(l.kind||''); a.href=l.url; a.target='_blank'; a.rel='noopener'; a.textContent=l.label||l.url; rm.appendChild(a); });
+      box.appendChild(rm);
     }
     return box;
   }
@@ -409,7 +454,7 @@
   function toggleOpen(el,card,btn){
     const ex=el.querySelector('.body');
     if(ex){ ex.remove(); btn.textContent='Читать →'; return; }
-    el.appendChild(bodyHTML(card,false)); btn.textContent='Свернуть ↑';
+    el.appendChild(bodyHTML(card,openFocus)); btn.textContent='Свернуть ↑';
     if(!state.seen[card.id]){ state.seen[card.id]=true; save(); renderStats(); const nb=el.querySelector('.badge.new'); if(nb) nb.remove(); }
   }
   function toggleSave(card,btn){ state.saved[card.id]=!state.saved[card.id]; btn.textContent=state.saved[card.id]?'★':'☆'; btn.classList.toggle('on',!!state.saved[card.id]); save(); }
@@ -448,7 +493,7 @@
     acts.querySelector('[data-a="no"]').onclick=()=>{ skipCard(card,null,'no'); fullClose(); };
     acts.querySelector('[data-a="save"]').onclick=(e)=>toggleSave(card,e.currentTarget);
     fbody.appendChild(acts);
-    fbody.appendChild(bodyHTML(card,true));
+    fbody.appendChild(bodyHTML(card,dive));
     crumbs.innerHTML='';
     trail.forEach((tid,i)=>{
       if(i){ const s=document.createElement('span'); s.className='sep'; s.textContent=' › '; crumbs.appendChild(s); }
@@ -554,6 +599,74 @@
   }
   document.getElementById('surprise').onclick=doSurprise;
 
+  // ---------- study mode (лента изучения) ----------
+  const studyEl=document.getElementById('study'), studyFeed=document.getElementById('studyFeed'),
+        studyChips=document.getElementById('studyChips'), studyTitle=document.getElementById('studyTitle');
+  let studyMode='all', studyIO=null;
+  function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+  function studyPool(){
+    let pool=CARDS.filter(c=>!state.known[c.id]);
+    if(studyMode!=='all') pool=pool.filter(c=>c.domain===studyMode);
+    if(!pool.length) pool=(studyMode!=='all')?CARDS.filter(c=>c.domain===studyMode):CARDS.slice();
+    const un=shuffle(pool.filter(c=>!state.seen[c.id]).map(c=>c.id));
+    const sn=shuffle(pool.filter(c=>state.seen[c.id]).map(c=>c.id));
+    return un.concat(sn);
+  }
+  function studySlide(id){
+    const card=byId[id]; const s=document.createElement('section'); s.className='slide'; s.dataset.id=id;
+    const inner=document.createElement('div'); inner.className='slide-inner';
+    inner.innerHTML=metaHTML(card)+'<h2 class="slide-title"></h2><div class="slide-body"></div>'
+      +'<div class="slide-acts">'
+      +'<button class="btn primary" data-a="deep">'+(state.lang==='en'?'Study this topic →':'Углубиться в тему →')+'</button>'
+      +'<button class="btn ghost" data-a="know">'+(state.lang==='en'?'Knew it ✓':'Знаю ✓')+'</button>'
+      +'<button class="btn star" data-a="save"></button></div>';
+    inner.querySelector('.slide-title').textContent=T(card).title;
+    const sv=inner.querySelector('[data-a="save"]'); sv.textContent=state.saved[id]?'★':'☆'; sv.classList.toggle('on',!!state.saved[id]);
+    sv.onclick=(e)=>toggleSave(card,e.currentTarget);
+    inner.querySelector('[data-a="know"]').onclick=()=>studyKnow(card,s);
+    inner.querySelector('[data-a="deep"]').onclick=()=>enterTheme(card.domain);
+    s.appendChild(inner); return s;
+  }
+  function fillSlide(s){
+    if(!s || s.dataset.filled) return; const card=byId[s.dataset.id]; if(!card) return;
+    s.querySelector('.slide-body').appendChild(bodyHTML(card, studyGoTo)); s.dataset.filled='1';
+    if(!state.seen[card.id]){ state.seen[card.id]=true; save(); renderStats(); }
+  }
+  function renderStudy(){
+    if(studyIO) studyIO.disconnect();
+    const order=studyPool(); studyFeed.innerHTML='';
+    if(!order.length){ studyFeed.innerHTML='<div class="empty"><h3>'+(state.lang==='en'?'Nothing here 🎉':'Здесь пусто 🎉')+'</h3></div>'; return; }
+    order.forEach(id=>studyFeed.appendChild(studySlide(id)));
+    studyTitle.textContent = studyMode==='all' ? (state.lang==='en'?'All mixed':'Всё вперемешку') : ((DOMAINS[studyMode]||{}).emoji+' '+(DOMAINS[studyMode]||{}).name);
+    syncStudyChips(); studyFeed.scrollTop=0;
+    studyIO=new IntersectionObserver((ents)=>{ ents.forEach(en=>{ if(en.isIntersecting) fillSlide(en.target); }); }, {root:studyFeed, rootMargin:'300px 0px'});
+    [...studyFeed.children].forEach(s=>studyIO.observe(s));
+    fillSlide(studyFeed.firstChild);
+  }
+  function openStudy(mode){ studyMode=mode||'all'; buildStudyChips(); studyEl.classList.add('show'); document.body.style.overflow='hidden'; renderStudy(); }
+  function closeStudy(){ studyEl.classList.remove('show'); document.body.style.overflow=''; if(studyIO) studyIO.disconnect(); }
+  function enterTheme(dom){ studyMode=dom; renderStudy(); }
+  function studyKnow(card,s){
+    state.known[card.id]=true; state.seen[card.id]=true; state.skips[card.domain]=(state.skips[card.domain]||0)+1; save(); renderStats();
+    const nxt=s.nextElementSibling; s.style.transition='opacity .25s'; s.style.opacity='0';
+    setTimeout(()=>{ s.remove(); if(nxt) nxt.scrollIntoView({behavior:'smooth',block:'start'}); else if(!studyFeed.querySelector('.slide')) renderStudy(); },230);
+  }
+  function studyGoTo(id){
+    let s=[...studyFeed.querySelectorAll('.slide')].find(x=>x.dataset.id===id);
+    if(!s){ const c=byId[id]; if(!c) return; studyMode=c.domain; renderStudy(); s=[...studyFeed.querySelectorAll('.slide')].find(x=>x.dataset.id===id); }
+    if(s){ fillSlide(s); s.scrollIntoView({behavior:'smooth',block:'start'}); }
+  }
+  function buildStudyChips(){
+    studyChips.innerHTML='';
+    const mk=(key,label)=>{ const b=document.createElement('button'); b.className='fchip'; b.dataset.m=key; b.textContent=label; b.onclick=()=>{ studyMode=key; renderStudy(); }; studyChips.appendChild(b); };
+    mk('all','🎲 '+(state.lang==='en'?'All':'Всё'));
+    Object.keys(DOMAINS).forEach(k=>mk(k, DOMAINS[k].emoji+' '+DOMAINS[k].name));
+  }
+  function syncStudyChips(){ [...studyChips.children].forEach(b=>b.classList.toggle('on', b.dataset.m===studyMode)); }
+  document.getElementById('studyBtn').onclick=()=>openStudy('all');
+  document.getElementById('studyClose').onclick=closeStudy;
+  document.getElementById('studyShuffle').onclick=()=>renderStudy();
+
   // ---------- pace / bookmarks / help / reset ----------
   document.getElementById('pace').addEventListener('click',e=>{
     const btn=e.target.closest('button[data-p]'); if(!btn) return;
@@ -565,7 +678,7 @@
   bmBtn.onclick=()=>{ viewSaved=!viewSaved; syncBm(); renderFilters(); rebuild(); };
   const langBtn=document.getElementById('langBtn');
   function syncLang(){ langBtn.textContent = state.lang==='en'?'RU':'EN'; langBtn.classList.toggle('on', state.lang==='en'); }
-  langBtn.onclick=()=>{ state.lang = state.lang==='en'?'ru':'en'; save(); syncLang(); rebuild(); if(focus.classList.contains('show')) renderFocus(); };
+  langBtn.onclick=()=>{ state.lang = state.lang==='en'?'ru':'en'; save(); syncLang(); rebuild(); if(focus.classList.contains('show')) renderFocus(); if(studyEl.classList.contains('show')){ buildStudyChips(); renderStudy(); } };
   const help=document.getElementById('help');
   document.getElementById('helpBtn').onclick=()=>help.classList.add('show');
   document.getElementById('helpClose').onclick=()=>help.classList.remove('show');
@@ -579,12 +692,13 @@
     if(e.key==='Escape'){
       if(help.classList.contains('show')){ help.classList.remove('show'); return; }
       if(searchRes.classList.contains('show')){ searchRes.classList.remove('show'); search.blur(); return; }
+      if(studyEl.classList.contains('show')){ closeStudy(); return; }
       if(focus.classList.contains('show')){ requestClose(); return; }
       pop.classList.remove('show'); return;
     }
     const typing = /^(INPUT|TEXTAREA)$/.test((document.activeElement||{}).tagName||'');
     if(focus.classList.contains('show') && (e.key==='Backspace'||e.key==='ArrowLeft') && !typing){ e.preventDefault(); requestClose(); return; }
-    if(typing || help.classList.contains('show')) return;
+    if(typing || help.classList.contains('show') || studyEl.classList.contains('show')) return;
     if(e.key==='/'){ e.preventDefault(); search.focus(); return; }
     if(e.key==='?'){ e.preventDefault(); help.classList.add('show'); return; }
     if(e.key==='r'||e.key==='R'||e.key==='к'||e.key==='К'){ doSurprise(); return; }
