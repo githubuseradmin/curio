@@ -13,6 +13,16 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Curio">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Curio">
+<meta property="og:title" content="Curio — движок любопытства">
+<meta property="og:description" content="Короткие экспресс-карточки по многим темам — узнавай что-то новое каждый день.">
+<meta property="og:image" content="https://githubuseradmin.github.io/curio/icons/icon-512.png">
+<meta property="og:url" content="https://githubuseradmin.github.io/curio/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Curio — движок любопытства">
+<meta name="twitter:description" content="Короткие экспресс-карточки по многим темам — узнавай что-то новое каждый день.">
+<meta name="twitter:image" content="https://githubuseradmin.github.io/curio/icons/icon-512.png">
 <style>
   :root{
     --bg:#0b0f17; --bg2:#0f1420; --panel:#131a28; --panel2:#171f30; --panel3:#1c2438;
@@ -208,6 +218,12 @@
   .slide-body .body{border-top:0; margin-top:10px; padding-top:0; animation:none}
   .slide-acts{display:flex; gap:8px; flex-wrap:wrap; margin-top:20px}
   .slide-acts .btn{padding:8px 13px; font-size:13.5px}
+  .study-bar #studyTts.on{color:var(--a1); border-color:var(--a1)}
+  .slide.speaking .slide-title{color:var(--a1); transition:color .25s}
+  #toast{position:fixed; left:50%; bottom:calc(26px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%) translateY(8px); z-index:80;
+    background:#0c1220; border:1px solid var(--line2); color:#e8edf6; padding:10px 16px; border-radius:12px; font-size:14px;
+    box-shadow:0 10px 30px rgba(0,0,0,.5); opacity:0; pointer-events:none; transition:.2s}
+  #toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
 
   footer{max-width:var(--maxw); margin:30px auto 0; padding:16px 22px; color:var(--dim); font-size:12.5px;
     display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; border-top:1px solid var(--line)}
@@ -287,6 +303,7 @@
   <div class="study-bar">
     <button class="fclose" id="studyClose" title="Закрыть">✕</button>
     <div class="st-title" id="studyTitle">Изучение</div>
+    <button class="fclose" id="studyTts" title="Читать вслух">🔊</button>
     <button class="fclose" id="studyShuffle" title="Перемешать">🎲</button>
   </div>
   <div class="study-chips" id="studyChips"></div>
@@ -619,12 +636,14 @@
       +'<div class="slide-acts">'
       +'<button class="btn primary" data-a="deep">'+(state.lang==='en'?'Study this topic →':'Углубиться в тему →')+'</button>'
       +'<button class="btn ghost" data-a="know">'+(state.lang==='en'?'Knew it ✓':'Знаю ✓')+'</button>'
+      +'<button class="btn ghost" data-a="share" title="Поделиться">↗</button>'
       +'<button class="btn star" data-a="save"></button></div>';
     inner.querySelector('.slide-title').textContent=T(card).title;
     const sv=inner.querySelector('[data-a="save"]'); sv.textContent=state.saved[id]?'★':'☆'; sv.classList.toggle('on',!!state.saved[id]);
     sv.onclick=(e)=>toggleSave(card,e.currentTarget);
     inner.querySelector('[data-a="know"]').onclick=()=>studyKnow(card,s);
     inner.querySelector('[data-a="deep"]').onclick=()=>enterTheme(card.domain);
+    inner.querySelector('[data-a="share"]').onclick=()=>shareCard(card);
     s.appendChild(inner); return s;
   }
   function fillSlide(s){
@@ -633,6 +652,7 @@
     if(!state.seen[card.id]){ state.seen[card.id]=true; save(); renderStats(); }
   }
   function renderStudy(){
+    ttsStop();
     if(studyIO) studyIO.disconnect();
     const order=studyPool(); studyFeed.innerHTML='';
     if(!order.length){ studyFeed.innerHTML='<div class="empty"><h3>'+(state.lang==='en'?'Nothing here 🎉':'Здесь пусто 🎉')+'</h3></div>'; return; }
@@ -644,7 +664,7 @@
     fillSlide(studyFeed.firstChild);
   }
   function openStudy(mode){ studyMode=mode||'all'; buildStudyChips(); studyEl.classList.add('show'); document.body.style.overflow='hidden'; renderStudy(); }
-  function closeStudy(){ studyEl.classList.remove('show'); document.body.style.overflow=''; if(studyIO) studyIO.disconnect(); }
+  function closeStudy(){ ttsStop(); studyEl.classList.remove('show'); document.body.style.overflow=''; if(studyIO) studyIO.disconnect(); }
   function enterTheme(dom){ studyMode=dom; renderStudy(); }
   function studyKnow(card,s){
     state.known[card.id]=true; state.seen[card.id]=true; state.skips[card.domain]=(state.skips[card.domain]||0)+1; save(); renderStats();
@@ -666,6 +686,20 @@
   document.getElementById('studyBtn').onclick=()=>openStudy('all');
   document.getElementById('studyClose').onclick=closeStudy;
   document.getElementById('studyShuffle').onclick=()=>renderStudy();
+
+  // ---------- read-aloud (TTS) + share + toast ----------
+  const synth = ('speechSynthesis' in window) ? window.speechSynthesis : null;
+  let ttsOn=false, ttsVoices=[];
+  if(synth){ ttsVoices=synth.getVoices(); synth.onvoiceschanged=()=>{ ttsVoices=synth.getVoices(); }; }
+  function stripSpeech(t){ return (t||'').replace(/\*\*(.+?)\*\*/g,'$1').replace(/`([^`]+?)`/g,'$1').replace(/\s*\n+\s*/g,'. ').replace(/\s+/g,' ').trim(); }
+  function utterFor(card){ const v=T(card); const u=new SpeechSynthesisUtterance(v.title+'. '+stripSpeech(v.body_md)); const lang=state.lang==='en'?'en-US':'ru-RU'; u.lang=lang; const vo=ttsVoices.find(x=>x.lang&&x.lang.toLowerCase().slice(0,2)===lang.slice(0,2)); if(vo)u.voice=vo; u.rate=1.02; return u; }
+  function studyCurrent(){ const sl=[...studyFeed.querySelectorAll('.slide')]; if(!sl.length)return null; const ftop=studyFeed.getBoundingClientRect().top; let b=sl[0],bd=1e9; sl.forEach(s=>{ const d=Math.abs(s.getBoundingClientRect().top-ftop); if(d<bd){bd=d;b=s;} }); return b; }
+  function ttsPlay(slide){ if(!ttsOn||!slide||!synth)return; fillSlide(slide); const card=byId[slide.dataset.id]; if(!card)return; synth.cancel(); [...studyFeed.querySelectorAll('.slide.speaking')].forEach(s=>s.classList.remove('speaking')); slide.classList.add('speaking'); const u=utterFor(card); u.onend=()=>{ slide.classList.remove('speaking'); if(!ttsOn)return; const nx=slide.nextElementSibling; if(nx){ nx.scrollIntoView({behavior:'smooth',block:'start'}); setTimeout(()=>ttsPlay(nx),700); } else { ttsOn=false; syncTts(); } }; u.onerror=()=>{ slide.classList.remove('speaking'); }; synth.speak(u); }
+  function ttsStop(){ ttsOn=false; if(synth)synth.cancel(); if(typeof studyFeed!=='undefined'&&studyFeed){ [...studyFeed.querySelectorAll('.slide.speaking')].forEach(s=>s.classList.remove('speaking')); } syncTts(); }
+  function syncTts(){ const b=document.getElementById('studyTts'); if(b){ b.classList.toggle('on',ttsOn); b.textContent=ttsOn?'⏸':'🔊'; } }
+  document.getElementById('studyTts').onclick=()=>{ if(!synth){ toast(state.lang==='en'?'Voice not supported here':'Голос не поддерживается'); return;} ttsOn=!ttsOn; syncTts(); if(ttsOn) ttsPlay(studyCurrent()); else synth.cancel(); };
+  function shareCard(card){ const url=location.origin+location.pathname+'#'+card.id; const v=T(card); if(navigator.share){ navigator.share({title:'Curio',text:v.title,url:url}).catch(function(){}); } else if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(function(){toast(state.lang==='en'?'Link copied':'Ссылка скопирована');},function(){toast(url);}); } else { toast(url); } }
+  let toastT=null; function toast(msg){ let el=document.getElementById('toast'); if(!el){ el=document.createElement('div'); el.id='toast'; document.body.appendChild(el);} el.textContent=msg; el.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(function(){el.classList.remove('show');},1900); }
 
   // ---------- pace / bookmarks / help / reset ----------
   document.getElementById('pace').addEventListener('click',e=>{
