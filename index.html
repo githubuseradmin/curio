@@ -39,7 +39,7 @@
     background-image:
       radial-gradient(55vw 55vw at 90% -10%, rgba(124,156,255,.13), transparent 60%),
       radial-gradient(45vw 45vw at -5% 5%, rgba(94,234,212,.09), transparent 55%);
-    background-attachment:fixed; padding-bottom:calc(60px + env(safe-area-inset-bottom, 0px));
+    background-attachment:fixed; padding-bottom:calc(72px + env(safe-area-inset-bottom, 0px));
   }
   a{color:var(--a2); text-decoration:none} a:hover{text-decoration:underline}
   button{font-family:inherit; cursor:pointer}
@@ -211,15 +211,31 @@
     border-bottom:1px solid var(--line); scrollbar-width:none}
   .study-chips::-webkit-scrollbar{display:none}
   .study-feed{flex:1 1 auto; overflow-y:auto; scroll-snap-type:y proximity; -webkit-overflow-scrolling:touch; overscroll-behavior:contain}
-  .slide{scroll-snap-align:start; scroll-snap-stop:always; min-height:100%; display:flex; flex-direction:column}
-  .slide-inner{max-width:var(--maxw); margin:0 auto; width:100%;
-    padding:22px max(clamp(16px,5vw,26px), env(safe-area-inset-left,0px)) 52px max(clamp(16px,5vw,26px), env(safe-area-inset-right,0px))}
-  .slide-title{font-size:clamp(20px,5vw,26px); line-height:1.22; margin:8px 0 2px; color:#fff; letter-spacing:-.01em}
-  .slide-body .body{border-top:0; margin-top:10px; padding-top:0; animation:none}
-  .slide-acts{display:flex; gap:8px; flex-wrap:wrap; margin-top:20px}
-  .slide-acts .btn{padding:8px 13px; font-size:13.5px}
-  .study-bar #studyTts.on{color:var(--a1); border-color:var(--a1)}
-  .slide.speaking .slide-title{color:var(--a1); transition:color .25s}
+  .slide{scroll-snap-align:start; scroll-snap-stop:always; min-height:100%; display:flex}
+  .slide-inner{max-width:640px; margin:0 auto; width:100%; min-height:100%; display:flex; flex-direction:column; justify-content:center; position:relative;
+    padding:24px max(clamp(18px,6vw,30px), env(safe-area-inset-left,0px)) 40px max(clamp(18px,6vw,30px), env(safe-area-inset-right,0px))}
+  .slide.open .slide-inner{justify-content:flex-start}
+  .slide-hook{display:flex; flex-direction:column; align-items:flex-start; gap:14px; animation:rise .4s ease both}
+  .slide-dom{font-size:12.5px}
+  .slide-title{font-size:clamp(24px,6.6vw,36px); line-height:1.14; font-weight:800; letter-spacing:-.02em; color:#fff; margin:0}
+  .slide-tldr{font-size:clamp(16px,4.3vw,20px); line-height:1.5; color:#c8d2e6; margin:0}
+  .slide-illus{width:100%; border:1px solid var(--line); border-radius:16px; padding:10px; overflow:hidden;
+    background:radial-gradient(130% 130% at 50% 0%, rgba(124,156,255,.09), transparent 66%), var(--bg2)}
+  .slide-illus:empty{display:none}
+  .slide-illus svg{width:100%; height:auto; max-height:min(38vh,260px); display:block}
+  .slide-quick{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:4px; width:100%}
+  .slide-expand{background:linear-gradient(120deg,var(--a1),#43cfc0); color:#08120f; border:0; border-radius:999px; padding:12px 22px; font-weight:800; font-size:15px; transition:.15s; cursor:pointer}
+  .slide-expand:hover{filter:brightness(1.06); transform:translateY(-1px)}
+  .slide-icons{display:flex; gap:9px; margin-left:auto}
+  .rail-btn{width:44px; height:44px; border-radius:50%; border:1px solid var(--line2); background:rgba(19,26,40,.6); color:#dbe3f2; font-size:17px; transition:.15s; display:flex; align-items:center; justify-content:center}
+  .rail-btn:hover{border-color:var(--a2); color:#fff; transform:translateY(-2px)}
+  .rail-btn.on{color:var(--warn); border-color:rgba(251,191,36,.5)}
+  .slide-more{display:none}
+  .slide.open .slide-more{display:block; margin-top:20px; animation:rise .3s ease both}
+  .slide-more .body{border-top:1px solid var(--line); margin-top:0; padding-top:16px}
+  .slide-heart{position:absolute; left:50%; top:42%; transform:translate(-50%,-50%) scale(0); font-size:96px; color:#f0637e; pointer-events:none; opacity:0; z-index:3}
+  .slide-heart.burst{animation:heartb .85s ease}
+  @keyframes heartb{0%{transform:translate(-50%,-50%) scale(.2); opacity:0}18%{transform:translate(-50%,-50%) scale(1.05); opacity:.95}70%{opacity:.85}100%{transform:translate(-50%,-50%) scale(1.35); opacity:0}}
   #toast{position:fixed; left:50%; bottom:calc(26px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%) translateY(8px); z-index:80;
     background:#0c1220; border:1px solid var(--line2); color:#e8edf6; padding:10px 16px; border-radius:12px; font-size:14px;
     box-shadow:0 10px 30px rgba(0,0,0,.5); opacity:0; pointer-events:none; transition:.2s}
@@ -229,6 +245,39 @@
     display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; border-top:1px solid var(--line)}
   footer button{border:0;background:transparent;color:var(--dim);text-decoration:underline;font-size:12.5px}
   footer button:hover{color:var(--muted)}
+  footer{display:none} /* заменено нижней навигацией */
+  #bmBtn,#helpBtn{display:none} /* перенесено в Профиль/Настройки */
+  .view{display:none} .view.active{display:block}
+  .tabbar{position:fixed; left:0; right:0; bottom:0; z-index:35; display:flex;
+    background:linear-gradient(0deg,rgba(11,15,23,.98),rgba(11,15,23,.9)); backdrop-filter:blur(12px); border-top:1px solid var(--line); padding-bottom:env(safe-area-inset-bottom,0px)}
+  .tab{flex:1; border:0; background:transparent; color:var(--dim); display:flex; flex-direction:column; align-items:center; gap:3px; padding:9px 4px 8px; font-size:11px; cursor:pointer; transition:color .15s}
+  .tab .ti{font-size:20px; line-height:1}
+  .tab.on{color:#fff} .tab.on .ti{filter:drop-shadow(0 0 8px rgba(94,234,212,.55))}
+  .pv,.sv{max-width:var(--maxw); margin:0 auto; padding:18px clamp(14px,4vw,22px) 20px}
+  .pv h1,.sv h1{font-size:22px; color:#fff; margin:6px 0 4px}
+  .pv .big{display:flex; gap:10px; margin:14px 0}
+  .stat{flex:1; background:var(--panel2); border:1px solid var(--line); border-radius:14px; padding:14px 8px; text-align:center}
+  .stat b{display:block; font-size:26px; color:#fff; line-height:1.1} .stat span{font-size:12px; color:var(--muted)}
+  .pv h2,.sv h2{font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--dim); margin:22px 0 10px}
+  .prog{display:flex; align-items:center; gap:10px; margin:9px 0}
+  .prog .pn{font-size:13px; color:#cbd5ea; width:150px; flex:0 0 auto; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .prog .pbar{flex:1; height:8px; background:var(--panel3); border-radius:6px; overflow:hidden}
+  .prog .pfill{height:100%; background:linear-gradient(90deg,var(--a1),var(--a2)); border-radius:6px; transition:width .5s ease}
+  .prog .pnum{font-size:12px; color:var(--dim); width:46px; text-align:right; flex:0 0 auto}
+  .savedrow{display:block; width:100%; text-align:left; border:1px solid var(--line); background:var(--panel); border-radius:12px; padding:11px 13px; margin:8px 0; color:#dbe3f2; cursor:pointer}
+  .savedrow:hover{border-color:var(--line2)} .savedrow b{color:#fff; font-size:14px; font-weight:600}
+  .acctbox{background:var(--panel2); border:1px solid var(--line); border-radius:14px; padding:16px; color:var(--muted); font-size:14px; line-height:1.55}
+  .srow{background:var(--panel2); border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin:12px 0}
+  .srow .sh{font-size:14px; color:#fff; font-weight:600; margin-bottom:10px}
+  .srow .sd{font-size:13px; color:var(--muted); margin-top:8px; line-height:1.5}
+  .srow .seg{display:inline-flex}
+  .story-prog{height:3px; background:var(--line); overflow:hidden}
+  .story-prog i{display:block; height:100%; width:100%; background:linear-gradient(90deg,var(--a1),var(--a2)); transform:scaleX(0); transform-origin:left}
+  .story-prog.run i{animation:storyfill 9s linear forwards}
+  @keyframes storyfill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  .study-bar #storyBtn.on{color:var(--a1); border-color:var(--a1)}
+  .study-feed.story .slide-illus svg{animation:kenburns 9.5s ease both}
+  @keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.12)}}
   @media (max-width:520px){ .hstats .pill.learned{display:none} .mins{margin-left:0} }
 </style>
 </head>
@@ -248,7 +297,7 @@
   </div>
 </header>
 
-<main class="wrap">
+<main class="wrap view active" id="view-feed">
   <div class="controls">
     <div class="row">
       <div class="searchbox">
@@ -279,6 +328,16 @@
   <span><button id="reset">сбросить прогресс</button></span>
 </footer>
 
+<section class="view" id="view-profile"><div class="pv" id="profileBody"></div></section>
+<section class="view" id="view-settings"><div class="sv" id="settingsBody"></div></section>
+
+<nav class="tabbar" id="tabbar">
+  <button class="tab on" data-v="feed"><span class="ti">🗂️</span><span class="tl">Лента</span></button>
+  <button class="tab" data-v="study"><span class="ti">📖</span><span class="tl">Изучение</span></button>
+  <button class="tab" data-v="profile"><span class="ti">👤</span><span class="tl">Профиль</span></button>
+  <button class="tab" data-v="settings"><span class="ti">⚙️</span><span class="tl">Настройки</span></button>
+</nav>
+
 <div class="focus" id="focus"><div class="fpanel">
   <div class="fbar">
     <button class="fclose" id="fclose" title="Назад / закрыть">✕</button>
@@ -303,9 +362,10 @@
   <div class="study-bar">
     <button class="fclose" id="studyClose" title="Закрыть">✕</button>
     <div class="st-title" id="studyTitle">Изучение</div>
-    <button class="fclose" id="studyTts" title="Читать вслух">🔊</button>
+    <button class="fclose" id="storyBtn" title="Авто-режим">▶</button>
     <button class="fclose" id="studyShuffle" title="Перемешать">🎲</button>
   </div>
+  <div class="story-prog" id="storyProg"><i></i></div>
   <div class="study-chips" id="studyChips"></div>
   <div class="study-feed" id="studyFeed"></div>
 </div>
@@ -393,10 +453,10 @@
   }
 
   // ---------- render a full body (used inline & in focus) ----------
-  function bodyHTML(card, onHole){
+  function bodyHTML(card, onHole, skipIllus){
     const box=document.createElement('div'); box.className='body';
     const illu=(window.ILLUS||{})[card.id];
-    if(illu){ const fig=document.createElement('figure'); fig.className='illus'; fig.innerHTML=illu; box.appendChild(fig); }
+    if(illu && !skipIllus){ const fig=document.createElement('figure'); fig.className='illus'; fig.innerHTML=illu; box.appendChild(fig); }
     const v=T(card);
     const txt=document.createElement('div'); txt.innerHTML=md(v.body_md);
     const matched=annotate(txt, v.terms); box.appendChild(txt);
@@ -630,29 +690,58 @@
     return un.concat(sn);
   }
   function studySlide(id){
-    const card=byId[id]; const s=document.createElement('section'); s.className='slide'; s.dataset.id=id;
+    const card=byId[id]; const d=DOMAINS[card.domain]||{name:card.domain,emoji:'•'}; const en=state.lang==='en';
+    const s=document.createElement('section'); s.className='slide'; s.dataset.id=id;
     const inner=document.createElement('div'); inner.className='slide-inner';
-    inner.innerHTML=metaHTML(card)+'<h2 class="slide-title"></h2><div class="slide-body"></div>'
-      +'<div class="slide-acts">'
-      +'<button class="btn primary" data-a="deep">'+(state.lang==='en'?'Study this topic →':'Углубиться в тему →')+'</button>'
-      +'<button class="btn ghost" data-a="know">'+(state.lang==='en'?'Knew it ✓':'Знаю ✓')+'</button>'
-      +'<button class="btn ghost" data-a="share" title="Поделиться">↗</button>'
-      +'<button class="btn star" data-a="save"></button></div>';
+    inner.innerHTML=
+       '<div class="slide-hook">'
+      +  '<span class="dom slide-dom">'+d.emoji+' '+d.name+' · ⏱ '+(card.minutes||5)+(en?' min':' мин')+'</span>'
+      +  '<h2 class="slide-title"></h2>'
+      +  '<p class="slide-tldr"></p>'
+      +  '<div class="slide-illus"></div>'
+      +  '<div class="slide-quick">'
+      +    '<button class="slide-expand" data-a="expand"><span class="ex-t">'+(en?'Break it down':'Разобраться')+'</span> ↓</button>'
+      +    '<div class="slide-icons">'
+      +      '<button class="rail-btn" data-a="save" title="'+(en?'Save':'В закладки')+'"></button>'
+      +      '<button class="rail-btn" data-a="share" title="'+(en?'Share':'Поделиться')+'">↗</button>'
+      +      '<button class="rail-btn" data-a="deep" title="'+(en?'This topic only':'Только эта тема')+'">⤢</button>'
+      +      '<button class="rail-btn" data-a="know" title="'+(en?'Knew it':'Уже знаю')+'">✓</button>'
+      +    '</div>'
+      +  '</div>'
+      + '</div>'
+      + '<div class="slide-more"></div>'
+      + '<div class="slide-heart">❤</div>';
     inner.querySelector('.slide-title').textContent=T(card).title;
+    inner.querySelector('.slide-tldr').textContent=T(card).tldr;
     const sv=inner.querySelector('[data-a="save"]'); sv.textContent=state.saved[id]?'★':'☆'; sv.classList.toggle('on',!!state.saved[id]);
-    sv.onclick=(e)=>toggleSave(card,e.currentTarget);
-    inner.querySelector('[data-a="know"]').onclick=()=>studyKnow(card,s);
-    inner.querySelector('[data-a="deep"]').onclick=()=>enterTheme(card.domain);
+    sv.onclick=()=>toggleSave(card,sv);
     inner.querySelector('[data-a="share"]').onclick=()=>shareCard(card);
+    inner.querySelector('[data-a="deep"]').onclick=()=>enterTheme(card.domain);
+    inner.querySelector('[data-a="know"]').onclick=()=>studyKnow(card,s);
+    inner.querySelector('[data-a="expand"]').onclick=()=>toggleExpand(s,card);
+    inner.addEventListener('dblclick',(e)=>{ if(e.target.closest('button')) return; likeBurst(s,card); });
     s.appendChild(inner); return s;
   }
   function fillSlide(s){
     if(!s || s.dataset.filled) return; const card=byId[s.dataset.id]; if(!card) return;
-    s.querySelector('.slide-body').appendChild(bodyHTML(card, studyGoTo)); s.dataset.filled='1';
+    const box=s.querySelector('.slide-illus'); const illu=(window.ILLUS||{})[card.id];
+    if(box){ if(illu) box.innerHTML=illu; else box.remove(); }
+    s.dataset.filled='1';
     if(!state.seen[card.id]){ state.seen[card.id]=true; save(); renderStats(); }
   }
+  function toggleExpand(s,card){
+    const more=s.querySelector('.slide-more'), t=s.querySelector('[data-a="expand"] .ex-t'); const en=state.lang==='en';
+    if(s.classList.contains('open')){ s.classList.remove('open'); if(t) t.textContent=en?'Break it down':'Разобраться'; return; }
+    if(!more.dataset.filled){ more.appendChild(bodyHTML(card, studyGoTo, true)); more.dataset.filled='1'; }
+    s.classList.add('open'); if(t) t.textContent=en?'Collapse':'Свернуть';
+    setTimeout(()=>{ more.scrollIntoView({behavior:'smooth',block:'nearest'}); }, 60);
+  }
+  function likeBurst(s,card){
+    if(!state.saved[card.id]){ state.saved[card.id]=true; save(); const sv=s.querySelector('[data-a="save"]'); if(sv){ sv.textContent='★'; sv.classList.add('on'); } }
+    const h=s.querySelector('.slide-heart'); if(h){ h.classList.remove('burst'); void h.offsetWidth; h.classList.add('burst'); }
+  }
   function renderStudy(){
-    ttsStop();
+    ttsStop(); storyStop();
     if(studyIO) studyIO.disconnect();
     const order=studyPool(); studyFeed.innerHTML='';
     if(!order.length){ studyFeed.innerHTML='<div class="empty"><h3>'+(state.lang==='en'?'Nothing here 🎉':'Здесь пусто 🎉')+'</h3></div>'; return; }
@@ -664,7 +753,7 @@
     fillSlide(studyFeed.firstChild);
   }
   function openStudy(mode){ studyMode=mode||'all'; buildStudyChips(); studyEl.classList.add('show'); document.body.style.overflow='hidden'; renderStudy(); }
-  function closeStudy(){ ttsStop(); studyEl.classList.remove('show'); document.body.style.overflow=''; if(studyIO) studyIO.disconnect(); }
+  function closeStudy(){ ttsStop(); storyStop(); studyEl.classList.remove('show'); document.body.style.overflow=''; if(studyIO) studyIO.disconnect(); markTab(curTab); }
   function enterTheme(dom){ studyMode=dom; renderStudy(); }
   function studyKnow(card,s){
     state.known[card.id]=true; state.seen[card.id]=true; state.skips[card.domain]=(state.skips[card.domain]||0)+1; save(); renderStats();
@@ -697,9 +786,67 @@
   function ttsPlay(slide){ if(!ttsOn||!slide||!synth)return; fillSlide(slide); const card=byId[slide.dataset.id]; if(!card)return; synth.cancel(); [...studyFeed.querySelectorAll('.slide.speaking')].forEach(s=>s.classList.remove('speaking')); slide.classList.add('speaking'); const u=utterFor(card); u.onend=()=>{ slide.classList.remove('speaking'); if(!ttsOn)return; const nx=slide.nextElementSibling; if(nx){ nx.scrollIntoView({behavior:'smooth',block:'start'}); setTimeout(()=>ttsPlay(nx),700); } else { ttsOn=false; syncTts(); } }; u.onerror=()=>{ slide.classList.remove('speaking'); }; synth.speak(u); }
   function ttsStop(){ ttsOn=false; if(synth)synth.cancel(); if(typeof studyFeed!=='undefined'&&studyFeed){ [...studyFeed.querySelectorAll('.slide.speaking')].forEach(s=>s.classList.remove('speaking')); } syncTts(); }
   function syncTts(){ const b=document.getElementById('studyTts'); if(b){ b.classList.toggle('on',ttsOn); b.textContent=ttsOn?'⏸':'🔊'; } }
-  document.getElementById('studyTts').onclick=()=>{ if(!synth){ toast(state.lang==='en'?'Voice not supported here':'Голос не поддерживается'); return;} ttsOn=!ttsOn; syncTts(); if(ttsOn) ttsPlay(studyCurrent()); else synth.cancel(); };
+  // read-aloud убран по фидбеку (робот-голос не зашёл)
   function shareCard(card){ const url=location.origin+location.pathname+'#'+card.id; const v=T(card); if(navigator.share){ navigator.share({title:'Curio',text:v.title,url:url}).catch(function(){}); } else if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(function(){toast(state.lang==='en'?'Link copied':'Ссылка скопирована');},function(){toast(url);}); } else { toast(url); } }
   let toastT=null; function toast(msg){ let el=document.getElementById('toast'); if(!el){ el=document.createElement('div'); el.id='toast'; document.body.appendChild(el);} el.textContent=msg; el.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(function(){el.classList.remove('show');},1900); }
+
+  // ---------- tabs / views ----------
+  const tabbar=document.getElementById('tabbar');
+  let curTab='feed';
+  function markTab(v){ if(tabbar)[...tabbar.children].forEach(b=>b.classList.toggle('on', b.dataset.v===v)); }
+  function switchTab(v){
+    if(v==='study'){ markTab('study'); openStudy('all'); return; }
+    curTab=v;
+    ['feed','profile','settings'].forEach(id=>{ const el=document.getElementById('view-'+id); if(el) el.classList.toggle('active', id===v); });
+    if(v==='profile') renderProfile();
+    if(v==='settings') renderSettings();
+    markTab(v); window.scrollTo(0,0);
+  }
+  if(tabbar) tabbar.addEventListener('click',e=>{ const b=e.target.closest('.tab'); if(b) switchTab(b.dataset.v); });
+
+  // ---------- profile ----------
+  function renderProfile(){
+    const el=document.getElementById('profileBody'); if(!el) return; const en=state.lang==='en';
+    const seen=Object.keys(state.seen).length;
+    const per={}; Object.keys(DOMAINS).forEach(k=>per[k]={t:0,s:0});
+    CARDS.forEach(c=>{ const d=per[c.domain]; if(d){ d.t++; if(state.seen[c.id])d.s++; } });
+    const saved=CARDS.filter(c=>state.saved[c.id]);
+    let h='<h1>'+(en?'Your profile':'Твой профиль')+'</h1><div class="big">'
+      +'<div class="stat"><b>'+(state.streak.count||0)+'</b><span>'+(en?'day streak':'дней подряд')+'</span></div>'
+      +'<div class="stat"><b>'+seen+'</b><span>'+(en?'learned':'изучено')+'</span></div>'
+      +'<div class="stat"><b>'+saved.length+'</b><span>'+(en?'saved':'закладок')+'</span></div></div>'
+      +'<h2>'+(en?'Progress by topic':'Прогресс по темам')+'</h2>';
+    Object.keys(DOMAINS).forEach(k=>{ const d=per[k], pct=d.t?Math.round(d.s/d.t*100):0;
+      h+='<div class="prog"><span class="pn">'+DOMAINS[k].emoji+' '+DOMAINS[k].name+'</span><span class="pbar"><span class="pfill" style="width:'+pct+'%"></span></span><span class="pnum">'+d.s+'/'+d.t+'</span></div>'; });
+    h+='<h2>'+(en?'Saved':'Закладки')+'</h2>';
+    if(saved.length){ saved.forEach(c=>{ h+='<button class="savedrow" data-id="'+c.id+'"><b></b></button>'; }); }
+    else h+='<div class="acctbox">'+(en?'Nothing saved yet — tap ★ on a card.':'Пока пусто — жми ★ на карточке (или двойной тап в режиме изучения).')+'</div>';
+    h+='<h2>'+(en?'Account':'Аккаунт')+'</h2><div class="acctbox">'+(en?'User accounts are coming — sync across devices, personal feed. For now progress lives on this device.':'Система пользователей — скоро: синхронизация между устройствами, личная лента. Сейчас прогресс хранится на этом устройстве.')+'<br><button class="btn" disabled style="opacity:.55;margin-top:12px">'+(en?'Sign in (soon)':'Войти (скоро)')+'</button></div>';
+    el.innerHTML=h;
+    saved.forEach(c=>{ const r=el.querySelector('.savedrow[data-id="'+c.id+'"]'); if(r){ r.querySelector('b').textContent=(DOMAINS[c.domain]||{}).emoji+' '+T(c).title; r.onclick=()=>openFocus(c.id); } });
+  }
+
+  // ---------- settings ----------
+  function renderSettings(){
+    const el=document.getElementById('settingsBody'); if(!el) return; const en=state.lang==='en';
+    el.innerHTML='<h1>'+(en?'Settings':'Настройки')+'</h1>'
+      +'<div class="srow"><div class="sh">'+(en?'Language':'Язык')+'</div><div class="seg" id="langSeg"><button data-l="ru"'+(state.lang!=='en'?' class="on"':'')+'>Русский</button><button data-l="en"'+(state.lang==='en'?' class="on"':'')+'>English</button></div><div class="sd">'+(en?'Card language. Where a translation is missing, Russian is shown.':'Язык карточек. Где нет перевода — покажется русский.')+'</div></div>'
+      +'<div class="srow"><div class="sh">'+(en?'Progress':'Прогресс')+'</div><button class="btn" id="setReset">'+(en?'Reset progress':'Сбросить прогресс')+'</button><div class="sd">'+(en?'Clears learned, saved and streak on this device.':'Очистит изученное, закладки и стрик на этом устройстве.')+'</div></div>'
+      +'<div class="srow"><div class="sh">'+(en?'Keyboard':'Горячие клавиши')+'</div><div class="sd"><kbd>/</kbd> '+(en?'search':'поиск')+' · <kbd>R</kbd> '+(en?'random':'рандом')+' · <kbd>&larr;</kbd> '+(en?'back':'назад')+' · <kbd>Esc</kbd> '+(en?'close':'закрыть')+'</div></div>'
+      +'<div class="srow"><div class="sh">'+(en?'About':'О проекте')+'</div><div class="sd">Curio — '+(en?'a curiosity engine: swipe and learn something new.':'движок любопытства: листай и узнавай новое.')+'<br>'+CARDS.length+(en?' cards · project ':' карточек · проект ')+'🌙 MoonCap</div></div>';
+    const seg=el.querySelector('#langSeg');
+    if(seg) seg.addEventListener('click',e=>{ const b=e.target.closest('button[data-l]'); if(!b) return; const cur=state.lang==='en'?'en':'ru'; if(b.dataset.l!==cur){ state.lang=b.dataset.l; save(); syncLang(); rebuild(); renderSettings(); } });
+    const rb=el.querySelector('#setReset');
+    if(rb) rb.onclick=()=>{ if(confirm(en?'Reset all progress?':'Сбросить весь прогресс?')){ const lang=state.lang, streak=state.streak; state=Object.assign({},def,{seen:{},known:{},saved:{},deep:{},skips:{},dislikes:{},streak:streak,lang:lang}); save(); rebuild(); renderStats(); renderSettings(); } };
+  }
+
+  // ---------- story (авто-режим, «наше видео») ----------
+  let storyOn=false, storyT=null;
+  function storyStop(){ storyOn=false; if(storyT){ clearTimeout(storyT); storyT=null; } if(typeof studyFeed!=='undefined'&&studyFeed) studyFeed.classList.remove('story'); const sb=document.getElementById('storyBtn'); if(sb){ sb.classList.remove('on'); sb.textContent='▶'; } const p=document.getElementById('storyProg'); if(p) p.classList.remove('run'); }
+  function storyTick(){ if(!storyOn) return; const cur=studyCurrent(); if(!cur){ storyStop(); return; } fillSlide(cur);
+    const p=document.getElementById('storyProg'); if(p){ p.classList.remove('run'); void p.offsetWidth; p.classList.add('run'); }
+    storyT=setTimeout(function(){ if(!storyOn) return; const nx=cur.nextElementSibling; if(nx){ nx.scrollIntoView({behavior:'smooth',block:'start'}); setTimeout(storyTick,650); } else { storyStop(); } }, 9000); }
+  { const sb=document.getElementById('storyBtn'); if(sb) sb.onclick=function(){ if(storyOn){ storyStop(); } else { storyOn=true; studyFeed.classList.add('story'); sb.classList.add('on'); sb.textContent='⏸'; storyTick(); } }; }
 
   // ---------- pace / bookmarks / help / reset ----------
   document.getElementById('pace').addEventListener('click',e=>{
