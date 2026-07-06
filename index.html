@@ -214,6 +214,33 @@
   .study-feed::-webkit-scrollbar{display:none; width:0; height:0}
   .slide{scroll-snap-align:start; scroll-snap-stop:always; height:100%; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:none; -ms-overflow-style:none; display:flex}
   .slide::-webkit-scrollbar{display:none; width:0}
+  /* ---- video-feed tab (тест: TikTok-лента роликов) ---- */
+  .videos{position:fixed; top:0; left:0; right:0; bottom:calc(59px + env(safe-area-inset-bottom,0px)); z-index:15; display:none; background:#05070c}
+  .videos.show{display:block}
+  .vfeed{height:100%; overflow-y:scroll; scroll-snap-type:y mandatory; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; scrollbar-width:none; -ms-overflow-style:none}
+  .vfeed::-webkit-scrollbar{display:none; width:0; height:0}
+  .vslide{position:relative; height:100%; scroll-snap-align:start; scroll-snap-stop:always; overflow:hidden; background:#05070c; display:flex; align-items:center; justify-content:center}
+  .vslide video{width:100%; height:100%; object-fit:contain; background:#05070c; display:block}
+  .vtop{position:absolute; top:0; left:0; right:0; padding:calc(12px + env(safe-area-inset-top,0px)) 16px 30px;
+    background:linear-gradient(180deg, rgba(5,7,12,.75), transparent); display:flex; align-items:center; gap:9px; pointer-events:none}
+  .vtop .vdom{font-weight:800; font-size:14px; color:#fff; letter-spacing:.2px}
+  .vtop .vbrand{margin-left:auto; font-weight:800; font-size:14px; color:var(--a1)}
+  .vbot{position:absolute; left:0; right:0; bottom:0; padding:40px 16px calc(16px + env(safe-area-inset-bottom,0px));
+    background:linear-gradient(0deg, rgba(5,7,12,.86), transparent)}
+  .vbot h3{margin:0 0 12px; font-size:19px; line-height:1.25; color:#fff; font-weight:800; max-width:88%}
+  .vbot .vgo{display:inline-flex; align-items:center; gap:8px; border:0; cursor:pointer;
+    background:linear-gradient(135deg,var(--a1),var(--a2)); color:#06121a; font-weight:800; font-size:15px;
+    padding:12px 18px; border-radius:14px; box-shadow:0 8px 24px rgba(94,234,212,.22)}
+  .vbot .vmeta{margin-top:10px; font-size:12.5px; color:#aab6cc; font-weight:600}
+  .vside{position:absolute; right:12px; bottom:150px; display:flex; flex-direction:column; gap:16px; align-items:center}
+  .vbtn{width:48px; height:48px; border-radius:50%; border:1px solid rgba(255,255,255,.16); background:rgba(12,18,32,.6);
+    color:#fff; font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; backdrop-filter:blur(6px)}
+  .vbtn.on{color:var(--a1); border-color:var(--a1)}
+  .vplayhint{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none;
+    font-size:64px; color:rgba(255,255,255,.9); opacity:0; transition:opacity .25s; text-shadow:0 4px 20px rgba(0,0,0,.5)}
+  .vslide.paused .vplayhint{opacity:1}
+  .vempty{display:flex; flex-direction:column; gap:10px; align-items:center; justify-content:center; height:100%; color:var(--dim); text-align:center; padding:24px}
+  .vempty h3{color:#fff; margin:0}
   .slide-inner{max-width:640px; margin:0 auto; width:100%; min-height:100%; display:flex; flex-direction:column; justify-content:center; position:relative;
     padding:24px max(clamp(18px,6vw,30px), env(safe-area-inset-left,0px)) 40px max(clamp(18px,6vw,30px), env(safe-area-inset-right,0px))}
   .slide.open .slide-inner{justify-content:flex-start}
@@ -353,6 +380,7 @@
 <nav class="tabbar" id="tabbar">
   <button class="tab on" data-v="feed"><span class="ti">🗂️</span><span class="tl">Лента</span></button>
   <button class="tab" data-v="study"><span class="ti">📖</span><span class="tl">Изучение</span></button>
+  <button class="tab" data-v="videos"><span class="ti">📺</span><span class="tl">Видео</span></button>
   <button class="tab" data-v="profile"><span class="ti">👤</span><span class="tl">Профиль</span></button>
   <button class="tab" data-v="settings"><span class="ti">⚙️</span><span class="tl">Настройки</span></button>
 </nav>
@@ -386,6 +414,10 @@
   <div class="study-feed" id="studyFeed"></div>
 </div>
 
+<div class="videos" id="videos">
+  <div class="vfeed" id="vfeed"></div>
+</div>
+
 <div class="review" id="review"><div class="rvpanel">
   <div class="rvbar"><button class="fclose" id="rvClose" title="Закрыть">✕</button><div class="rvprog" id="rvProg"></div></div>
   <div class="rvbody" id="rvBody"></div>
@@ -404,7 +436,7 @@
   const DOMAINS = {
     math:{name:'Математика',emoji:'🧮'}, it:{name:'IT под капотом',emoji:'🖥️'},
     cyber:{name:'Кибербез',emoji:'🛡️'}, ai:{name:'ИИ изнутри',emoji:'🧠'},
-    aviation:{name:'Авиация',emoji:'✈️'}, law:{name:'Право',emoji:'⚖️'},
+    aviation:{name:'Авиация',emoji:'✈️'}, space:{name:'Космос',emoji:'🚀'}, law:{name:'Право',emoji:'⚖️'},
     business:{name:'Бизнес',emoji:'📈'}, econ:{name:'Экономика',emoji:'💸'},
     english:{name:'English',emoji:'🌍'}, creative:{name:'Творчество',emoji:'🎧'}
   };
@@ -826,18 +858,71 @@
 
   // ---------- tabs / views ----------
   const tabbar=document.getElementById('tabbar');
+  const videosEl=document.getElementById('videos'), vfeed=document.getElementById('vfeed');
   let curTab='feed';
   function markTab(v){ if(tabbar)[...tabbar.children].forEach(b=>b.classList.toggle('on', b.dataset.v===v)); }
   function switchTab(v){
     curTab=v;
     ['feed','profile','settings'].forEach(id=>{ const el=document.getElementById('view-'+id); if(el) el.classList.toggle('active', id===v); });
-    if(v==='study'){ openStudy(); document.body.style.overflow='hidden'; }
-    else { studyEl.classList.remove('show'); document.body.style.overflow=''; }
+    const overlay=(v==='study'||v==='videos');
+    if(v==='study') openStudy(); else studyEl.classList.remove('show');
+    if(v==='videos') openVideos(); else vClose();
+    document.body.style.overflow = overlay ? 'hidden' : '';
     if(v==='profile') renderProfile();
     if(v==='settings') renderSettings();
-    markTab(v); if(v!=='study') window.scrollTo(0,0);
+    markTab(v); if(!overlay) window.scrollTo(0,0);
   }
   if(tabbar) tabbar.addEventListener('click',e=>{ const b=e.target.closest('.tab'); if(b) switchTab(b.dataset.v); });
+
+  // ---------- video feed (тестовая вкладка «Видео») ----------
+  let vData=null, vBuilt=false, vIO=null, vMuted=true;
+  function openVideos(){ videosEl.classList.add('show'); if(!vBuilt) loadVideos(); else { const cur=vCurrent(); if(cur) vPlay(cur); } }
+  function vClose(){ videosEl.classList.remove('show'); [...vfeed.querySelectorAll('video')].forEach(v=>{ try{v.pause();}catch(e){} }); }
+  function loadVideos(){
+    vBuilt=true;
+    fetch('videos/index.json',{cache:'no-cache'}).then(r=>{ if(!r.ok) throw 0; return r.json(); })
+      .then(list=>{ vData=Array.isArray(list)?list:(list.videos||[]); buildVideos(); })
+      .catch(()=>{ vfeed.innerHTML='<div class="vempty"><h3>'+(state.lang==='en'?'No videos yet':'Роликов пока нет')+'</h3><div>'+(state.lang==='en'?'Render them into /videos to see the feed.':'Отрендерь ролики в /videos — и лента оживёт.')+'</div></div>'; });
+  }
+  function buildVideos(){
+    if(!vData||!vData.length){ vfeed.innerHTML='<div class="vempty"><h3>'+(state.lang==='en'?'No videos yet':'Роликов пока нет')+'</h3></div>'; return; }
+    vfeed.innerHTML='';
+    vData.forEach(item=>{
+      const c=byId[item.id]||{}; const dom=DOMAINS[item.domain]||DOMAINS[c.domain]||{emoji:item.emoji||'•',name:item.domain||''};
+      const sl=document.createElement('div'); sl.className='vslide paused'; sl.dataset.id=item.id;
+      const title=(c && T(c) && T(c).title)||item.title||'';
+      const mins=(item.minutes||c.minutes||'');
+      sl.innerHTML=
+        '<video src="videos/'+item.file+'" loop muted playsinline preload="metadata" poster=""></video>'
+        +'<div class="vplayhint">▶</div>'
+        +'<div class="vtop"><span class="vdom">'+dom.emoji+' '+dom.name+'</span><span class="vbrand">Curio</span></div>'
+        +'<div class="vside"><button class="vbtn vmute'+(vMuted?'':' on')+'" title="Звук">'+(vMuted?'🔇':'🔊')+'</button></div>'
+        +'<div class="vbot"><h3>'+esc(title)+'</h3>'
+          +'<button class="vgo">'+(state.lang==='en'?'Study in detail':'Разобраться подробнее')+' →</button>'
+          +(mins?'<div class="vmeta">📖 '+mins+' '+(state.lang==='en'?'min read':'мин чтения')+'</div>':'')
+        +'</div>';
+      const video=sl.querySelector('video');
+      video.muted=vMuted;
+      sl.querySelector('.vgo').onclick=(e)=>{ e.stopPropagation(); openFocus(item.id); };
+      sl.querySelector('.vmute').onclick=(e)=>{ e.stopPropagation(); vMuted=!vMuted; [...vfeed.querySelectorAll('video')].forEach(v=>v.muted=vMuted); [...vfeed.querySelectorAll('.vmute')].forEach(b=>{ b.classList.toggle('on',!vMuted); b.textContent=vMuted?'🔇':'🔊'; }); };
+      video.addEventListener('click',()=>{ if(video.paused){ vPlay(sl); } else { video.pause(); sl.classList.add('paused'); } });
+      video.addEventListener('play',()=>{ sl.classList.remove('paused'); });
+      video.addEventListener('pause',()=>{ sl.classList.add('paused'); });
+      vfeed.appendChild(sl);
+    });
+    if(vIO) vIO.disconnect();
+    vIO=new IntersectionObserver((ents)=>{ ents.forEach(en=>{ const v=en.target.querySelector('video'); if(!v)return;
+      if(en.isIntersecting && en.intersectionRatio>0.6){ vPlay(en.target); } else { try{v.pause();}catch(e){} }
+    }); }, {root:vfeed, threshold:[0,0.6,0.9]});
+    [...vfeed.children].forEach(s=>vIO.observe(s));
+    vfeed.scrollTop=0; vPlay(vfeed.firstChild);
+  }
+  function vPlay(sl){ if(!sl)return; const v=sl.querySelector('video'); if(!v)return;
+    [...vfeed.querySelectorAll('video')].forEach(o=>{ if(o!==v){ try{o.pause();}catch(e){} } });
+    v.muted=vMuted; const p=v.play(); if(p&&p.catch)p.catch(()=>{});
+    const id=sl.dataset.id; if(id&&!sl.dataset.seen){ sl.dataset.seen='1'; if(byId[id]) markSeen(id); }
+  }
+  function vCurrent(){ const sl=[...vfeed.querySelectorAll('.vslide')]; if(!sl.length)return null; const ft=vfeed.getBoundingClientRect().top; let b=sl[0],bd=1e9; sl.forEach(s=>{ const d=Math.abs(s.getBoundingClientRect().top-ft); if(d<bd){bd=d;b=s;} }); return b; }
 
   // ---------- spaced-repetition review ----------
   let rvQueue=[], rvIdx=0;

@@ -1223,6 +1223,126 @@ window.CARDS_EN = {
       }
     ],
     "test_yourself": "How does a streamer's parasocial connection differ from the classic 1956 television kind?"
+  },
+  "space-rocket-staging": {
+    "title": "A rocket hauls fuel to haul fuel — that's why it gets chopped to pieces",
+    "tldr": "A rocket's speed grows with the logarithm of its mass ratio, but the fuel needed to hit a target speed grows exponentially. So we split the rocket into stages and throw away the empty tanks — otherwise almost all the mass would go into accelerating what's about to become dead weight.",
+    "body_md": "To reach orbit, a rocket doesn't just need to \"go up high\" — it needs a monstrous sideways speed, roughly **9.4 km/s** once losses are counted. And here a brutal law kicks in, written down by Tsiolkovsky back in 1903: **the rocket equation**. It says the speed gain equals the exhaust velocity times the **logarithm** of the wet-to-dry mass ratio (Δv = v · ln(M₀/M_dry)).\n\nThat logarithm is a trap. It grows painfully slowly: to raise your final speed in a straight line, you have to multiply the mass ratio over and over. And the mass ratio is just \"how many times heavier the fueled rocket is than the empty one.\" Every extra kilometer per second demands not \"a bit more\" fuel, but **exponentially more**. Worse, fuel has to accelerate fuel: to lift the upper tons of kerosene, the lower tons must be shoved upward too — and those need their own fuel to move. A snowball.\n\nThe exponential verdict is harsh: for a single-stage rocket to reach orbit, **over 90% of its liftoff mass must be propellant**. The Falcon 9 first stage runs at about **96%** propellant — the structure, engines and tanks weigh barely more than an empty soda can. A rocket is basically a flying barrel of kerosene with a tiny payload perched on top.\n\nNow let's kill the big myth. It feels like rockets are huge **because space is so far away**. Nope. The Kármán line sits only ~100 km up — a shorter straight-line hop than a drive between two nearby towns. Rockets are huge because of the **exponential fuel penalty**: almost the entire rocket is fuel needed to lift other fuel.\n\nThis is where **stages** save the day. Once the lower tanks run dry, they become dead weight — dragging empty metal and burnt-out engines means wasting fuel on nothing. So you **drop them**. The remaining fuel now accelerates a far smaller mass, and in the rocket equation that sharply improves the mass ratio for the upper stage. By shedding its tail, the rocket effectively \"zeroes out\" the ballast it built up. In practice you rarely see more than four stages: the couplers and joints themselves start weighing too much.",
+    "terms": [
+      {
+        "term": "Tsiolkovsky rocket equation",
+        "explain": "The equation linking a rocket's speed gain to exhaust velocity and the logarithm of the full-to-empty mass ratio. The foundation of all rocketry."
+      },
+      {
+        "term": "Delta-v (Δv)",
+        "explain": "The \"maneuver budget\" — the total amount a rocket can change its own speed by burning all its fuel. Reaching orbit takes about 9.4 km/s."
+      },
+      {
+        "term": "Mass ratio",
+        "explain": "How many times heavier the fueled rocket is than the empty one. The bigger it is, the higher the reachable speed — but it only grows by piling on an ever-larger fraction of fuel."
+      }
+    ],
+    "test_yourself": "An engineer adds a little more fuel and gains +0.5 km/s of speed. Why will the NEXT +0.5 km/s cost him far more fuel mass than the first?"
+  },
+  "space-orbit-is-falling": {
+    "title": "An orbit is just falling — and endlessly missing the Earth",
+    "tldr": "A satellite isn't hovering in space and it hasn't switched off gravity — it's falling toward Earth, but moving sideways so fast that the planet keeps curving away beneath it. That never-ending fall is what we call an orbit.",
+    "body_md": "Picture a cannon on an impossibly tall mountain, firing sideways. Weak charge — the ball drops nearby. Stronger charge — it flies farther, but still thuds into the ground. Now fire it hard enough that, in the time it takes to fall, **the Earth's surface curves away downward by exactly the same amount**. The ball keeps falling — but the ground keeps not being there. It misses the whole planet, going in a circle. That's an orbit, and Newton dreamed up this exact thought experiment centuries ago — the **Newton's cannonball**.\n\nThe whole trick is sideways speed. Near the surface, Earth curves just enough that you need to travel about **7.8 km/s** (roughly 28,000 km/h) to keep \"falling past\" it. At that speed the ISS laps the entire planet in about **90 minutes**. Go slower and your path bends into the ground — you crash. Go faster and the orbit stretches into an ellipse, or opens up and lets you escape.\n\nNow let's kill the biggest myth: **\"there's no gravity in space.\"** There is — plenty of it. At the ISS's altitude (about 400 km), Earth's pull is still roughly **90% of what you feel standing on the ground** right now. An astronaut hasn't flown out of gravity's reach at all.\n\nSo why do they float inside the station? Because **the station, the astronaut, and their coffee cup are all falling together, at the same acceleration**. When everything falls at once, there's no support underneath you — and it's that support (the floor pushing up on your feet) that you actually feel as \"weight.\" It's the same stomach-drop weightlessness you catch for a second in an elevator that lurches down, or on a roller coaster. On orbit, that fall simply **never ends**, because you keep missing the Earth.\n\nSo the right phrase isn't \"zero gravity\" but **free fall** (scientists say \"microgravity\"). Astronauts haven't escaped Earth's pull — they're forever falling around it, moving just fast enough to never reach the bottom.",
+    "terms": [
+      {
+        "term": "Low Earth orbit (LEO)",
+        "explain": "Orbits roughly 160 to 2,000 km up, where the ISS and most satellites fly; staying there takes about 7.8 km/s of sideways speed."
+      },
+      {
+        "term": "Microgravity",
+        "explain": "The state where everything falls together and support vanishes, so weight seems to disappear — even though Earth's pull has barely weakened."
+      },
+      {
+        "term": "Free fall",
+        "explain": "Moving under gravity alone, with no support or friction; in that moment any object feels weightless."
+      }
+    ],
+    "test_yourself": "If an astronaut on the ISS let go of a wrench, why doesn't it \"drop to the floor,\" even though the gravity around it is almost as strong as on Earth?"
+  },
+  "space-microgravity-freefall": {
+    "title": "Astronauts don't hover — they fall forever, and so does the station",
+    "tldr": "Gravity at the ISS is nearly as strong as on the ground — about 90% of it. Astronauts float not because gravity vanished, but because they and the station are falling toward Earth at the exact same rate. Falling with nothing to push against means no weight.",
+    "body_md": "The big myth goes: \"there's no gravity in space, that's why things float.\" Wrong. The ISS orbits only ~400 km up, and at that altitude **Earth's pull is still about 90% of what you feel standing on the ground**. If gravity really switched off up there, nothing would hold the station in orbit — it would sail off in a straight line into deep space.\n\nSo why do astronauts float? Because the station, the crew inside it, and every stray pencil are all **in free fall toward Earth with the exact same acceleration**. When you fall together with everything around you, your support vanishes. No support, no sensation of weight. Weight was never gravity itself — it's the force with which you press on the floor (and the floor on you). In free fall there's nothing to press against.\n\nThen why doesn't the ISS smash into the planet? Because it's screaming **sideways at about 28,000 km/h**. Earth is round, so as the station 'falls,' the surface curves away beneath it — the horizon drops at exactly the rate the station descends. The result is an endless fall that keeps missing the planet. That's what an orbit is: not hovering, but missing the ground over and over.\n\nThe most honest analogy is **an elevator with its cable cut**. The instant the car drops, everyone inside goes weightless for a moment: you and the car fall identically, the floor slips out from under you. You feel the same thing at the top of a drop on a roller coaster. NASA deliberately flies a plane on a steep parabola — nicknamed the **'vomit comet'** — and over the top of the arc it gives the crew **about 25 seconds** of true weightlessness, precisely because the plane is in free fall during those seconds too.\n\nThat's why scientists say **'microgravity,' not 'zero-g.'** Tiny residual accelerations remain (vibrations, drag from the thin upper atmosphere), roughly a millionth of Earth's pull — but not zero. Gravity never left. It's just that when you're falling along with your own house, there's nothing left to weigh you.",
+    "terms": [
+      {
+        "term": "Microgravity",
+        "explain": "A state where weight almost disappears but not entirely: tiny accelerations remain, around a millionth of Earth's gravity. More accurate than the misleading 'zero-g'."
+      },
+      {
+        "term": "Free fall",
+        "explain": "Motion under gravity alone, with no support and no friction. Everything falls at the same rate, so objects appear motionless relative to each other."
+      },
+      {
+        "term": "Weight",
+        "explain": "Not gravity itself, but the force your body presses onto its support. In free fall there's nothing to press against, so weight goes to zero even though gravity is still there."
+      }
+    ],
+    "test_yourself": "If gravity at the ISS is almost as strong as on Earth, what exactly would have to change for a person inside the station to suddenly feel their weight again?"
+  },
+  "space-spacex-booster-landing": {
+    "title": "Landing tail-first: how SpaceX catches the Falcon 9 booster",
+    "tldr": "After the boost, the Falcon 9 first stage flips around, brakes on its own engines, and lands upright on its legs. The final move is the \"hoverslam\": a single engine pushes harder than the near-empty booster weighs, so it can't hover — it has to hit zero speed exactly at touchdown.",
+    "body_md": "Old rocketry dogma: a rocket is a one-shot match. It burns out, then falls into the ocean or up in flames. SpaceX broke that with a simple idea: **bring the first stage back in one piece** and fly it again. And there's no parachute — the stage lands **tail-first**, on its own engines, like something out of old sci-fi.\n\nAfter stage separation comes a chain of engine burns. First the **boostback burn** — the stage flips around and fires three engines to kill its forward motion and, if needed, fly back toward the pad. Then it falls; from the top, four **grid fins** unfold — titanium \"waffles\" that grip the oncoming air and steer the stage at hypersonic speed. Next comes the **entry burn** — three engines again, so the stage doesn't burn up plunging into thick air.\n\nThe tensest part is the finale, the **landing burn**. Here's the big misconception: people picture the rocket \"hovering and gently setting down\" like a helicopter. It can't. Even a **single** Merlin engine at minimum throttle pushes the nearly empty, lightweight stage **harder than it weighs**. So hovering is physically impossible: light the engine and it starts shoving you back up.\n\nThat's why engineers do the **\"hoverslam\"** (a.k.a. the \"suicide burn\"): the engine lights at the last possible instant so that speed hits zero **exactly** at the point of touchdown. A second early — the stage stalls in the air and shoots back up. A second late — it slams into the ground. No \"hover and think it over\" — either the math is right, or it's a crash. At the very end four **landing legs** deploy, and the multi-ton tower freezes onto concrete or onto a floating barge in the middle of the ocean.\n\nWhy the whole circus? Money. The first stage is the priciest part of the rocket. Don't throw it away — refuel it and fly it again — and the **cost per launch drops several times over**. Reusability is exactly what turned spaceflight from rare-and-golden into near-routine: a single SpaceX booster has already flown more than twenty times.",
+    "terms": [
+      {
+        "term": "hoverslam (suicide burn)",
+        "explain": "A landing move where the engine fires at the last moment and cancels all speed right at the ground — because the rocket simply can't hover."
+      },
+      {
+        "term": "grid fins",
+        "explain": "Folding titanium lattices at the top of the stage; in the atmosphere they catch the airflow and steer the falling stage like rudders."
+      },
+      {
+        "term": "boostback burn",
+        "explain": "An engine burn right after stage separation that flips the stage around and kills its forward motion, aiming it back toward the landing site."
+      }
+    ],
+    "test_yourself": "Suppose the Merlin engine could throttle down so low it actually held an empty stage in mid-air. Why might SpaceX still choose to skip 'hovering' before landing?"
+  },
+  "space-reentry-heat": {
+    "title": "Why Reentry Gets So Hot — and No, It's Not Friction",
+    "tldr": "A returning capsule glows like plasma not because it 'rubs' against the air, but because it's moving ~7.8 km/s and the air can't get out of the way — it slams into a shock wave and ignites. That's exactly why spacecraft come home with a BLUNT nose, not a sharp one.",
+    "body_md": "Everyone 'knows' the story from school: spacecraft heat up on reentry from **friction with the air**. Neat, intuitive, and almost entirely wrong. Friction (viscous flow along the skin) does add some heat, but on blunt reentry vehicles it's a side effect. The real furnace is **compression**.\n\nPicture it: a capsule drops out of orbit at roughly **7.8 km/s** — about 28,000 km/h. The air ahead simply can't scatter fast enough. Molecules with nowhere to go pile up and slam to a stop in a thin layer in front of the vehicle. Sudden **adiabatic compression** means sudden heating: the gas soars to **thousands of degrees**, ionizes, and turns into **plasma** — a glowing shell hotter than the Sun's surface. It's the same physics that warms a bike pump when you inflate a tire, cranked to the extreme.\n\nNow the twist about shape. Intuition screams for a sharp nose — 'to slice the air.' But in the 1950s NASA engineer **Harry Julian Allen** proved the paradox: the **BLUNTER** the nose, the **easier** the vehicle's life. A blunt body pushes a **detached bow shock** out in front — a wall of compressed, blazing gas hovering just ahead of the skin. Most of the energy heats that gas and sheds sideways instead of soaking into the metal. A sharp nose would pin the shock to itself and burn straight through.\n\nEven with a blunt nose, some heat still reaches the hull — and that's where the **heat shield** earns its keep. Two approaches: **ablative** shields (Apollo, Soyuz, Dragon), which are designed to char, melt, and boil away, carrying heat off with them and reshaping the boundary layer; and reusable **ceramic tiles** (the Shuttle), which can glow red-hot without burning up. An ablative shield is sacrificial — it's *supposed* to partly burn away. That's the job.\n\nUnder the hood it all comes down to one trade: to land, you must dump a mountain of kinetic energy — and it's far better to dump it into the glowing air around you than into your own skin. A blunt nose and a sacrificial shield are the trick for outsmarting the plasma and coming home in one piece.",
+    "terms": [
+      {
+        "term": "Adiabatic compression",
+        "explain": "Squeezing a gas so fast it can't dump its heat outward, so it heats up sharply. Like the air inside a bike pump as you inflate a tire."
+      },
+      {
+        "term": "Detached bow shock",
+        "explain": "A wall of violently compressed gas standing just ahead of a blunt nose instead of clinging to it. This is what soaks up most of the heat."
+      },
+      {
+        "term": "Ablation",
+        "explain": "Controlled charring and vaporizing of the heat shield: the material sacrifices itself, carrying heat away from the hull."
+      }
+    ],
+    "test_yourself": "If reentry heat really came from friction with the air, which nose shape would be smarter — sharp or blunt? And why does reality flip that answer?"
+  },
+  "space-mars-transfer-window": {
+    "title": "Mars, Once Every Two Years: Why You Can't Just Launch Whenever You Want",
+    "tldr": "The cheap way to Mars only opens in short windows roughly every 26 months. It's not that rockets are picky — it's that the fuel-saving route needs Mars itself to arrive at the meeting point right when your spacecraft does.",
+    "body_md": "It feels like you should be able to launch to Mars any day: point the rocket at the red dot and hit the gas. Nobody does that. Real missions — Perseverance, Tianwen-1, Hope — all left within weeks of each other in the summer of 2020, and then everyone waited until 2022. The reason is **geometry**, not paperwork.\n\nThe cheapest way to move between two orbits was worked out by German engineer **Walter Hohmann** back in 1925. The trick: don't barrel straight over — coast along a stretched ellipse that just grazes Earth's orbit on one end and Mars's orbit on the other. This **Hohmann transfer** burns the least fuel because the engine fires only twice: a push at Earth and a brake at Mars. The price is time — roughly **8–9 months** (about 259 days) to reach Mars.\n\nHere's the catch. While your spacecraft spends nine months crawling out to the far end of the ellipse, Mars doesn't sit still — it keeps racing along its own orbit. So you don't aim where Mars is now; you aim where Mars **will be** nine months later. In orbital-mechanics terms: at launch, Mars needs to be about **44° ahead** of Earth. Miss that phasing and you arrive at empty space.\n\nThat lucky lineup doesn't come around monthly. It repeats once per **synodic period** of Earth and Mars — about **780 days**, roughly 26 months. That's the famous \"launch window every two years\": the corridor itself lasts only a couple of weeks, and missing it means waiting more than two years.\n\nNow the big myth: \"you can just fly anytime, it'll only take longer.\" Technically true. But outside the window the cheap Hohmann route no longer adds up, and you're forced onto a steep, brute-force path — which means a **huge extra load of propellant**. And fuel in space is mass you have to accelerate too; every extra ton of fuel needs still more fuel just to carry it. So the real question isn't \"can we?\" but \"what will it cost?\" — and it's almost always cheaper to wait for the window than to fight physics.",
+    "terms": [
+      {
+        "term": "Hohmann transfer",
+        "explain": "The most fuel-efficient route between two orbits: a stretched ellipse that touches both. The engine fires just twice — once to speed up, once to slow down."
+      },
+      {
+        "term": "Synodic period",
+        "explain": "The time it takes two planets to return to the same relative position around the Sun. For Earth and Mars that's about 780 days."
+      },
+      {
+        "term": "Launch window",
+        "explain": "The short stretch (weeks) when the planets line up well and the trip costs the least fuel. For Mars it opens roughly every 26 months."
+      }
+    ],
+    "test_yourself": "If we decided to fly to Mars 'off-window,' what would we pay for it first — and why is that bill bigger than it looks?"
   }
 };
 

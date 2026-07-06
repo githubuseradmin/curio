@@ -1,0 +1,233 @@
+[
+ {
+  "id": "math-monty-hall",
+  "file": "math-monty-hall.mp4",
+  "title": "Козёл, машина и дверь: почему менять выбор выгодно вдвое",
+  "domain": "math",
+  "emoji": "🚪",
+  "minutes": 5,
+  "dur": 26.2,
+  "w": 1080,
+  "h": 1920
+ },
+ {
+  "id": "it-otkryvaesh-sait-chto-proishodit",
+  "file": "it-otkryvaesh-sait-chto-proishodit.mp4",
+  "title": "Ты нажал Enter — и за 200 мс произошло больше, чем ты думаешь",
+  "domain": "it",
+  "emoji": "🌐",
+  "minutes": 6,
+  "dur": 25.8,
+  "w": 1080,
+  "h": 1920
+ },
+ {
+  "id": "cyber-injection-hub",
+  "file": "cyber-injection-hub.mp4",
+  "title": "Уязвимость — это не «баг», а перепутанные данные и команды",
+  "domain": "cyber",
+  "emoji": "💉",
+  "minutes": 6,
+  "dur": 26,
+  "w": 1080,
+  "h": 1920
+ },
+ {
+  "id": "ai-attention-hub",
+  "file": "ai-attention-hub.mp4",
+  "title": "Attention: как ИИ решает, на какие слова смотреть",
+  "domain": "ai",
+  "emoji": "👀",
+  "minutes": 6,
+  "dur": 25.8,
+  "w": 1080,
+  "h": 1920
+ },
+ {
+  "id": "aviation-how-wings-lift",
+  "file": "aviation-how-wings-lift.mp4",
+  "title": "Почему крыло держит самолёт — и почему школьная версия про «путь длиннее сверху» врёт",
+  "domain": "aviation",
+  "emoji": "🛩️",
+  "minutes": 6,
+  "dur": 25.8,
+  "w": 1080,
+  "h": 1920
+ },
+ {
+  "id": "law-return-goods-14-days",
+  "file": "law-return-goods-14-days.mp4",
+  "title": "Товар не подошёл? У тебя 14 дней — но продавцы врут про «без чека нельзя»",
+  "domain": "law",
+  "emoji": "🧾",
+  "minutes": 5,
+  "dur": 25.8,
+  "w": 1080,
+  "h": 1920
+ },
+ {
+  "id": "business-share-and-dividend",
+  "file": "business-share-and-dividend.mp4",
+  "title": "Акция — это кусочек компании, лежащий у тебя в кармане",
+  "domain": "business",
+  "emoji": "📈",
+  "minutes": 6,
+  "dur": 25.8,
+  "w": 1080,
+  "h": 1920
+ },
+ {
+  "id": "econ-central-bank-rate-inflation",
+  "file": "econ-central-bank-rate-inflation.mp4",
+  "title": "Как одна цифра от ЦБ разгоняет или тормозит всю экономику",
+  "domain": "econ",
+  "emoji": "🎚️",
+  "minutes": 6,
+  "dur": 26,
+  "w": 1080,
+  "h": 1920
+ },
+ {
+  "id": "english-native-tells",
+  "file": "english-native-tells.mp4",
+  "title": "Три вещи, которые выдают неносителя даже при идеальной грамматике",
+  "domain": "english",
+  "emoji": "🕵️",
+  "minutes": 6,
+  "dur": 21.5,
+  "w": 1080,
+  "h": 1920
+ },
+ {
+  "id": "creative-808-heartbeat",
+  "file": "creative-808-heartbeat.mp4",
+  "title": "808: как одна драм-машина 1980-х стала басом всего современного рэпа",
+  "domain": "creative",
+  "emoji": "🥁",
+  "minutes": 6,
+  "dur": 26,
+  "w": 1080,
+  "h": 1920
+ },
+ {
+  "id": "space-rocket-staging",
+  "file": "space-rocket-staging.mp4",
+  "title": "Ракета возит топливо, чтобы возить топливо: почему её приходится резать на куски",
+  "domain": "space",
+  "emoji": "🚀",
+  "minutes": 6,
+  "dur": 26,
+  "w": 1080,
+  "h": 1920
+ },
+ {
+  "id": "math-bayes-theorem",
+  "file": "math-bayes-theorem.mp4",
+  "title": "Теорема Байеса: формула, которая обновляет твою веру фактами",
+  "domain": "math",
+  "emoji": "🧮",
+  "minutes": 8,
+  "dur": 25.8,
+  "w": 1080,
+  "h": 1920
+ },
+ {
+  "id": "it-tls-13-handshake",
+  "file": "it-tls-13-handshake.mp4",
+  "title": "Как двое договариваются о секрете на виду у всех",
+  "domain": "it",
+  "emoji": "🔐",
+  "minutes": 8,
+  "dur": 25.8,
+  "w": 1080,
+  "h": 1920
+ },
+ {
+  "id": "cyber-memory-mitigations",
+  "file": "cyber-memory-mitigations.mp4",
+  "title": "Переполнить буфер сегодня мало: три щита в памяти",
+  "domain": "cyber",
+  "emoji": "🛡️",
+  "minutes": 8,
+  "dur": 25.8,
+  "w": 1080,
+  "h": 1920
+ },
+ {
+  "id": "ai-embeddings-geometry",
+  "file": "ai-embeddings-geometry.mp4",
+  "title": "Эмбеддинги: где у ИИ «живёт» смысл слова",
+  "domain": "ai",
+  "emoji": "🧭",
+  "minutes": 7,
+  "dur": 25.8,
+  "w": 1080,
+  "h": 1920
+ },
+ {
+  "id": "aviation-stall-angle-of-attack",
+  "file": "aviation-stall-angle-of-attack.mp4",
+  "title": "Сваливание: почему самолёт падает не от нехватки скорости, а от угла",
+  "domain": "aviation",
+  "emoji": "📉",
+  "minutes": 6,
+  "dur": 25.8,
+  "w": 1080,
+  "h": 1920
+ },
+ {
+  "id": "law-common-vs-civil",
+  "file": "law-common-vs-civil.mp4",
+  "title": "Две «операционки» права: почему судья в США пишет закон, а во Франции нет",
+  "domain": "law",
+  "emoji": "⚖️",
+  "minutes": 7,
+  "dur": 25.8,
+  "w": 1080,
+  "h": 1920
+ },
+ {
+  "id": "business-ipo-mechanics",
+  "file": "business-ipo-mechanics.mp4",
+  "title": "IPO: как частная фирма превращается в публичную за один день",
+  "domain": "business",
+  "emoji": "🔔",
+  "minutes": 7,
+  "dur": 25.8,
+  "w": 1080,
+  "h": 1920
+ },
+ {
+  "id": "econ-deflation-danger",
+  "file": "econ-deflation-danger.mp4",
+  "title": "Дефляция: почему падающие цены чуть не убили экономику США",
+  "domain": "econ",
+  "emoji": "🌀",
+  "minutes": 7,
+  "dur": 25.9,
+  "w": 1080,
+  "h": 1920
+ },
+ {
+  "id": "english-phrasal-verbs",
+  "file": "english-phrasal-verbs.mp4",
+  "title": "Phrasal verbs: почему give up, give in и give away — три разных слова",
+  "domain": "english",
+  "emoji": "🧩",
+  "minutes": 7,
+  "dur": 25.8,
+  "w": 1080,
+  "h": 1920
+ },
+ {
+  "id": "creative-circle-of-fifths",
+  "file": "creative-circle-of-fifths.mp4",
+  "title": "Круг квинт: почему аккорды C-F-G звучат «правильно», а физика знает ответ",
+  "domain": "creative",
+  "emoji": "🎯",
+  "minutes": 8,
+  "dur": 25.8,
+  "w": 1080,
+  "h": 1920
+ }
+]

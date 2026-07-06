@@ -1,6 +1,6 @@
 // Curio service worker — офлайн-режим и мгновенная загрузка.
 // Бампни версию при каждом деплое, чтобы обновить кэш.
-const CACHE = 'curio-v10';
+const CACHE = 'curio-v11';
 const ASSETS = [
   './', 'index.html', 'cards.js', 'cards.en.js', 'illustrations.js', 'manifest.webmanifest',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png', 'icons/favicon-32.png'
@@ -27,6 +27,7 @@ self.addEventListener('fetch', (e) => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.origin !== location.origin) return; // внешние ссылки (источники) — мимо кэша, как есть
+  if (url.pathname.includes('/videos/')) return; // видео тяжёлые + range-запросы — не кэшируем, отдаём сети
   e.respondWith(
     caches.match(req).then((hit) =>
       hit ||
