@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curio — learn something new, one swipe at a time</title>
+<meta name="description" content="Curio is a curiosity engine: bite-sized cards across 10 topics you swipe through to learn something new every day. Free, works offline.">
+<meta property="og:title" content="Curio — a curiosity engine">
+<meta property="og:description" content="Swipe through bite-sized knowledge across 10 topics. Learn something new every day.">
+<meta property="og:image" content="https://githubuseradmin.github.io/curio/icons/icon-512.png">
+<meta property="og:url" content="https://githubuseradmin.github.io/curio/landing/">
+<meta name="twitter:card" content="summary">
+<style>
+  :root{
+    --bg:#0b0f17; --bg2:#0f1420; --panel:#131a28; --panel2:#171f30;
+    --ink:#e8edf6; --muted:#93a0b8; --dim:#6b7890; --line:#222c40; --line2:#2c3850;
+    --a1:#5eead4; --a2:#7c9cff; --a3:#f0abfc;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,system-ui,sans-serif; line-height:1.6; -webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(60vw 60vw at 85% -10%, rgba(124,156,255,.13), transparent 60%), radial-gradient(50vw 50vw at 0% 8%, rgba(94,234,212,.09), transparent 55%);
+    background-attachment:fixed}
+  a{color:var(--a2); text-decoration:none}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 clamp(18px,5vw,32px)}
+  .btn{display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line2); background:var(--panel2); color:var(--ink);
+    padding:12px 22px; border-radius:999px; font-weight:700; font-size:15px; cursor:pointer; transition:.15s}
+  .btn:hover{border-color:var(--a2); transform:translateY(-1px)}
+  .btn.primary{background:linear-gradient(120deg,var(--a1),#43cfc0); color:#08120f; border-color:transparent}
+  .btn.primary:hover{filter:brightness(1.06)}
+
+  /* Nav */
+  nav{position:sticky; top:0; z-index:20; backdrop-filter:blur(12px); background:linear-gradient(180deg,rgba(11,15,23,.92),rgba(11,15,23,.6)); border-bottom:1px solid var(--line)}
+  .navbar{display:flex; align-items:center; gap:14px; padding:14px 0}
+  .brand{display:flex; align-items:center; gap:9px; font-weight:800; font-size:20px; letter-spacing:-.02em}
+  .brand .mark{width:26px;height:26px}
+  .brand b{background:linear-gradient(120deg,#fff,var(--a1) 70%,var(--a2)); -webkit-background-clip:text; background-clip:text; color:transparent}
+  .navsp{margin-left:auto; display:flex; align-items:center; gap:10px}
+  .lang{display:inline-flex; border:1px solid var(--line); border-radius:999px; overflow:hidden}
+  .lang button{border:0; background:transparent; color:var(--muted); padding:7px 12px; font-size:13px; font-weight:700; cursor:pointer}
+  .lang button.on{background:var(--a1); color:#08120f}
+
+  /* Hero */
+  .hero{display:grid; grid-template-columns:1.1fr .9fr; gap:40px; align-items:center; padding:clamp(36px,7vw,80px) 0 clamp(30px,5vw,56px)}
+  .eyebrow{display:inline-flex; align-items:center; gap:8px; font-size:13px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); border:1px solid var(--line); padding:6px 12px; border-radius:999px}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--a1);box-shadow:0 0 12px var(--a1)}
+  h1{font-size:clamp(34px,6vw,58px); line-height:1.05; letter-spacing:-.02em; margin:18px 0 16px;
+    background:linear-gradient(120deg,#fff 30%,var(--a1) 70%,var(--a2)); -webkit-background-clip:text; background-clip:text; color:transparent}
+  .lead{font-size:clamp(17px,2.4vw,20px); color:#c8d2e6; max-width:52ch; margin:0 0 26px}
+  .cta-row{display:flex; gap:12px; flex-wrap:wrap}
+  .cta-note{margin-top:14px; font-size:13px; color:var(--dim)}
+
+  /* Phone mockup */
+  .phone{justify-self:center; width:min(300px,80vw); aspect-ratio:9/19; border-radius:38px; border:1px solid var(--line2); background:var(--bg2);
+    box-shadow:0 30px 80px rgba(0,0,0,.5), inset 0 0 0 8px #05070c; padding:16px 14px; position:relative; overflow:hidden}
+  .phone::before{content:""; position:absolute; top:14px; left:50%; transform:translateX(-50%); width:110px; height:22px; background:#05070c; border-radius:0 0 14px 14px; z-index:3}
+  .mchip{display:inline-block; font-size:11px; color:#cbd5ea; background:rgba(124,156,255,.1); border:1px solid var(--line); padding:4px 9px; border-radius:999px; margin-top:20px}
+  .mtitle{font-size:21px; font-weight:800; line-height:1.15; color:#fff; margin:12px 0 8px}
+  .mtldr{font-size:13px; color:#c4cde0; margin:0 0 12px}
+  .millus{border:1px solid var(--line); border-radius:14px; background:radial-gradient(130% 130% at 50% 0%, rgba(124,156,255,.1), transparent 66%), var(--panel); padding:10px}
+  .mrail{position:absolute; right:20px; bottom:78px; display:flex; flex-direction:column; gap:10px}
+  .mrail span{width:38px;height:38px;border-radius:50%;border:1px solid var(--line2);background:rgba(19,26,40,.7);display:flex;align-items:center;justify-content:center;font-size:15px;color:#dbe3f2}
+  .mnav{position:absolute; left:0; right:0; bottom:0; height:56px; background:linear-gradient(0deg,#0c111c,rgba(12,17,28,.8)); border-top:1px solid var(--line); display:flex; justify-content:space-around; align-items:center; font-size:18px}
+  .mnav b{opacity:.5} .mnav b.on{opacity:1; filter:drop-shadow(0 0 6px rgba(94,234,212,.6))}
+
+  /* Sections */
+  section{padding:clamp(34px,6vw,64px) 0}
+  .st{font-size:13px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); text-align:center; margin-bottom:10px}
+  h2{font-size:clamp(26px,4vw,38px); text-align:center; margin:0 0 12px; letter-spacing:-.02em; color:#fff}
+  .sub{text-align:center; color:var(--muted); max-width:56ch; margin:0 auto 34px; font-size:16px}
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px}
+  .card{background:linear-gradient(180deg,var(--panel),var(--bg2)); border:1px solid var(--line); border-radius:16px; padding:22px; transition:.18s}
+  .card:hover{transform:translateY(-3px); border-color:var(--line2)}
+  .card .ic{font-size:26px}
+  .card h3{margin:12px 0 6px; font-size:18px; color:#fff}
+  .card p{margin:0; color:var(--muted); font-size:14.5px}
+  .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; counter-reset:s}
+  .step{background:var(--panel2); border:1px solid var(--line); border-radius:16px; padding:22px; position:relative}
+  .step::before{counter-increment:s; content:counter(s); position:absolute; top:-14px; left:20px; width:32px; height:32px; border-radius:50%;
+    background:linear-gradient(120deg,var(--a1),var(--a2)); color:#08120f; font-weight:800; display:flex; align-items:center; justify-content:center; font-size:15px}
+  .step h3{margin:8px 0 6px; font-size:17px; color:#fff} .step p{margin:0; color:var(--muted); font-size:14px}
+  .chips{display:flex; flex-wrap:wrap; gap:10px; justify-content:center}
+  .chip{border:1px solid var(--line); background:var(--panel); color:#cbd5ea; padding:10px 16px; border-radius:999px; font-size:14.5px; font-weight:600}
+  .final{text-align:center; background:linear-gradient(120deg,rgba(94,234,212,.08),rgba(124,156,255,.06)); border:1px solid var(--line2); border-radius:24px; padding:clamp(30px,5vw,56px)}
+  footer{border-top:1px solid var(--line); padding:28px 0; color:var(--dim); font-size:13.5px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px}
+  @media(max-width:760px){ .hero{grid-template-columns:1fr; text-align:center} .hero .lead{margin-inline:auto} .cta-row{justify-content:center} .eyebrow{margin:0 auto} .steps{grid-template-columns:1fr} .phone{grid-row:1} }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap navbar">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5eead4"/><stop offset="1" stop-color="#7c9cff"/></linearGradient></defs><path d="M50 8 L58 42 L92 50 L58 58 L50 92 L42 58 L8 50 L42 42 Z" fill="url(#g)"/></svg>
+      <b>Curio</b>
+    </div>
+    <div class="navsp">
+      <div class="lang" id="lang"><button data-l="en" class="on">EN</button><button data-l="ru">RU</button></div>
+      <a class="btn primary" href="../" data-en="Open app" data-ru="Открыть">Open app</a>
+    </div>
+  </div>
+</nav>
+
+<header class="wrap hero">
+  <div>
+    <span class="eyebrow"><span class="dot"></span><span data-en="Free · works offline · no sign-up" data-ru="Бесплатно · офлайн · без регистрации">Free · works offline · no sign-up</span></span>
+    <h1 data-en="Learn something new, one swipe at a time." data-ru="Узнавай новое — одним свайпом.">Learn something new, one swipe at a time.</h1>
+    <p class="lead" data-en="Curio is a curiosity engine: short, punchy cards across 10 topics — from probability and cybersecurity to aviation, law and music. Swipe like a feed, go deeper when something hooks you." data-ru="Curio — движок любопытства: короткие ёмкие карточки по 10 темам — от теории вероятностей и кибербеза до авиации, права и музыки. Листаешь как ленту, проваливаешься глубже, когда цепляет.">Curio is a curiosity engine: short, punchy cards across 10 topics — from probability and cybersecurity to aviation, law and music. Swipe like a feed, go deeper when something hooks you.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="../" data-en="Start learning →" data-ru="Начать →">Start learning →</a>
+      <a class="btn" href="#how" data-en="How it works" data-ru="Как это работает">How it works</a>
+    </div>
+    <div class="cta-note" data-en="Add to your home screen and it opens full-screen, like an app." data-ru="Добавь на главный экран — откроется на весь экран, как приложение.">Add to your home screen and it opens full-screen, like an app.</div>
+  </div>
+  <div class="phone" aria-hidden="true">
+    <span class="mchip">🖥️ IT · ⏱ 6 min</span>
+    <div class="mtitle" data-en="You pressed Enter — and a lot happened in 200 ms" data-ru="Ты нажал Enter — и за 200 мс случилось многое">You pressed Enter — and a lot happened in 200 ms</div>
+    <p class="mtldr" data-en="DNS lookup, TCP handshake and TLS — three separate “negotiations” before a single byte of HTML." data-ru="DNS-поиск, TCP-рукопожатие и TLS — три «переговора» до первого байта HTML.">DNS lookup, TCP handshake and TLS — three separate “negotiations” before a single byte of HTML.</p>
+    <div class="millus">
+      <svg viewBox="0 0 400 150" xmlns="http://www.w3.org/2000/svg"><style>.d{animation:mv 4s ease-in-out infinite}@keyframes mv{0%,100%{transform:translateX(0)}50%{transform:translateX(250px)}}.r{animation:pl 4s ease-in-out infinite}@keyframes pl{0%,100%{opacity:.4}50%{opacity:1}}</style>
+        <line x1="40" y1="80" x2="360" y2="80" stroke="#2c3850" stroke-width="2"/>
+        <g><circle cx="110" cy="80" r="7" fill="none" stroke="#5eead4" stroke-width="2"/><text x="110" y="106" fill="#93a0b8" font-size="11" text-anchor="middle" font-family="sans-serif">DNS</text></g>
+        <g><circle cx="200" cy="80" r="7" fill="none" stroke="#7c9cff" stroke-width="2"/><text x="200" y="106" fill="#93a0b8" font-size="11" text-anchor="middle" font-family="sans-serif">TCP</text></g>
+        <g><circle cx="290" cy="80" r="7" fill="none" stroke="#f0abfc" stroke-width="2"/><text x="290" y="106" fill="#93a0b8" font-size="11" text-anchor="middle" font-family="sans-serif">TLS</text></g>
+        <rect x="26" y="64" width="30" height="30" rx="5" fill="#171f30" stroke="#7c9cff" stroke-width="2"/>
+        <rect x="344" y="64" width="30" height="30" rx="5" fill="#171f30" stroke="#f0abfc" stroke-width="2"/>
+        <circle class="d" cx="40" cy="80" r="6" fill="#5eead4"/>
+      </svg>
+    </div>
+    <div class="mrail"><span>★</span><span>↗</span><span>✓</span></div>
+    <div class="mnav"><b class="on">🗂️</b><b>📖</b><b>👤</b><b>⚙️</b></div>
+  </div>
+</header>
+
+<section id="features">
+  <div class="wrap">
+    <div class="st" data-en="Why it's fun" data-ru="Почему это залипает">Why it's fun</div>
+    <h2 data-en="Knowledge that feels like a feed" data-ru="Знания, которые листаются как лента">Knowledge that feels like a feed</h2>
+    <p class="sub" data-en="Each card is one quick “oh, I didn't know that” — the dopamine of getting smarter, not doom-scrolling." data-ru="Каждая карточка — быстрое «о, не знал» — дофамин от того, что становишься умнее, а не бесконечный скролл.">Each card is one quick “oh, I didn't know that” — the dopamine of getting smarter, not doom-scrolling.</p>
+    <div class="grid">
+      <div class="card"><div class="ic">📱</div><h3 data-en="Swipe to learn" data-ru="Листай и учись">Swipe to learn</div><p data-en="Full-screen cards you flip through like Reels — hook, one key idea, an animated illustration." data-ru="Полноэкранные карточки — крючок, одна мысль, анимированная иллюстрация. Листаешь как Reels.">Full-screen cards you flip through like Reels — hook, one key idea, an animated illustration.</p></div>
+      <div class="card"><div class="ic">🐇</div><h3 data-en="Fall down the rabbit hole" data-ru="Проваливайся в «нору»">Fall down the rabbit hole</div><p data-en="Hooked? Tap to break it down, then jump to related cards — the Wikipedia dive, but guided." data-ru="Зацепило? Разверни разбор и прыгай в связанные карточки — эффект Википедии, но управляемый.">Hooked? Tap to break it down, then jump to related cards — the Wikipedia dive, but guided.</p></div>
+      <div class="card"><div class="ic">🎨</div><h3 data-en="Animated, not walls of text" data-ru="Анимации, а не стены текста">Animated, not walls of text</div><p data-en="Every topic has a hand-crafted animated diagram that explains the concept at a glance." data-ru="У каждой темы — анимированная схема, которая объясняет суть с первого взгляда.">Every topic has a hand-crafted animated diagram that explains the concept at a glance.</p></div>
+      <div class="card"><div class="ic">🔗</div><h3 data-en="Real sources" data-ru="Настоящие источники">Real sources</div><p data-en="Every card links out to Wikipedia and an official primary source — NASA, OWASP, EUR-Lex, ECB and more." data-ru="Каждая карточка ведёт на Википедию и официальный первоисточник — NASA, OWASP, EUR-Lex, ЕЦБ и др.">Every card links out to Wikipedia and an official primary source — NASA, OWASP, EUR-Lex, ECB and more.</p></div>
+      <div class="card"><div class="ic">⚡</div><h3 data-en="Yours, at your pace" data-ru="Твой темп">Yours, at your pace</div><p data-en="Skip what you know, dive into what you love. The feed adapts, and it remembers your streak." data-ru="Скипай известное, углубляйся в любимое. Лента подстраивается и помнит твой стрик.">Skip what you know, dive into what you love. The feed adapts, and it remembers your streak.</p></div>
+      <div class="card"><div class="ic">📶</div><h3 data-en="Offline & installable" data-ru="Офлайн и установка">Offline & installable</div><p data-en="Works without a connection, installs to your home screen, dark by default. No account needed." data-ru="Работает без сети, ставится на главный экран, тёмная тема. Без аккаунта.">Works without a connection, installs to your home screen, dark by default. No account needed.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="st" data-en="How it works" data-ru="Как это работает">How it works</div>
+    <h2 data-en="Three taps to smarter" data-ru="Три касания до «стал умнее»">Three taps to smarter</h2>
+    <div class="steps" style="margin-top:26px">
+      <div class="step"><h3 data-en="Open & swipe" data-ru="Открой и листай">Open & swipe</h3><p data-en="Hit Study mode and start flipping through cards — mixed, or one topic at a time." data-ru="Заходи в режим изучения и листай карточки — вперемешку или по одной теме.">Hit Study mode and start flipping through cards — mixed, or one topic at a time.</p></div>
+      <div class="step"><h3 data-en="Go deeper" data-ru="Углубляйся">Go deeper</h3><p data-en="Something grabs you? Break it down, hop to related cards, open the sources." data-ru="Что-то зацепило? Разверни разбор, прыгай в связанные карточки, открывай источники.">Something grabs you? Break it down, hop to related cards, open the sources.</p></div>
+      <div class="step"><h3 data-en="Come back tomorrow" data-ru="Возвращайся завтра">Come back tomorrow</h3><p data-en="Track your progress across topics and keep your streak going. A little every day." data-ru="Следи за прогрессом по темам и держи стрик. Понемногу каждый день.">Track your progress across topics and keep your streak going. A little every day.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="topics">
+  <div class="wrap">
+    <div class="st" data-en="10 topics" data-ru="10 тем">10 topics</div>
+    <h2 data-en="A little of everything" data-ru="Понемногу обо всём">A little of everything</h2>
+    <p class="sub" data-en="Breadth over one narrow lane — the generalist's edge." data-ru="Широкий кругозор вместо одной колеи — сила универсала.">Breadth over one narrow lane — the generalist's edge.</p>
+    <div class="chips">
+      <span class="chip">🧮 <span data-en="Math &amp; probability" data-ru="Математика">Math &amp; probability</span></span>
+      <span class="chip">🖥️ <span data-en="IT under the hood" data-ru="IT под капотом">IT under the hood</span></span>
+      <span class="chip">🛡️ <span data-en="Cybersecurity" data-ru="Кибербез">Cybersecurity</span></span>
+      <span class="chip">🧠 <span data-en="AI inside" data-ru="ИИ изнутри">AI inside</span></span>
+      <span class="chip">✈️ <span data-en="Aviation" data-ru="Авиация">Aviation</span></span>
+      <span class="chip">⚖️ <span data-en="Law" data-ru="Право">Law</span></span>
+      <span class="chip">📈 <span data-en="Business" data-ru="Бизнес">Business</span></span>
+      <span class="chip">💸 <span data-en="Economics" data-ru="Экономика">Economics</span></span>
+      <span class="chip">🌍 <span data-en="English" data-ru="Английский">English</span></span>
+      <span class="chip">🎧 <span data-en="Music &amp; acting" data-ru="Творчество">Music &amp; acting</span></span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="final">
+      <h2 data-en="Feed your curiosity" data-ru="Накорми своё любопытство">Feed your curiosity</h2>
+      <p class="sub" data-en="Free, no sign-up. Open it, swipe, learn something you didn't know five minutes ago." data-ru="Бесплатно, без регистрации. Открой, листай и узнай то, чего пять минут назад не знал.">Free, no sign-up. Open it, swipe, learn something you didn't know five minutes ago.</p>
+      <a class="btn primary" href="../" data-en="Open Curio →" data-ru="Открыть Curio →">Open Curio →</a>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap">
+  <span>Curio — <span data-en="a curiosity engine" data-ru="движок любопытства">a curiosity engine</span></span>
+  <span data-en="a 🌙 MoonCap project" data-ru="проект 🌙 MoonCap">a 🌙 MoonCap project</span>
+</footer>
+
+<script>
+  (function(){
+    var lang='en';
+    function apply(l){
+      lang=l; document.documentElement.lang=l;
+      document.querySelectorAll('[data-'+l+']').forEach(function(el){ el.textContent=el.getAttribute('data-'+l); });
+      document.querySelectorAll('#lang button').forEach(function(b){ b.classList.toggle('on', b.dataset.l===l); });
+      try{ localStorage.setItem('curio.landing.lang', l); }catch(e){}
+    }
+    document.getElementById('lang').addEventListener('click',function(e){ var b=e.target.closest('button[data-l]'); if(b) apply(b.dataset.l); });
+    var saved; try{ saved=localStorage.getItem('curio.landing.lang'); }catch(e){}
+    if(!saved && (navigator.language||'').toLowerCase().indexOf('ru')===0) saved='ru';
+    if(saved && saved!=='en') apply(saved);
+  })();
+</script>
+</body>
+</html>

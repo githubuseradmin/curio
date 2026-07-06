@@ -210,8 +210,10 @@
   .study-chips{flex:0 0 auto; display:flex; gap:8px; overflow-x:auto; padding:9px clamp(14px,4vw,20px);
     border-bottom:1px solid var(--line); scrollbar-width:none}
   .study-chips::-webkit-scrollbar{display:none}
-  .study-feed{flex:1 1 auto; overflow-y:auto; scroll-snap-type:y proximity; -webkit-overflow-scrolling:touch; overscroll-behavior:contain}
-  .slide{scroll-snap-align:start; scroll-snap-stop:always; min-height:100%; display:flex}
+  .study-feed{flex:1 1 auto; overflow-y:scroll; scroll-snap-type:y mandatory; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; scrollbar-width:none; -ms-overflow-style:none}
+  .study-feed::-webkit-scrollbar{display:none; width:0; height:0}
+  .slide{scroll-snap-align:start; scroll-snap-stop:always; height:100%; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:none; -ms-overflow-style:none; display:flex}
+  .slide::-webkit-scrollbar{display:none; width:0}
   .slide-inner{max-width:640px; margin:0 auto; width:100%; min-height:100%; display:flex; flex-direction:column; justify-content:center; position:relative;
     padding:24px max(clamp(18px,6vw,30px), env(safe-area-inset-left,0px)) 40px max(clamp(18px,6vw,30px), env(safe-area-inset-right,0px))}
   .slide.open .slide-inner{justify-content:flex-start}
@@ -362,10 +364,8 @@
   <div class="study-bar">
     <button class="fclose" id="studyClose" title="Закрыть">✕</button>
     <div class="st-title" id="studyTitle">Изучение</div>
-    <button class="fclose" id="storyBtn" title="Авто-режим">▶</button>
     <button class="fclose" id="studyShuffle" title="Перемешать">🎲</button>
   </div>
-  <div class="story-prog" id="storyProg"><i></i></div>
   <div class="study-chips" id="studyChips"></div>
   <div class="study-feed" id="studyFeed"></div>
 </div>
