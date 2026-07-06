@@ -201,7 +201,7 @@
   .study-cta:hover{border-color:transparent; filter:brightness(1.06)}
 
   /* Study mode (лента изучения) */
-  .study{position:fixed; inset:0; z-index:50; display:none; background:var(--bg)}
+  .study{position:fixed; top:0; left:0; right:0; bottom:calc(59px + env(safe-area-inset-bottom,0px)); z-index:15; display:none; background:var(--bg)}
   .study.show{display:flex; flex-direction:column}
   .study-bar{flex:0 0 auto; display:flex; align-items:center; gap:10px;
     padding:calc(10px + env(safe-area-inset-top,0px)) clamp(14px,4vw,20px) 8px;
@@ -273,6 +273,23 @@
   .srow .sh{font-size:14px; color:#fff; font-weight:600; margin-bottom:10px}
   .srow .sd{font-size:13px; color:var(--muted); margin-top:8px; line-height:1.5}
   .srow .seg{display:inline-flex}
+  .daily{display:flex; align-items:center; gap:14px; background:var(--panel2); border:1px solid var(--line); border-radius:16px; padding:14px 16px; margin:14px 0}
+  .dring{width:60px; height:60px; border-radius:50%; flex:0 0 auto; display:flex; align-items:center; justify-content:center; position:relative}
+  .dring::after{content:""; position:absolute; inset:6px; background:var(--panel2); border-radius:50%}
+  .dring span{position:relative; z-index:1; font-size:13px; font-weight:800; color:#fff}
+  .dtx .dh{font-size:15px; color:#fff; font-weight:700} .dtx .dsub{font-size:13px; color:var(--muted); margin-top:3px}
+  .review-cta{width:100%; justify-content:center; margin:2px 0 6px; background:linear-gradient(120deg,rgba(240,171,252,.16),rgba(124,156,255,.16)); border-color:rgba(240,171,252,.35); font-weight:700}
+  .review{position:fixed; inset:0; z-index:45; display:none; background:rgba(6,9,15,.9); backdrop-filter:blur(6px); overflow-y:auto}
+  .review.show{display:block; animation:fade .2s ease}
+  .rvpanel{max-width:var(--maxw); margin:0 auto; min-height:100%; background:var(--bg2); border-left:1px solid var(--line); border-right:1px solid var(--line); padding:0 clamp(16px,4vw,26px) 44px}
+  .rvbar{position:sticky; top:0; background:var(--bg2); padding:calc(14px + env(safe-area-inset-top,0px)) 0 12px; display:flex; align-items:center; gap:12px; border-bottom:1px solid var(--line); z-index:2}
+  .rvprog{flex:1; text-align:center; color:var(--muted); font-size:13px; font-weight:700}
+  .rvbody{padding-top:20px}
+  .rvcard h2{font-size:clamp(20px,5vw,26px); color:#fff; margin:8px 0 12px}
+  .rvq{background:linear-gradient(90deg,rgba(94,234,212,.07),transparent); border-left:3px solid var(--a1); border-radius:0 10px 10px 0; padding:12px 14px; color:#d5ddec; font-size:15px}
+  .rvq b{color:var(--a1); display:block; font-size:12px; text-transform:uppercase; letter-spacing:.08em; margin-bottom:4px}
+  .rvacts{margin-top:18px} .rvacts .btn{width:100%; justify-content:center}
+  .rvrate{display:flex; gap:10px; margin-top:18px} .rvrate .btn{flex:1; justify-content:center}
   .story-prog{height:3px; background:var(--line); overflow:hidden}
   .story-prog i{display:block; height:100%; width:100%; background:linear-gradient(90deg,var(--a1),var(--a2)); transform:scaleX(0); transform-origin:left}
   .story-prog.run i{animation:storyfill 9s linear forwards}
@@ -362,13 +379,17 @@
 
 <div class="study" id="study">
   <div class="study-bar">
-    <button class="fclose" id="studyClose" title="Закрыть">✕</button>
-    <div class="st-title" id="studyTitle">Изучение</div>
+    <div class="st-title" id="studyTitle" style="text-align:left">Изучение</div>
     <button class="fclose" id="studyShuffle" title="Перемешать">🎲</button>
   </div>
   <div class="study-chips" id="studyChips"></div>
   <div class="study-feed" id="studyFeed"></div>
 </div>
+
+<div class="review" id="review"><div class="rvpanel">
+  <div class="rvbar"><button class="fclose" id="rvClose" title="Закрыть">✕</button><div class="rvprog" id="rvProg"></div></div>
+  <div class="rvbody" id="rvBody"></div>
+</div></div>
 
 <div id="pop"></div>
 
@@ -532,7 +553,7 @@
     const ex=el.querySelector('.body');
     if(ex){ ex.remove(); btn.textContent='Читать →'; return; }
     el.appendChild(bodyHTML(card,openFocus)); btn.textContent='Свернуть ↑';
-    if(!state.seen[card.id]){ state.seen[card.id]=true; save(); renderStats(); const nb=el.querySelector('.badge.new'); if(nb) nb.remove(); }
+    if(!state.seen[card.id]){ markSeen(card.id); const nb=el.querySelector('.badge.new'); if(nb) nb.remove(); }
   }
   function toggleSave(card,btn){ state.saved[card.id]=!state.saved[card.id]; btn.textContent=state.saved[card.id]?'★':'☆'; btn.classList.toggle('on',!!state.saved[card.id]); save(); }
   function skipCard(card,el,kind){
@@ -558,7 +579,7 @@
   function clearHash(){ if(location.hash) history.replaceState(null,'',location.pathname+location.search); }
   function renderFocus(){
     const id=trail[trail.length-1], card=byId[id]; if(!card) return;
-    if(!state.seen[id]) state.seen[id]=true;
+    if(!state.seen[id]) markSeen(id);
     state.deep[card.domain]=(state.deep[card.domain]||0)+1; save(); renderStats();
     fbody.innerHTML=metaHTML(card)+'<h2></h2>';
     fbody.querySelector('h2').textContent=T(card).title;
@@ -631,6 +652,21 @@
       more.appendChild(b);
     }
   }
+
+  // ---------- seen / daily goal / spaced repetition ----------
+  function dayNum(){ return Math.floor(Date.now()/86400000); }
+  function markSeen(id){
+    if(state.seen[id]) return;
+    state.seen[id]=true;
+    const d=today();
+    if(!state.daily || state.daily.day!==d) state.daily={day:d,c:0};
+    state.daily.c++;
+    if(!state.srs) state.srs={};
+    if(!state.srs[id]) state.srs[id]={due:dayNum()+1,int:1,ease:2.3};
+    save(); renderStats();
+  }
+  function dueCards(){ const dn=dayNum(), s=state.srs||{}; return CARDS.filter(c=>s[c.id] && s[c.id].due<=dn && !state.known[c.id]); }
+  function srsRate(id, ok){ if(!state.srs) state.srs={}; const s=state.srs[id]||{int:1,ease:2.3}; if(ok){ s.int=Math.max(1,Math.round(s.int*(s.ease||2.3))); s.ease=Math.min(2.8,(s.ease||2.3)+0.1); } else { s.int=1; s.ease=Math.max(1.3,(s.ease||2.3)-0.2); } s.due=dayNum()+s.int; state.srs[id]=s; save(); }
 
   // ---------- stats / filters ----------
   function renderStats(){
@@ -727,7 +763,7 @@
     const box=s.querySelector('.slide-illus'); const illu=(window.ILLUS||{})[card.id];
     if(box){ if(illu) box.innerHTML=illu; else box.remove(); }
     s.dataset.filled='1';
-    if(!state.seen[card.id]){ state.seen[card.id]=true; save(); renderStats(); }
+    if(!state.seen[card.id]) markSeen(card.id);
   }
   function toggleExpand(s,card){
     const more=s.querySelector('.slide-more'), t=s.querySelector('[data-a="expand"] .ex-t'); const en=state.lang==='en';
@@ -752,8 +788,7 @@
     [...studyFeed.children].forEach(s=>studyIO.observe(s));
     fillSlide(studyFeed.firstChild);
   }
-  function openStudy(mode){ studyMode=mode||'all'; buildStudyChips(); studyEl.classList.add('show'); document.body.style.overflow='hidden'; renderStudy(); }
-  function closeStudy(){ ttsStop(); storyStop(); studyEl.classList.remove('show'); document.body.style.overflow=''; if(studyIO) studyIO.disconnect(); markTab(curTab); }
+  function openStudy(mode){ if(mode) studyMode=mode; buildStudyChips(); studyEl.classList.add('show'); if(!studyFeed.querySelector('.slide')) renderStudy(); else syncStudyChips(); }
   function enterTheme(dom){ studyMode=dom; renderStudy(); }
   function studyKnow(card,s){
     state.known[card.id]=true; state.seen[card.id]=true; state.skips[card.domain]=(state.skips[card.domain]||0)+1; save(); renderStats();
@@ -772,8 +807,7 @@
     Object.keys(DOMAINS).forEach(k=>mk(k, DOMAINS[k].emoji+' '+DOMAINS[k].name));
   }
   function syncStudyChips(){ [...studyChips.children].forEach(b=>b.classList.toggle('on', b.dataset.m===studyMode)); }
-  document.getElementById('studyBtn').onclick=()=>openStudy('all');
-  document.getElementById('studyClose').onclick=closeStudy;
+  { const sb=document.getElementById('studyBtn'); if(sb) sb.onclick=()=>switchTab('study'); }
   document.getElementById('studyShuffle').onclick=()=>renderStudy();
 
   // ---------- read-aloud (TTS) + share + toast ----------
@@ -795,14 +829,37 @@
   let curTab='feed';
   function markTab(v){ if(tabbar)[...tabbar.children].forEach(b=>b.classList.toggle('on', b.dataset.v===v)); }
   function switchTab(v){
-    if(v==='study'){ markTab('study'); openStudy('all'); return; }
     curTab=v;
     ['feed','profile','settings'].forEach(id=>{ const el=document.getElementById('view-'+id); if(el) el.classList.toggle('active', id===v); });
+    if(v==='study'){ openStudy(); document.body.style.overflow='hidden'; }
+    else { studyEl.classList.remove('show'); document.body.style.overflow=''; }
     if(v==='profile') renderProfile();
     if(v==='settings') renderSettings();
-    markTab(v); window.scrollTo(0,0);
+    markTab(v); if(v!=='study') window.scrollTo(0,0);
   }
   if(tabbar) tabbar.addEventListener('click',e=>{ const b=e.target.closest('.tab'); if(b) switchTab(b.dataset.v); });
+
+  // ---------- spaced-repetition review ----------
+  let rvQueue=[], rvIdx=0;
+  function openReview(){ rvQueue=dueCards().map(c=>c.id); rvIdx=0; if(!rvQueue.length){ toast(state.lang==='en'?'Nothing to review':'Нечего повторять'); return; } document.getElementById('review').classList.add('show'); document.body.style.overflow='hidden'; renderReview(); }
+  function closeReview(){ document.getElementById('review').classList.remove('show'); document.body.style.overflow=''; if(curTab==='profile') renderProfile(); }
+  function renderReview(){
+    const en=state.lang==='en', b=document.getElementById('rvBody'), pr=document.getElementById('rvProg');
+    if(rvIdx>=rvQueue.length){ b.innerHTML='<div class="empty"><h3>'+(en?'Done for today 🎉':'На сегодня всё 🎉')+'</h3><div>'+(en?'Come back tomorrow.':'Возвращайся завтра.')+'</div></div>'; pr.textContent=''; return; }
+    const card=byId[rvQueue[rvIdx]]; pr.textContent=(rvIdx+1)+' / '+rvQueue.length;
+    const q=T(card).test_yourself||card.test_yourself||'';
+    b.innerHTML='<div class="rvcard"><span class="dom">'+((DOMAINS[card.domain]||{}).emoji)+' '+((DOMAINS[card.domain]||{}).name)+'</span><h2></h2>'
+      +(q?'<div class="rvq"><b>'+(en?'Recall':'Вспомни')+'</b><span class="q"></span></div>':'')
+      +'<div class="rvreveal"></div>'
+      +'<div class="rvacts"><button class="btn primary" data-a="show">'+(en?'Show answer':'Показать разбор')+'</button></div>'
+      +'<div class="rvrate" style="display:none"><button class="btn no" data-r="0">'+(en?'Forgot':'Забыл')+'</button><button class="btn primary" data-r="1">'+(en?'Got it ✓':'Помню ✓')+'</button></div></div>';
+    b.querySelector('h2').textContent=T(card).title;
+    if(q) b.querySelector('.rvq .q').textContent=' '+q;
+    b.querySelector('[data-a="show"]').onclick=()=>{ b.querySelector('.rvreveal').appendChild(bodyHTML(card, function(){}, true)); b.querySelector('.rvacts').style.display='none'; b.querySelector('.rvrate').style.display='flex'; };
+    b.querySelector('.rvrate').addEventListener('click',e=>{ const btn=e.target.closest('button[data-r]'); if(!btn)return; srsRate(card.id, btn.dataset.r==='1'); rvIdx++; renderReview(); });
+    document.getElementById('review').scrollTop=0;
+  }
+  { const rc=document.getElementById('rvClose'); if(rc) rc.onclick=closeReview; }
 
   // ---------- profile ----------
   function renderProfile(){
@@ -814,8 +871,12 @@
     let h='<h1>'+(en?'Your profile':'Твой профиль')+'</h1><div class="big">'
       +'<div class="stat"><b>'+(state.streak.count||0)+'</b><span>'+(en?'day streak':'дней подряд')+'</span></div>'
       +'<div class="stat"><b>'+seen+'</b><span>'+(en?'learned':'изучено')+'</span></div>'
-      +'<div class="stat"><b>'+saved.length+'</b><span>'+(en?'saved':'закладок')+'</span></div></div>'
-      +'<h2>'+(en?'Progress by topic':'Прогресс по темам')+'</h2>';
+      +'<div class="stat"><b>'+saved.length+'</b><span>'+(en?'saved':'закладок')+'</span></div></div>';
+    const goal=state.goal||3, dc=(state.daily&&state.daily.day===today())?state.daily.c:0, due=dueCards().length, dpct=Math.min(100,Math.round(dc/goal*100));
+    h+='<div class="daily"><div class="dring" style="background:conic-gradient(var(--a1) '+(dpct*3.6)+'deg, var(--panel3) 0)"><span>'+dc+'/'+goal+'</span></div>'
+      +'<div class="dtx"><div class="dh">'+(dc>=goal?(en?'Daily goal done 🎉':'Цель дня — готово 🎉'):(en?'Daily goal':'Цель на сегодня'))+'</div><div class="dsub">'+(en?'A few cards a day keeps the streak alive.':'Пара карточек в день — и стрик держится.')+'</div></div></div>';
+    if(due>0) h+='<button class="btn review-cta" id="reviewCta">🔁 '+(en?'Review today':'Повторить сегодня')+' · '+due+'</button>';
+    h+='<h2>'+(en?'Progress by topic':'Прогресс по темам')+'</h2>';
     Object.keys(DOMAINS).forEach(k=>{ const d=per[k], pct=d.t?Math.round(d.s/d.t*100):0;
       h+='<div class="prog"><span class="pn">'+DOMAINS[k].emoji+' '+DOMAINS[k].name+'</span><span class="pbar"><span class="pfill" style="width:'+pct+'%"></span></span><span class="pnum">'+d.s+'/'+d.t+'</span></div>'; });
     h+='<h2>'+(en?'Saved':'Закладки')+'</h2>';
@@ -823,6 +884,7 @@
     else h+='<div class="acctbox">'+(en?'Nothing saved yet — tap ★ on a card.':'Пока пусто — жми ★ на карточке (или двойной тап в режиме изучения).')+'</div>';
     h+='<h2>'+(en?'Account':'Аккаунт')+'</h2><div class="acctbox">'+(en?'User accounts are coming — sync across devices, personal feed. For now progress lives on this device.':'Система пользователей — скоро: синхронизация между устройствами, личная лента. Сейчас прогресс хранится на этом устройстве.')+'<br><button class="btn" disabled style="opacity:.55;margin-top:12px">'+(en?'Sign in (soon)':'Войти (скоро)')+'</button></div>';
     el.innerHTML=h;
+    { const rc=el.querySelector('#reviewCta'); if(rc) rc.onclick=openReview; }
     saved.forEach(c=>{ const r=el.querySelector('.savedrow[data-id="'+c.id+'"]'); if(r){ r.querySelector('b').textContent=(DOMAINS[c.domain]||{}).emoji+' '+T(c).title; r.onclick=()=>openFocus(c.id); } });
   }
 
@@ -871,9 +933,10 @@
   // ---------- keyboard ----------
   document.addEventListener('keydown',e=>{
     if(e.key==='Escape'){
+      var rvEl=document.getElementById('review'); if(rvEl&&rvEl.classList.contains('show')){ closeReview(); return; }
       if(help.classList.contains('show')){ help.classList.remove('show'); return; }
       if(searchRes.classList.contains('show')){ searchRes.classList.remove('show'); search.blur(); return; }
-      if(studyEl.classList.contains('show')){ closeStudy(); return; }
+      if(studyEl.classList.contains('show')){ switchTab('feed'); return; }
       if(focus.classList.contains('show')){ requestClose(); return; }
       pop.classList.remove('show'); return;
     }
