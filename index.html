@@ -313,7 +313,19 @@
   .review-cta{width:100%; justify-content:center; margin:2px 0 6px; background:linear-gradient(120deg,rgba(240,171,252,.16),rgba(124,156,255,.16)); border-color:rgba(240,171,252,.35); font-weight:700}
   .share-cta{width:100%; justify-content:center; margin:2px 0 10px; background:linear-gradient(120deg,rgba(94,234,212,.14),rgba(124,156,255,.14)); border-color:rgba(94,234,212,.32); font-weight:700}
   .quiz-cta{width:100%; justify-content:center; margin:2px 0 6px; background:linear-gradient(120deg,rgba(251,191,36,.14),rgba(240,171,252,.14)); border-color:rgba(251,191,36,.32); font-weight:700}
-  .quiz-cta span{color:var(--muted); font-weight:600; margin-left:2px}
+  .quiz-cta span,.connect-cta span{color:var(--muted); font-weight:600; margin-left:2px}
+  .connect-cta{width:100%; justify-content:center; margin:2px 0 6px; background:linear-gradient(120deg,rgba(240,171,252,.14),rgba(124,156,255,.14)); border-color:rgba(240,171,252,.32); font-weight:700}
+  .cncard{padding:8px 2px 16px}
+  .cnq{text-align:center; color:var(--muted); font-size:14px; margin-bottom:16px}
+  .cnside{display:block; width:100%; text-align:left; background:var(--panel2); border:1px solid var(--line); border-radius:14px; padding:14px 16px; cursor:pointer; margin:0}
+  .cnside.b{border-color:rgba(94,234,212,.4)}
+  .cnside .cndom{display:block; font-size:12px; font-weight:800; color:var(--a2); margin-bottom:4px}
+  .cnside b{font-size:16px; color:#fff; line-height:1.3; font-weight:800}
+  .cnlink{display:flex; align-items:center; gap:10px; padding:14px 8px; color:#dbe3f2}
+  .cnlink .cnspark{color:var(--a3); font-size:20px} .cnlink .cnlabel{font-size:14.5px; font-weight:700}
+  .cnb.hidden{display:none}
+  .cnteaser{font-size:14px; color:#c8d2e6; line-height:1.45; margin:12px 4px 0}
+  .cnacts{display:flex; gap:10px; justify-content:center; margin-top:20px} .cnacts .btn{min-width:150px; justify-content:center}
   .qzscore{margin-left:auto; font-weight:800; color:var(--a1); font-size:15px}
   .qzfin{text-align:center; padding:40px 16px}
   .qzfin .qzbig{font-size:72px; font-weight:800; color:var(--a1); line-height:1}
@@ -450,6 +462,7 @@
     <div class="sessinfo" id="sessInfo"></div>
   </div>
 
+  <div id="cardOfDay"></div>
   <div class="feed" id="feed"></div>
   <div class="more" id="more"></div>
 </main>
@@ -520,6 +533,11 @@
 <div class="review" id="kmapfull"><div class="rvpanel">
   <div class="rvbar"><button class="fclose" id="kmClose" title="Закрыть">✕</button><div class="rvprog" id="kmHead"></div></div>
   <div class="rvbody" id="kmBody"></div>
+</div></div>
+
+<div class="review" id="connect"><div class="rvpanel">
+  <div class="rvbar"><button class="fclose" id="cnClose" title="Закрыть">✕</button><div class="rvprog" id="cnHead"></div></div>
+  <div class="rvbody" id="cnBody"></div>
 </div></div>
 
 <div class="onboard" id="onboard">
@@ -965,7 +983,14 @@
   const feed=document.getElementById('feed'), more=document.getElementById('more'), sessInfo=document.getElementById('sessInfo');
   let feedOrder=[], revealed=0;
   function paceN(){ return state.pace==='all'?Infinity:state.pace; }
-  function rebuild(){ feedOrder=ordered(); revealed=Math.min(feedOrder.length, paceN()===Infinity?feedOrder.length:paceN()); renderFeed(); }
+  function rebuild(){ feedOrder=ordered(); revealed=Math.min(feedOrder.length, paceN()===Infinity?feedOrder.length:paceN()); renderFeed(); renderCardOfDay(); }
+  function renderCardOfDay(){
+    const el=document.getElementById('cardOfDay'); if(!el) return;
+    if(state.filter!=='all' || viewSaved){ el.innerHTML=''; return; }
+    const en=state.lang==='en', c=cardOfDay();
+    el.innerHTML='<button class="cod feed-cod" data-id="'+c.id+'"><div class="cod-lbl">'+(en?'✦ Card of the day':'✦ Карточка дня')+'</div><div class="cod-title">'+esc(T(c).title)+'</div><div class="cod-sub">'+esc((T(c).tldr||'').slice(0,130))+'</div><div class="cod-go">'+DOMAINS[c.domain].emoji+' '+esc(domName(c.domain))+(hasVid(c.id)?' · 📺':'')+' → '+(en?'read':'читать')+'</div></button>';
+    { const cd=el.querySelector('.cod'); if(cd) cd.onclick=()=>openFocus(c.id); }
+  }
   function renderSession(shown){
     if(!shown){ sessInfo.textContent=''; return; }
     let mins=0; for(let i=0;i<shown;i++) mins+=(byId[feedOrder[i]]||{}).minutes||0;
@@ -1397,6 +1422,33 @@
   }
   { const qc=document.getElementById('qzClose'); if(qc) qc.onclick=closeQuiz; }
 
+  // ---------- Connections «Связал!» (cross-domain links, the Wikipedia effect as a game) ----------
+  function crossLinks(){ const out=[], seen={}; CARDS.forEach(c=>(c.rabbit_holes||[]).forEach(h=>{ const t=byId[h.to_id]; if(!t||t.domain===c.domain)return; const k=c.id<h.to_id?c.id+'|'+h.to_id:h.to_id+'|'+c.id; if(seen[k])return; seen[k]=1; out.push({a:c.id,b:h.to_id,label:h.label,teaser:h.teaser}); })); return out; }
+  let cnList=[], cnIdx=0;
+  function openConnect(){ cnList=qShuffle(crossLinks()); cnIdx=0; if(!cnList.length){ toast(state.lang==='en'?'No connections yet':'Связей пока нет'); return; } document.getElementById('connect').classList.add('show'); document.body.style.overflow='hidden'; renderConnect(); }
+  function closeConnect(){ document.getElementById('connect').classList.remove('show'); document.body.style.overflow=''; }
+  function renderConnect(){
+    const en=state.lang==='en', b=document.getElementById('cnBody'), hd=document.getElementById('cnHead');
+    hd.textContent=(en?'Connected!':'Связал!')+' · '+Math.min(cnIdx+1,cnList.length)+'/'+cnList.length;
+    if(cnIdx>=cnList.length){ b.innerHTML='<div class="qzfin"><div class="qzv">'+(en?'That\'s all the links — for now 🔗':'Пока это все связи 🔗')+'</div><div class="qzacts"><button class="btn" id="cnAgain">'+(en?'Again':'Ещё раз')+'</button><button class="btn primary" id="cnDone">'+(en?'Done':'Готово')+'</button></div></div>'; b.querySelector('#cnAgain').onclick=openConnect; b.querySelector('#cnDone').onclick=closeConnect; return; }
+    const it=cnList[cnIdx], a=byId[it.a], bb=byId[it.b]; if(!a||!bb){ cnIdx++; return renderConnect(); }
+    b.innerHTML='<div class="cncard">'
+      +'<div class="cnq">'+(en?'What does this idea secretly connect to?':'С чем это тайно связано?')+'</div>'
+      +'<button class="cnside" data-open="a"><span class="cndom">'+DOMAINS[a.domain].emoji+' '+esc(domName(a.domain))+'</span><b>'+esc(T(a).title)+'</b></button>'
+      +'<div class="cnlink"><span class="cnspark">✦</span><span class="cnlabel">'+esc(it.label||'')+'</span></div>'
+      +'<div class="cnb hidden">'
+        +'<button class="cnside b" data-open="b"><span class="cndom">'+DOMAINS[bb.domain].emoji+' '+esc(domName(bb.domain))+'</span><b>'+esc(T(bb).title)+'</b></button>'
+        +'<div class="cnteaser">'+esc(it.teaser||'')+'</div>'
+      +'</div>'
+      +'<div class="cnacts"><button class="btn primary" id="cnReveal">'+(en?'Reveal the link →':'Раскрыть связь →')+'</button><button class="btn" id="cnNext" style="display:none">'+(en?'Next →':'Дальше →')+'</button></div>'
+      +'</div>';
+    b.querySelector('#cnReveal').onclick=()=>{ b.querySelector('.cnb').classList.remove('hidden'); b.querySelector('#cnReveal').style.display='none'; b.querySelector('#cnNext').style.display=''; };
+    b.querySelector('#cnNext').onclick=()=>{ cnIdx++; renderConnect(); };
+    b.querySelectorAll('[data-open]').forEach(btn=>btn.onclick=()=>{ closeConnect(); openFocus(btn.dataset.open==='a'?it.a:it.b); });
+    document.getElementById('connect').scrollTop=0;
+  }
+  { const cc=document.getElementById('cnClose'); if(cc) cc.onclick=closeConnect; }
+
   // ---------- profile ----------
   function renderProfile(){
     const el=document.getElementById('profileBody'); if(!el) return; const en=state.lang==='en';
@@ -1437,6 +1489,7 @@
       +'<div class="dtx"><div class="dh">'+(ds>=goal?(en?'Daily goal done 🎉':'Цель дня — готово 🎉'):(en?'Daily goal':'Цель на сегодня'))+'</div><div class="dsub">'+(en?(db+' browsed · '+ds+' studied · goal '+goal):(db+' пролистано · '+ds+' изучено · цель '+goal))+'</div></div></div>';
     if(due>0) h+='<button class="btn review-cta" id="reviewCta">🔁 '+(en?'Review today':'Повторить сегодня')+' · '+due+'</button>';
     h+='<button class="btn quiz-cta" id="quizCta">🎯 '+(en?'Quick quiz':'Быстрый квиз')+' · <span>'+(en?'5 questions':'5 вопросов')+'</span></button>';
+    h+='<button class="btn connect-cta" id="connectCta">🔗 '+(en?'Connected!':'Связал!')+' · <span>'+(en?'link topics':'связи тем')+'</span></button>';
     h+='<button class="btn share-cta" id="shareCta">↗ '+(en?'Share my progress':'Поделиться результатом')+'</button>';
     h+='<h2>'+(en?'Progress by topic':'Прогресс по темам')+'</h2>';
     Object.keys(DOMAINS).forEach(k=>{ const d=per[k], pct=d.t?Math.round(d.s/d.t*100):0; const lv=topicLevel(k);
@@ -1458,6 +1511,7 @@
     { const g=el.querySelector('#pvGear'); if(g) g.onclick=openSettings; }
     { const km=el.querySelector('#kExpand'); if(km) km.onclick=openMap; }
     { const qc=el.querySelector('#quizCta'); if(qc) qc.onclick=()=>openQuiz('all'); }
+    { const cc=el.querySelector('#connectCta'); if(cc) cc.onclick=openConnect; }
     { const sc=el.querySelector('#shareCta'); if(sc) sc.onclick=()=>shareResult('progress'); }
     saved.forEach(c=>{ const r=el.querySelector('.savedrow[data-id="'+c.id+'"]'); if(r){ r.querySelector('b').textContent=(DOMAINS[c.domain]||{}).emoji+' '+T(c).title; r.onclick=()=>openFocus(c.id); } });
   }
