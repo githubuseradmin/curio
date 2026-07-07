@@ -244,15 +244,16 @@
   .vempty h3{color:#fff; margin:0}
   .slide-inner{max-width:640px; margin:0 auto; width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; position:relative;
     padding:20px max(clamp(18px,6vw,30px), env(safe-area-inset-left,0px)) 22px max(clamp(18px,6vw,30px), env(safe-area-inset-right,0px))}
-  .slide-hook{display:flex; flex-direction:column; align-items:flex-start; gap:12px; animation:rise .4s ease both; min-height:0}
-  .slide-dom{font-size:12.5px}
-  .slide-title{font-size:clamp(22px,6vw,34px); line-height:1.14; font-weight:800; letter-spacing:-.02em; color:#fff; margin:0}
-  .slide-tldr{font-size:clamp(15px,4.1vw,19px); line-height:1.45; color:#c8d2e6; margin:0; display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden}
-  .slide-illus{width:100%; border:1px solid var(--line); border-radius:16px; padding:10px; overflow:hidden; min-height:0;
+  .slide-hook{display:flex; flex-direction:column; align-items:flex-start; gap:11px; animation:rise .4s ease both; min-height:0; width:100%; max-height:100%}
+  .slide-dom{font-size:12.5px; flex:0 0 auto}
+  .slide-title{font-size:clamp(21px,5.7vw,33px); line-height:1.14; font-weight:800; letter-spacing:-.02em; color:#fff; margin:0; flex:0 0 auto; display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden}
+  .slide-tldr{font-size:clamp(15px,4.1vw,19px); line-height:1.42; color:#c8d2e6; margin:0; flex:0 0 auto; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden}
+  .slide-illus{width:100%; border:1px solid var(--line); border-radius:16px; padding:8px; overflow:hidden; flex:0 1 auto; min-height:56px; height:min(28vh,200px);
+    display:flex; align-items:center; justify-content:center;
     background:radial-gradient(130% 130% at 50% 0%, rgba(124,156,255,.09), transparent 66%), var(--bg2)}
   .slide-illus:empty{display:none}
-  .slide-illus svg{width:100%; height:auto; max-height:min(30vh,210px); display:block}
-  .slide-quick{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:4px; width:100%}
+  .slide-illus svg{width:100%; height:100%; display:block}
+  .slide-quick{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:2px; width:100%; flex:0 0 auto}
   .slide-expand{background:linear-gradient(120deg,var(--a1),#43cfc0); color:#08120f; border:0; border-radius:999px; padding:12px 22px; font-weight:800; font-size:15px; transition:.15s; cursor:pointer}
   .slide-expand:hover{filter:brightness(1.06); transform:translateY(-1px)}
   .slide-icons{display:flex; gap:9px; margin-left:auto}
@@ -284,6 +285,9 @@
   .tab .ti{font-size:19px; line-height:1}
   .tab.on{color:#fff} .tab.on .ti{filter:drop-shadow(0 0 8px rgba(94,234,212,.55))}
   .pv,.sv{max-width:var(--maxw); margin:0 auto; padding:18px clamp(14px,4vw,22px) 20px}
+  .pv-head{display:flex; align-items:center; justify-content:space-between; gap:10px}
+  .pv-head h1{margin:0}
+  .pv-gear{flex:0 0 auto; width:40px; height:40px; border-radius:50%; border:1px solid var(--line); background:var(--panel2); color:#dbe3f2; font-size:19px; cursor:pointer; display:flex; align-items:center; justify-content:center}
   .pv h1,.sv h1{font-size:22px; color:#fff; margin:6px 0 4px}
   .pv .big{display:flex; gap:10px; margin:14px 0}
   .stat{flex:1; background:var(--panel2); border:1px solid var(--line); border-radius:14px; padding:14px 8px; text-align:center}
@@ -455,17 +459,18 @@
   <span><button id="reset">сбросить прогресс</button></span>
 </footer>
 
-<section class="view" id="view-following"><div class="pv" id="followingBody"></div></section>
 <section class="view" id="view-profile"><div class="pv" id="profileBody"></div></section>
-<section class="view" id="view-settings"><div class="sv" id="settingsBody"></div></section>
+
+<div class="review" id="settingsSheet"><div class="rvpanel">
+  <div class="rvbar"><button class="fclose" id="stClose" title="Закрыть">✕</button><div class="rvprog" id="stHead"></div></div>
+  <div class="sv" id="settingsBody"></div>
+</div></div>
 
 <nav class="tabbar" id="tabbar">
   <button class="tab on" data-v="feed"><span class="ti">🗂️</span><span class="tl">Лента</span></button>
-  <button class="tab" data-v="following"><span class="ti">🔔</span><span class="tl">Подписки</span></button>
   <button class="tab" data-v="study"><span class="ti">📖</span><span class="tl">Изучение</span></button>
   <button class="tab" data-v="videos"><span class="ti">📺</span><span class="tl">Видео</span></button>
   <button class="tab" data-v="profile"><span class="ti">👤</span><span class="tl">Профиль</span></button>
-  <button class="tab" data-v="settings"><span class="ti">⚙️</span><span class="tl">Настройки</span></button>
 </nav>
 
 <div class="focus" id="focus"><div class="fpanel">
@@ -1255,19 +1260,22 @@
   function markTab(v){ if(tabbar)[...tabbar.children].forEach(b=>b.classList.toggle('on', b.dataset.v===v)); }
   function switchTab(v){
     curTab=v;
-    ['feed','following','profile','settings'].forEach(id=>{ const el=document.getElementById('view-'+id); if(el) el.classList.toggle('active', id===v); });
+    ['feed','profile'].forEach(id=>{ const el=document.getElementById('view-'+id); if(el) el.classList.toggle('active', id===v); });
     const overlay=(v==='study'||v==='videos');
     if(v!=='study') dwellClear();
     if(v==='study') openStudy(); else studyEl.classList.remove('show');
     if(v==='videos') openVideos(); else vClose();
     const hdr=document.querySelector('header'); if(hdr) hdr.style.display = overlay ? 'none' : '';
-    document.body.style.overflow = overlay ? 'hidden' : '';
-    if(v==='following') renderFollowing();
+    document.body.style.overflow = ''; // study/video are fixed overlays with contained scroll — no body lock (prevents iOS tab-bar jump)
+    if(overlay) setTabbarH();
     if(v==='profile') renderProfile();
-    if(v==='settings') renderSettings();
     markTab(v); if(!overlay) window.scrollTo(0,0);
   }
   if(tabbar) tabbar.addEventListener('click',e=>{ const b=e.target.closest('.tab'); if(b) switchTab(b.dataset.v); });
+  // settings as an overlay opened from the profile gear
+  function openSettings(){ renderSettings(); document.getElementById('stHead').textContent=(state.lang==='en'?'Settings':'Настройки'); document.getElementById('settingsSheet').classList.add('show'); document.body.style.overflow='hidden'; }
+  function closeSettings(){ document.getElementById('settingsSheet').classList.remove('show'); document.body.style.overflow=''; }
+  { const sc=document.getElementById('stClose'); if(sc) sc.onclick=closeSettings; }
 
   // ---------- video feed (тестовая вкладка «Видео») ----------
   let vData=null, vBuilt=false, vIO=null, vMuted=true;
@@ -1396,7 +1404,7 @@
     const per={}; Object.keys(DOMAINS).forEach(k=>per[k]={t:0,s:0});
     CARDS.forEach(c=>{ const d=per[c.domain]; if(d){ d.t++; if(state.studied&&state.studied[c.id])d.s++; } });
     const saved=CARDS.filter(c=>state.saved[c.id]);
-    let h='<h1>'+(en?'Your profile':'Твой профиль')+'</h1><div class="big">'
+    let h='<div class="pv-head"><h1>'+(en?'Your profile':'Твой профиль')+'</h1><button class="pv-gear" id="pvGear" title="'+(en?'Settings':'Настройки')+'">⚙️</button></div><div class="big">'
       +'<div class="stat"><b>'+(state.streak.count||0)+'</b><span>'+(en?'day streak':'дней подряд')+'</span></div>'
       +'<div class="stat"><b>'+studiedN+'</b><span>'+(en?'studied':'изучено')+'</span></div>'
       +'<div class="stat"><b>'+saved.length+'</b><span>'+(en?'saved':'закладок')+'</span></div></div>';
@@ -1447,6 +1455,7 @@
     h+='<h2>'+(en?'Account':'Аккаунт')+'</h2><div class="acctbox">'+(en?'User accounts are coming — sync across devices, personal feed. For now progress lives on this device.':'Система пользователей — скоро: синхронизация между устройствами, личная лента. Сейчас прогресс хранится на этом устройстве.')+'<br><button class="btn" disabled style="opacity:.55;margin-top:12px">'+(en?'Sign in (soon)':'Войти (скоро)')+'</button></div>';
     el.innerHTML=h;
     { const rc=el.querySelector('#reviewCta'); if(rc) rc.onclick=openReview; }
+    { const g=el.querySelector('#pvGear'); if(g) g.onclick=openSettings; }
     { const km=el.querySelector('#kExpand'); if(km) km.onclick=openMap; }
     { const qc=el.querySelector('#quizCta'); if(qc) qc.onclick=()=>openQuiz('all'); }
     { const sc=el.querySelector('#shareCta'); if(sc) sc.onclick=()=>shareResult('progress'); }
