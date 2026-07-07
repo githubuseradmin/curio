@@ -281,8 +281,9 @@
   .view{display:none} .view.active{display:block}
   .tabbar{position:fixed; left:0; right:0; bottom:0; z-index:35; display:flex;
     background:linear-gradient(0deg,rgba(11,15,23,.98),rgba(11,15,23,.9)); backdrop-filter:blur(12px); border-top:1px solid var(--line); padding-bottom:env(safe-area-inset-bottom,0px)}
-  .tab{flex:1; border:0; background:transparent; color:var(--dim); display:flex; flex-direction:column; align-items:center; gap:3px; padding:9px 4px 8px; font-size:11px; cursor:pointer; transition:color .15s}
-  .tab .ti{font-size:20px; line-height:1}
+  .tab{flex:1; min-width:0; border:0; background:transparent; color:var(--dim); display:flex; flex-direction:column; align-items:center; gap:3px; padding:9px 2px 8px; font-size:10px; cursor:pointer; transition:color .15s}
+  .tab .tl{max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .tab .ti{font-size:19px; line-height:1}
   .tab.on{color:#fff} .tab.on .ti{filter:drop-shadow(0 0 8px rgba(94,234,212,.55))}
   .pv,.sv{max-width:var(--maxw); margin:0 auto; padding:18px clamp(14px,4vw,22px) 20px}
   .pv h1,.sv h1{font-size:22px; color:#fff; margin:6px 0 4px}
@@ -342,6 +343,12 @@
   .ach.got{opacity:1; border-color:rgba(94,234,212,.4)}
   .ach .ache{font-size:30px; filter:grayscale(1)} .ach.got .ache{filter:none}
   .ach b{font-size:13px; color:#fff} .ach i{font-size:11px; color:var(--muted); font-style:normal; line-height:1.3}
+  .lvlbar{margin:14px 0 8px} .lvhead{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px}
+  .lvhead b{font-size:16px; color:#fff} .lvhead span{font-size:12px; color:var(--muted)}
+  .lvtrack{height:8px; background:var(--panel3); border-radius:8px; overflow:hidden} .lvtrack i{display:block; height:100%; border-radius:8px; background:linear-gradient(90deg,var(--a1),var(--a2) 60%,var(--a3))}
+  .toptopics{background:var(--panel2); border:1px solid var(--line); border-radius:14px; padding:12px 14px; margin:10px 0 4px}
+  .toptopics .tth{font-size:13px; font-weight:800; color:#fff; margin-bottom:8px}
+  .ttrow{display:flex; align-items:center; gap:10px; padding:4px 0} .ttrow .ttr{font-size:18px; flex:0 0 auto} .ttrow .ttn{flex:1; font-size:13.5px; color:#dbe3f2} .ttrow .ttp{font-size:13px; font-weight:800; color:var(--a1)}
   .kmapcard{background:var(--panel2); border:1px solid var(--line); border-radius:16px; padding:16px; margin:14px 0}
   .kmapcard .khead{display:flex; align-items:baseline; gap:8px; margin-bottom:2px}
   .kmapcard .kscore{font-size:26px; font-weight:800; color:var(--a1); line-height:1}
@@ -371,6 +378,17 @@
   .ob-chip{display:flex; align-items:center; gap:10px; padding:14px 14px; border-radius:14px; background:var(--panel2); border:1.5px solid var(--line); color:#dbe3f2; font-size:14.5px; font-weight:600; cursor:pointer; transition:.15s; text-align:left}
   .ob-chip .obe{font-size:22px} .ob-chip.on{border-color:var(--a1); background:rgba(94,234,212,.1); color:#fff}
   .ob-start{width:100%; justify-content:center; font-size:16px; padding:15px}
+  .cod{display:block; width:100%; text-align:left; border:1px solid rgba(94,234,212,.32); border-radius:16px; padding:16px; margin:6px 0 14px; cursor:pointer;
+    background:linear-gradient(135deg,rgba(94,234,212,.12),rgba(124,156,255,.1))}
+  .cod-lbl{font-size:12px; font-weight:800; color:var(--a1); letter-spacing:.3px} .cod-title{font-size:18px; font-weight:800; color:#fff; margin:6px 0 4px; line-height:1.25}
+  .cod-sub{font-size:13.5px; color:#c8d2e6; line-height:1.4} .cod-go{font-size:12.5px; color:var(--muted); font-weight:700; margin-top:8px}
+  .chbar{display:flex; gap:8px; overflow-x:auto; padding-bottom:8px; margin-bottom:10px; scrollbar-width:none} .chbar::-webkit-scrollbar{display:none}
+  .chchip{flex:0 0 auto; border:1px solid var(--line); background:var(--panel2); color:#cbd5ea; border-radius:999px; padding:7px 13px; font-size:13px; font-weight:600; cursor:pointer; white-space:nowrap}
+  .chchip.on{border-color:var(--a1); background:rgba(94,234,212,.12); color:#fff} .chchip.manage{color:var(--a2)}
+  .foll-list{display:flex; flex-direction:column; gap:8px}
+  .foll-row{display:flex; align-items:center; gap:12px; text-align:left; width:100%; background:var(--panel2); border:1px solid var(--line); border-radius:13px; padding:12px 14px; cursor:pointer}
+  .foll-row .fr-e{font-size:22px; flex:0 0 auto} .foll-row .fr-txt{flex:1; min-width:0} .foll-row .fr-txt b{display:block; font-size:14.5px; color:#fff; line-height:1.3}
+  .foll-row .fr-txt i{font-size:12px; color:var(--muted); font-style:normal} .foll-row .fr-done{color:var(--a1); font-weight:800; flex:0 0 auto}
   .review{position:fixed; inset:0; z-index:45; display:none; background:rgba(6,9,15,.9); backdrop-filter:blur(6px); overflow-y:auto}
   .review.show{display:block; animation:fade .2s ease}
   .rvpanel{max-width:var(--maxw); margin:0 auto; min-height:100%; background:var(--bg2); border-left:1px solid var(--line); border-right:1px solid var(--line); padding:0 clamp(16px,4vw,26px) 44px}
@@ -439,11 +457,13 @@
   <span><button id="reset">сбросить прогресс</button></span>
 </footer>
 
+<section class="view" id="view-following"><div class="pv" id="followingBody"></div></section>
 <section class="view" id="view-profile"><div class="pv" id="profileBody"></div></section>
 <section class="view" id="view-settings"><div class="sv" id="settingsBody"></div></section>
 
 <nav class="tabbar" id="tabbar">
   <button class="tab on" data-v="feed"><span class="ti">🗂️</span><span class="tl">Лента</span></button>
+  <button class="tab" data-v="following"><span class="ti">🔔</span><span class="tl">Подписки</span></button>
   <button class="tab" data-v="study"><span class="ti">📖</span><span class="tl">Изучение</span></button>
   <button class="tab" data-v="videos"><span class="ti">📺</span><span class="tl">Видео</span></button>
   <button class="tab" data-v="profile"><span class="ti">👤</span><span class="tl">Профиль</span></button>
@@ -577,7 +597,7 @@
     studymode:{ru:'📖 Режим изучения',en:'📖 Study mode'},
     portion:{ru:'Порция',en:'Batch'},
     pace1:{ru:'10 мин · 1',en:'10 min · 1'},pace3:{ru:'полчаса · 3',en:'half hour · 3'},paceall:{ru:'залипнуть · ∞',en:'binge · ∞'},
-    tab_feed:{ru:'Лента',en:'Feed'},tab_study:{ru:'Изучение',en:'Study'},tab_videos:{ru:'Видео',en:'Video'},tab_profile:{ru:'Профиль',en:'Profile'},tab_settings:{ru:'Настройки',en:'Settings'},
+    tab_feed:{ru:'Лента',en:'Feed'},tab_following:{ru:'Подписки',en:'Following'},tab_study:{ru:'Изучение',en:'Study'},tab_videos:{ru:'Видео',en:'Video'},tab_profile:{ru:'Профиль',en:'Profile'},tab_settings:{ru:'Настройки',en:'Settings'},
     footer:{ru:'Curio · личный движок любопытства · ',en:'Curio · personal curiosity engine · '},
     read:{ru:'Читать →',en:'Read →'},collapse:{ru:'Свернуть ↑',en:'Collapse ↑'},all:{ru:'Всё',en:'All'},
     streakTitle:{ru:'Дней подряд',en:'Day streak'},learnedTitle:{ru:'Изучено карточек',en:'Studied cards'},bmTitle:{ru:'Закладки',en:'Saved'},helpTitle:{ru:'Горячие клавиши',en:'Keyboard shortcuts'}};
@@ -683,6 +703,9 @@
     const bridges=m.edges.filter(e=>e.cross).length; const synapse=Math.min(0.15,bridges*0.03);
     return Math.round(Math.min(1,0.45*breadth+0.30*evenness+0.25*depth+synapse)*100);
   }
+  function curioXP(){ return Object.keys(state.studied||{}).length*10 + (((state.quizStats||{}).correct)||0)*8 + (((state.streak||{}).best)||0)*5; }
+  function curioLevel(){ const xp=curioXP(); let lv=1, need=100, acc=0; while(acc+need<=xp && lv<99){ acc+=need; lv++; need=Math.round(need*1.32); } return {lv,xp,into:xp-acc,need}; }
+  function topTopics(n){ return Object.keys(DOMAINS).map(d=>({d,pct:topicPct(d),s:CARDS.filter(c=>c.domain===d&&state.studied&&state.studied[c.id]).length})).filter(t=>t.s>0).sort((a,b)=>b.pct-a.pct||b.s-a.s).slice(0,n||3); }
   function kArc(cx,cy,r,a0,a1,color,w){ const x0=cx+Math.cos(a0)*r,y0=cy+Math.sin(a0)*r,x1=cx+Math.cos(a1)*r,y1=cy+Math.sin(a1)*r,lg=(a1-a0)>Math.PI?1:0;
     return '<path d="M'+x0.toFixed(1)+' '+y0.toFixed(1)+' A'+r+' '+r+' 0 '+lg+' 1 '+x1.toFixed(1)+' '+y1.toFixed(1)+'" stroke="'+color+'" stroke-width="'+w+'" fill="none" stroke-linecap="round"/>'; }
   function mapSVG(m,opts){ opts=opts||{}; const S=opts.size||400, C=S/2, R=S*0.34, inter=!!opts.interactive, showUnlit=opts.showUnlit!==false, en=state.lang==='en';
@@ -1230,13 +1253,14 @@
   function markTab(v){ if(tabbar)[...tabbar.children].forEach(b=>b.classList.toggle('on', b.dataset.v===v)); }
   function switchTab(v){
     curTab=v;
-    ['feed','profile','settings'].forEach(id=>{ const el=document.getElementById('view-'+id); if(el) el.classList.toggle('active', id===v); });
+    ['feed','following','profile','settings'].forEach(id=>{ const el=document.getElementById('view-'+id); if(el) el.classList.toggle('active', id===v); });
     const overlay=(v==='study'||v==='videos');
     if(v!=='study') dwellClear();
     if(v==='study') openStudy(); else studyEl.classList.remove('show');
     if(v==='videos') openVideos(); else vClose();
     const hdr=document.querySelector('header'); if(hdr) hdr.style.display = overlay ? 'none' : '';
     document.body.style.overflow = overlay ? 'hidden' : '';
+    if(v==='following') renderFollowing();
     if(v==='profile') renderProfile();
     if(v==='settings') renderSettings();
     markTab(v); if(!overlay) window.scrollTo(0,0);
@@ -1376,6 +1400,14 @@
       +'<div class="stat"><b>'+(state.streak.count||0)+'</b><span>'+(en?'day streak':'дней подряд')+'</span></div>'
       +'<div class="stat"><b>'+studiedN+'</b><span>'+(en?'studied':'изучено')+'</span></div>'
       +'<div class="stat"><b>'+saved.length+'</b><span>'+(en?'saved':'закладок')+'</span></div></div>';
+    // level (rating) + top topics
+    { const lv=curioLevel();
+      h+='<div class="lvlbar"><div class="lvhead"><b>'+(en?'Level ':'Уровень ')+lv.lv+'</b><span>'+lv.into+' / '+lv.need+' XP</span></div><div class="lvtrack"><i style="width:'+Math.round(lv.into/Math.max(1,lv.need)*100)+'%"></i></div></div>';
+      const tt=topTopics(3);
+      if(tt.length){ h+='<div class="toptopics"><div class="tth">'+(en?'🏆 Your top topics':'🏆 Топ твоих тем')+'</div>';
+        tt.forEach((t,i)=>{ h+='<div class="ttrow"><span class="ttr">'+['🥇','🥈','🥉'][i]+'</span><span class="ttn">'+DOMAINS[t.d].emoji+' '+esc(domName(t.d))+'</span><span class="ttp">'+Math.round(t.pct*100)+'%</span></div>'; });
+        h+='</div>'; }
+    }
     // knowledge map (the cherry)
     { const m=mapModel(), sc=polymathScore(m), rk=rankOf(sc);
       h+='<div class="kmapcard"><div class="khead"><b class="kscore">'+sc+'</b><span class="krank">'+(en?'Polymath Score':'Polymath Score')+' · '+(en?rk.en:rk.ru)+'</span><button class="kexpand" id="kExpand">'+(en?'Explore ↗':'Раскрыть ↗')+'</button></div>'
@@ -1419,6 +1451,48 @@
     { const qc=el.querySelector('#quizCta'); if(qc) qc.onclick=()=>openQuiz('all'); }
     { const sc=el.querySelector('#shareCta'); if(sc) sc.onclick=()=>shareResult('progress'); }
     saved.forEach(c=>{ const r=el.querySelector('.savedrow[data-id="'+c.id+'"]'); if(r){ r.querySelector('b').textContent=(DOMAINS[c.domain]||{}).emoji+' '+T(c).title; r.onclick=()=>openFocus(c.id); } });
+  }
+
+  // ---------- following / subscriptions tab ----------
+  function hasVid(id){ return !!(window.ILLUS && window.ILLUS[id]); }
+  function cardOfDay(){ return CARDS[dayNum()%CARDS.length]; }
+  const COLLECTIONS=[
+    {id:'video', e:'🎬', en:'On video', ru:'В видео', pick:()=>CARDS.filter(c=>hasVid(c.id))},
+    {id:'benders', e:'🧩', en:'Mind-benders', ru:'Взрыв мозга', pick:()=>CARDS.filter(c=>c.level==='глубоко')},
+    {id:'quick', e:'⚡', en:'Quick reads', ru:'На 5 минут', pick:()=>CARDS.filter(c=>(c.minutes||5)<=5)},
+  ];
+  let followCh='mine';
+  function followCards(){
+    let list;
+    if(followCh==='mine'){ const ints=(state.interests&&state.interests.length)?state.interests:Object.keys(DOMAINS); list=CARDS.filter(c=>ints.includes(c.domain)); }
+    else if(followCh.indexOf('col:')===0){ const col=COLLECTIONS.find(c=>c.id===followCh.slice(4)); list=col?col.pick():[]; }
+    else { list=CARDS.filter(c=>c.domain===followCh); }
+    const vfirst=a=>a.slice().sort((x,y)=>(hasVid(y.id)?1:0)-(hasVid(x.id)?1:0));
+    const un=vfirst(list.filter(c=>!(state.studied&&state.studied[c.id])));
+    const sn=vfirst(list.filter(c=>state.studied&&state.studied[c.id]));
+    return un.concat(sn);
+  }
+  function renderFollowing(){
+    const el=document.getElementById('followingBody'); if(!el) return; const en=state.lang==='en';
+    const ints=(state.interests&&state.interests.length)?state.interests:null;
+    let h='<h1>'+(en?'Following':'Подписки')+'</h1>';
+    const cod=cardOfDay();
+    h+='<button class="cod" data-id="'+cod.id+'"><div class="cod-lbl">'+(en?'✦ Card of the day':'✦ Карточка дня')+'</div><div class="cod-title">'+esc(T(cod).title)+'</div><div class="cod-sub">'+esc((T(cod).tldr||'').slice(0,130))+'</div><div class="cod-go">'+DOMAINS[cod.domain].emoji+' '+esc(domName(cod.domain))+(hasVid(cod.id)?' · 📺':'')+' → '+(en?'read':'читать')+'</div></button>';
+    h+='<div class="chbar">';
+    h+='<button class="chchip'+(followCh==='mine'?' on':'')+'" data-ch="mine">✨ '+(en?'For you':'Для тебя')+'</button>';
+    (ints||[]).forEach(d=>{ h+='<button class="chchip'+(followCh===d?' on':'')+'" data-ch="'+d+'">'+DOMAINS[d].emoji+' '+esc(domName(d))+'</button>'; });
+    COLLECTIONS.forEach(c=>{ h+='<button class="chchip'+(followCh==='col:'+c.id?' on':'')+'" data-ch="col:'+c.id+'">'+c.e+' '+(en?c.en:c.ru)+'</button>'; });
+    h+='<button class="chchip manage" data-ch="__manage">＋ '+(en?'Topics':'Темы')+'</button></div>';
+    if(!ints) h+='<div class="acctbox">'+(en?'Pick topics to make this feed yours.':'Выбери темы — и лента подписок станет твоей.')+'</div>';
+    const list=followCards().slice(0,40);
+    h+='<div class="foll-list">';
+    if(!list.length) h+='<div class="acctbox">'+(en?'Nothing here yet.':'Здесь пока пусто.')+'</div>';
+    list.forEach(c=>{ h+='<button class="foll-row" data-id="'+c.id+'"><span class="fr-e">'+DOMAINS[c.domain].emoji+'</span><span class="fr-txt"><b>'+esc(T(c).title)+'</b><i>'+esc(domName(c.domain))+(hasVid(c.id)?' · 📺 '+(en?'video':'видео'):'')+' · '+(c.minutes||5)+(en?' min':' мин')+'</i></span>'+((state.studied&&state.studied[c.id])?'<span class="fr-done">✓</span>':'')+'</button>'; });
+    h+='</div>';
+    el.innerHTML=h;
+    { const cd=el.querySelector('.cod'); if(cd) cd.onclick=()=>openFocus(cod.id); }
+    el.querySelectorAll('.chchip').forEach(b=>b.onclick=()=>{ const ch=b.dataset.ch; if(ch==='__manage'){ showOnboard(); return; } followCh=ch; renderFollowing(); });
+    el.querySelectorAll('.foll-row').forEach(b=>b.onclick=()=>openFocus(b.dataset.id));
   }
 
   // ---------- settings ----------
