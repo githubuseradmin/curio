@@ -201,7 +201,7 @@
   .study-cta:hover{border-color:transparent; filter:brightness(1.06)}
 
   /* Study mode (лента изучения) */
-  .study{position:fixed; top:0; left:0; right:0; bottom:calc(59px + env(safe-area-inset-bottom,0px)); z-index:15; display:none; background:var(--bg)}
+  .study{position:fixed; top:0; left:0; right:0; bottom:var(--tabbarH,92px); z-index:15; display:none; background:var(--bg)}
   .study.show{display:flex; flex-direction:column}
   .study-bar{flex:0 0 auto; display:flex; align-items:center; gap:10px;
     padding:calc(10px + env(safe-area-inset-top,0px)) clamp(14px,4vw,20px) 8px;
@@ -215,25 +215,23 @@
   .slide{scroll-snap-align:start; scroll-snap-stop:always; height:100%; overflow:hidden; overscroll-behavior:contain; scrollbar-width:none; -ms-overflow-style:none; display:flex}
   .slide::-webkit-scrollbar{display:none; width:0}
   /* ---- video-feed tab (тест: TikTok-лента роликов) ---- */
-  .videos{position:fixed; top:0; left:0; right:0; bottom:calc(59px + env(safe-area-inset-bottom,0px)); z-index:15; display:none; background:#05070c}
+  .videos{position:fixed; top:0; left:0; right:0; bottom:var(--tabbarH,92px); z-index:15; display:none; background:#05070c}
   .videos.show{display:block}
   .vfeed{height:100%; overflow-y:scroll; scroll-snap-type:y mandatory; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; scrollbar-width:none; -ms-overflow-style:none}
   .vfeed::-webkit-scrollbar{display:none; width:0; height:0}
   .vslide{position:relative; height:100%; scroll-snap-align:start; scroll-snap-stop:always; overflow:hidden; background:#05070c; display:flex; align-items:center; justify-content:center}
-  .vslide video{width:100%; height:100%; object-fit:contain; background:#05070c; display:block}
+  .vslide video{width:100%; height:100%; object-fit:cover; background:#05070c; display:block}
   .vtop{position:absolute; top:0; left:0; right:0; padding:calc(16px + env(safe-area-inset-top,0px)) 16px 34px;
     background:linear-gradient(180deg, rgba(5,7,12,.8), transparent); display:flex; align-items:center; gap:9px; pointer-events:none; z-index:3}
   .vprog{position:absolute; top:calc(7px + env(safe-area-inset-top,0px)); left:14px; right:14px; height:3px; border-radius:3px; background:rgba(255,255,255,.16); overflow:hidden; z-index:4}
   .vprog i{display:block; height:100%; width:0; border-radius:3px; background:linear-gradient(90deg,var(--a1),var(--a2))}
   .vtop .vdom{font-weight:800; font-size:14px; color:#fff; letter-spacing:.2px; text-shadow:0 1px 6px rgba(0,0,0,.5)}
   .vtop .vbrand{margin-left:auto; font-weight:800; font-size:14px; color:var(--a1)}
-  .vbot{position:absolute; left:0; right:64px; bottom:0; padding:56px 16px calc(18px + env(safe-area-inset-bottom,0px)); z-index:3;
-    background:linear-gradient(0deg, rgba(5,7,12,.9) 55%, transparent)}
-  .vbot h3{margin:0 0 13px; font-size:19px; line-height:1.28; color:#fff; font-weight:800; text-shadow:0 1px 8px rgba(0,0,0,.5)}
-  .vbot .vgo{display:inline-flex; align-items:center; gap:8px; border:0; cursor:pointer;
+  .vbot{position:absolute; left:0; right:0; bottom:0; padding:26px 16px calc(16px + env(safe-area-inset-bottom,0px)); z-index:3; display:flex; justify-content:center;
+    background:linear-gradient(0deg, rgba(5,7,12,.6), transparent); pointer-events:none}
+  .vbot .vgo{pointer-events:auto; display:inline-flex; align-items:center; gap:8px; border:0; cursor:pointer;
     background:linear-gradient(135deg,var(--a1),var(--a2)); color:#06121a; font-weight:800; font-size:15px;
-    padding:12px 18px; border-radius:14px; box-shadow:0 8px 24px rgba(94,234,212,.22)}
-  .vbot .vmeta{margin-top:10px; font-size:12.5px; color:#aab6cc; font-weight:600}
+    padding:13px 24px; border-radius:999px; box-shadow:0 10px 28px rgba(0,0,0,.4)}
   .vside{position:absolute; right:10px; bottom:calc(150px + env(safe-area-inset-bottom,0px)); display:flex; flex-direction:column; gap:14px; align-items:center; z-index:4}
   .vbtn{width:48px; height:48px; border-radius:50%; border:1px solid rgba(255,255,255,.18); background:rgba(12,18,32,.55);
     color:#fff; font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; backdrop-filter:blur(6px)}
@@ -501,6 +499,7 @@
 
 <div class="videos" id="videos">
   <div class="vfeed" id="vfeed"></div>
+  <audio id="vmusic" loop preload="auto" playsinline><source src="videos/ambient.m4a" type="audio/mp4"></audio>
 </div>
 
 <div class="review" id="review"><div class="rvpanel">
@@ -554,7 +553,7 @@
     browsed:{},browsedCount:0,studied:{},srs:{},daily:{day:null,b:0,s:0},goal:3,
     streak:{count:0,best:0,last:null,freezes:2,freezeAcc:0,history:{},badges:{},froze:{}},
     ach:{},quizBest:0,quizStats:{done:0,correct:0},topicLvl:{},levelFilter:'all',
-    interests:null,onboarded:false,
+    interests:null,onboarded:false,langSet:false,
     pace:3,filter:'all',lang:'en'};
   let state = load();
   function load(){
@@ -573,6 +572,7 @@
         if(typeof s.goal!=='number') s.goal=3;
         s._m2=true;
       }
+      if(!s.langSet) s.lang=def.lang; // English is primary until the user explicitly picks a language
       return s;
     }catch(e){ return Object.assign({},def,{_m2:true}); }
   }
@@ -1248,6 +1248,8 @@
 
   // ---------- tabs / views ----------
   const tabbar=document.getElementById('tabbar');
+  function setTabbarH(){ if(tabbar) document.documentElement.style.setProperty('--tabbarH', tabbar.offsetHeight+'px'); }
+  setTabbarH(); addEventListener('resize',setTabbarH); addEventListener('orientationchange',()=>setTimeout(setTabbarH,250));
   const videosEl=document.getElementById('videos'), vfeed=document.getElementById('vfeed');
   let curTab='feed';
   function markTab(v){ if(tabbar)[...tabbar.children].forEach(b=>b.classList.toggle('on', b.dataset.v===v)); }
@@ -1270,7 +1272,8 @@
   // ---------- video feed (тестовая вкладка «Видео») ----------
   let vData=null, vBuilt=false, vIO=null, vMuted=true;
   function openVideos(){ videosEl.classList.add('show'); if(!vBuilt) loadVideos(); else { const cur=vCurrent(); if(cur) vPlay(cur); } }
-  function vClose(){ videosEl.classList.remove('show'); [...vfeed.querySelectorAll('video')].forEach(v=>{ try{v.pause();}catch(e){} }); }
+  function vClose(){ videosEl.classList.remove('show'); [...vfeed.querySelectorAll('video')].forEach(v=>{ try{v.pause();}catch(e){} }); vMusic(false); }
+  function vMusic(on){ const a=document.getElementById('vmusic'); if(!a) return; if(on){ a.volume=0.55; const p=a.play(); if(p&&p.catch) p.catch(()=>{}); } else { try{a.pause();}catch(e){} } }
   function loadVideos(){
     vBuilt=true;
     fetch('videos/index.json',{cache:'no-cache'}).then(r=>{ if(!r.ok) throw 0; return r.json(); })
@@ -1297,14 +1300,11 @@
           +'<button class="vbtn vshare" title="'+(en?'Share':'Поделиться')+'">↗</button>'
           +'<button class="vbtn vmute'+(vMuted?'':' on')+'" title="'+(en?'Sound':'Звук')+'">'+(vMuted?'🔇':'🔊')+'</button>'
         +'</div>'
-        +'<div class="vbot"><h3>'+esc(title)+'</h3>'
-          +'<button class="vgo">'+(en?'Study in detail':'Разобраться подробнее')+' →</button>'
-          +(mins?'<div class="vmeta">📖 '+mins+' '+(en?'min read':'мин чтения')+'</div>':'')
-        +'</div>';
+        +'<div class="vbot"><button class="vgo">'+(en?'Study in detail':'Разобраться подробнее')+' →</button></div>';
       const video=sl.querySelector('video');
       video.muted=vMuted;
       sl.querySelector('.vgo').onclick=(e)=>{ e.stopPropagation(); openFocus(item.id); };
-      sl.querySelector('.vmute').onclick=(e)=>{ e.stopPropagation(); vMuted=!vMuted; [...vfeed.querySelectorAll('video')].forEach(v=>v.muted=vMuted); [...vfeed.querySelectorAll('.vmute')].forEach(b=>{ b.classList.toggle('on',!vMuted); b.textContent=vMuted?'🔇':'🔊'; }); };
+      sl.querySelector('.vmute').onclick=(e)=>{ e.stopPropagation(); vMuted=!vMuted; [...vfeed.querySelectorAll('video')].forEach(v=>v.muted=vMuted); [...vfeed.querySelectorAll('.vmute')].forEach(b=>{ b.classList.toggle('on',!vMuted); b.textContent=vMuted?'🔇':'🔊'; }); vMusic(!vMuted); };
       sl.querySelector('.vsave').onclick=(e)=>{ e.stopPropagation(); if(c.id){ toggleSave(c, sl.querySelector('.vsave')); } };
       sl.querySelector('.vshare').onclick=(e)=>{ e.stopPropagation(); if(c.id) shareCard(c); };
       video.addEventListener('click',()=>{ if(video.paused){ vPlay(sl); } else { video.pause(); sl.classList.add('paused'); } });
@@ -1499,13 +1499,13 @@
   function renderSettings(){
     const el=document.getElementById('settingsBody'); if(!el) return; const en=state.lang==='en';
     el.innerHTML='<h1>'+(en?'Settings':'Настройки')+'</h1>'
-      +'<div class="srow"><div class="sh">'+(en?'Language':'Язык')+'</div><div class="seg" id="langSeg"><button data-l="ru"'+(state.lang!=='en'?' class="on"':'')+'>Русский</button><button data-l="en"'+(state.lang==='en'?' class="on"':'')+'>English</button></div><div class="sd">'+(en?'Card language. Where a translation is missing, Russian is shown.':'Язык карточек. Где нет перевода — покажется русский.')+'</div></div>'
+      +'<div class="srow"><div class="sh">'+(en?'Language':'Язык')+'</div><div class="seg" id="langSeg"><button data-l="en"'+(state.lang==='en'?' class="on"':'')+'>English</button><button data-l="ru"'+(state.lang!=='en'?' class="on"':'')+'>Русский</button></div><div class="sd">'+(en?'Card language. Where a translation is missing, Russian is shown.':'Язык карточек. Где нет перевода — покажется русский.')+'</div></div>'
       +'<div class="srow"><div class="sh">'+(en?'Your interests':'Твои интересы')+'</div><button class="btn" id="setInterests">'+(en?'Pick topics':'Выбрать темы')+'</button><div class="sd">'+(en?'Choose topics to weight your feed toward.':'Выбери темы, под которые подстроится лента.')+'</div></div>'
       +'<div class="srow"><div class="sh">'+(en?'Progress':'Прогресс')+'</div><button class="btn" id="setReset">'+(en?'Reset progress':'Сбросить прогресс')+'</button><div class="sd">'+(en?'Clears learned, saved and streak on this device.':'Очистит изученное, закладки и стрик на этом устройстве.')+'</div></div>'
       +'<div class="srow"><div class="sh">'+(en?'Keyboard':'Горячие клавиши')+'</div><div class="sd"><kbd>/</kbd> '+(en?'search':'поиск')+' · <kbd>R</kbd> '+(en?'random':'рандом')+' · <kbd>&larr;</kbd> '+(en?'back':'назад')+' · <kbd>Esc</kbd> '+(en?'close':'закрыть')+'</div></div>'
       +'<div class="srow"><div class="sh">'+(en?'About':'О проекте')+'</div><div class="sd">Curio — '+(en?'a curiosity engine: swipe and learn something new.':'движок любопытства: листай и узнавай новое.')+'<br>'+CARDS.length+(en?' cards · project ':' карточек · проект ')+'🌙 MoonCap</div></div>';
     const seg=el.querySelector('#langSeg');
-    if(seg) seg.addEventListener('click',e=>{ const b=e.target.closest('button[data-l]'); if(!b) return; const cur=state.lang==='en'?'en':'ru'; if(b.dataset.l!==cur){ state.lang=b.dataset.l; save(); syncLang(); applyChrome(); renderFilters(); rebuild(); renderSettings(); } });
+    if(seg) seg.addEventListener('click',e=>{ const b=e.target.closest('button[data-l]'); if(!b) return; const cur=state.lang==='en'?'en':'ru'; if(b.dataset.l!==cur){ state.lang=b.dataset.l; state.langSet=true; save(); syncLang(); applyChrome(); renderFilters(); rebuild(); renderSettings(); } });
     const ib=el.querySelector('#setInterests'); if(ib) ib.onclick=showOnboard;
     const rb=el.querySelector('#setReset');
     if(rb) rb.onclick=()=>{ if(confirm(en?'Reset all progress?':'Сбросить весь прогресс?')){ state=Object.assign({},structuredClone(def),{lang:state.lang,_m2:true}); save(); rebuild(); renderStats(); renderSettings(); } };
@@ -1530,7 +1530,7 @@
   bmBtn.onclick=()=>{ viewSaved=!viewSaved; syncBm(); renderFilters(); rebuild(); };
   const langBtn=document.getElementById('langBtn');
   function syncLang(){ langBtn.textContent = state.lang==='en'?'RU':'EN'; langBtn.classList.toggle('on', state.lang==='en'); }
-  langBtn.onclick=()=>{ state.lang = state.lang==='en'?'ru':'en'; save(); syncLang(); applyChrome(); renderFilters(); rebuild(); if(curTab==='profile') renderProfile(); if(focus.classList.contains('show')) renderFocus(); if(studyEl.classList.contains('show')){ buildStudyChips(); renderStudy(); } if(videosEl&&videosEl.classList.contains('show')){ vBuilt=false; loadVideos(); } };
+  langBtn.onclick=()=>{ state.lang = state.lang==='en'?'ru':'en'; state.langSet=true; save(); syncLang(); applyChrome(); renderFilters(); rebuild(); if(curTab==='profile') renderProfile(); if(focus.classList.contains('show')) renderFocus(); if(studyEl.classList.contains('show')){ buildStudyChips(); renderStudy(); } if(videosEl&&videosEl.classList.contains('show')){ vBuilt=false; loadVideos(); } };
   const help=document.getElementById('help');
   document.getElementById('helpBtn').onclick=()=>help.classList.add('show');
   document.getElementById('helpClose').onclick=()=>help.classList.remove('show');
