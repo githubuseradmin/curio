@@ -34,6 +34,7 @@
   html{scroll-behavior:smooth}
   body{
     margin:0; background:var(--bg); color:var(--ink);
+    min-height:100vh; min-height:100dvh; /* keep document >= viewport so iOS anchors the fixed tab-bar to the screen bottom (not a short body) in Study/Video */
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,system-ui,sans-serif;
     line-height:1.62; -webkit-font-smoothing:antialiased;
     background-image:
