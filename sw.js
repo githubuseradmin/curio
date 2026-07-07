@@ -1,6 +1,6 @@
 // Curio service worker — офлайн-режим и мгновенная загрузка.
 // Бампни версию при каждом деплое, чтобы обновить кэш.
-const CACHE = 'curio-v11';
+const CACHE = 'curio-v13';
 const ASSETS = [
   './', 'index.html', 'cards.js', 'cards.en.js', 'illustrations.js', 'manifest.webmanifest',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png', 'icons/favicon-32.png'
